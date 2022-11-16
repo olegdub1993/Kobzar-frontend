@@ -1,0 +1,8 @@
+/* .input::-webkit-slider-runnable-track {
+    background: rgb(160, 31, 31);
+    height: 16px;
+    border-radius: 8px;
+  } */
+.input::-webkit-slider-thumb {
+    background: green;
+  }
