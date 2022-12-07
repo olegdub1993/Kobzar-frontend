@@ -4,7 +4,7 @@ import Link from "next/link";
 import { logout } from "../store/authSlice";
 
 export const HoverPopup = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<any>();
   return (
     <div
       className={`group-hover:block  rounded w-[175px] font-semibold hidden bg-red p-[15px] top-[63px] right-[0px]  text-black absolute `} >

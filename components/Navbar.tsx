@@ -20,13 +20,12 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import { useRouter } from 'next/router';
 import { Button } from '@mui/material';
-import kobza from  "./../public/kobza.jpg"
 import Popup from './Popup';
 import { useTypedSelector } from '../hooks/useTypedSelector';
 import { HoverPopup } from './HoverPopup';
-import { fetchUser } from '../store/userSlice';
-import { useDispatch } from 'react-redux';
 import PersonIcon from '@mui/icons-material/Person';
+
+
 const drawerWidth = 240;
 
  
@@ -62,8 +61,6 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 }));
 
 export default function Navigation({restrictPopup,setRestrictPopup}:any) {
-
-    const dispatch=useDispatch()
     const {isAuth} = useTypedSelector((state) => state.auth)
     const {user,alboms} = useTypedSelector((state) => state.user)
     const theme = useTheme();
@@ -106,7 +103,7 @@ export default function Navigation({restrictPopup,setRestrictPopup}:any) {
                     </Typography >
                         <Button onClick={() => router.push("/signup")} className='bg-white hover:!bg-red capitalize text-black font-semibold'>Реєстрація</Button></>:
                          <div className='group flex items-center relative h-[64px]'>
-                           {user.picture ? <img className="rounded-full w-[40px] h-[40px] bg-red mr-4" 
+                           {user?.picture ? <img className="rounded-full w-[40px] h-[40px] bg-red mr-4" 
                             src={process.env.NEXT_PUBLIC_BASIC_URL + user.picture} />:
                             <div className="flex items-center justify-center rounded-full w-[40px] h-[40px] bg-red mr-4"><PersonIcon className="mb-[5px]" /></div>}
                             <Typography className='text-white' variant="h6" noWrap component="div">
@@ -167,7 +164,7 @@ const MyListItem=({text,href,index,protect,setRestrictPopup,restrictPopup}:any)=
     const router = useRouter()
   
 
-    const onListItemClick=(e,href)=>{
+    const onListItemClick=(e:React.MouseEvent<HTMLElement>, href:string)=>{
         e.stopPropagation()
         if(!isAuth && protect){
             setRestrictPopup(text)

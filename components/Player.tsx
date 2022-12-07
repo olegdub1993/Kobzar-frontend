@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useMemo } from 'react'
-import { Button, Card, Grid, IconButton } from '@mui/material';
+import React, { useEffect } from 'react'
+import { Grid, IconButton } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import Pause from '@mui/icons-material/Pause'
 import PlayArrow from '@mui/icons-material/PlayArrow';
@@ -12,24 +12,19 @@ import TrackProgress from './TrackProgress';
 import { useDispatch } from 'react-redux';
 import { useTypedSelector } from '../hooks/useTypedSelector';
 import { setPlay, setPrevVolume, setPause, setVolume, setCurrentTime, setDuration, setActiveTrack, setTaken, setFree, setActivePlaylist, setRepeat, setPrevPlaylist } from '../store/playerSlice';
-import { useRef } from 'react';
 import { addToLiked } from '../store/userSlice';
 import { removeFromLiked } from './../store/userSlice';
-import ReplayCircleFilledIcon from '@mui/icons-material/ReplayCircleFilled';
 import RepeatOneOnOutlinedIcon from '@mui/icons-material/RepeatOneOnOutlined';
-import ReplayIcon from '@mui/icons-material/Replay';
 import RepeatOneOutlinedIcon from '@mui/icons-material/RepeatOneOutlined';
 import Link from '@mui/material/Link';
-import { ActionCreator } from '@reduxjs/toolkit';
 
 let audio: HTMLAudioElement;
 
 const Player = () => {
   const {disabled, prevVolume, active, repeat, prevPlaylist, activePlaylist, volume, duration, taken, currentTime, pause } = useTypedSelector((state) => state.player)
-  const { tracks, error } = useTypedSelector((state) => state.track)
+  // const { tracks, error } = useTypedSelector((state) => state.track)
   const {user} = useTypedSelector((state) => state.user)
-  const dispatch = useDispatch()
-  console.log("activePlaylist", activePlaylist)
+  const dispatch = useDispatch<any>()
   const isLiked=user?.liked?.find((id)=>id===active?._id)
   useEffect(() => {
     if (!audio) {
@@ -76,7 +71,6 @@ const Player = () => {
       // audio.pause()
     }
   }
-  const ref=useRef()
   const playNext = () => {
     let nextSong= activePlaylist.length-1 > active.index ? activePlaylist[active.index+1]: activePlaylist[0]
     // dispatch(setPause())
@@ -113,7 +107,7 @@ const Player = () => {
   }
     const addOrRemoveFromLiked=()=>{
       if(!isLiked){
-        dispatch(addToLiked(active))
+        dispatch(addToLiked(active._id))
       }
       else{
         dispatch(removeFromLiked(active._id))

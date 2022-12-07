@@ -8,8 +8,8 @@ import { useInput } from '../../hooks/useInput';
 import { IPlaylist } from '../../types/playlist';
 import SearchTrackList from '../../components/SearchTrackList';
 import TrackItem from '../../components/TrackItemLiniar';
-
-
+import Image from 'next/image'
+import albomPicture from './../../public/kobza.jpg'
 
 interface PlaylistPageProps {
     serverPlaylist: IPlaylist
@@ -23,7 +23,7 @@ const PlaylistPage = ({ serverPlaylist }: PlaylistPageProps) => {
         <MainLayout title={'Kobzar ' + serverPlaylist.name }
             keywords={"Music, tracks, " + serverPlaylist.name} red >
             <Grid container className="flex mb-8">
-            <div className='w-[500px] h-[350px] mb-4 mt-2 '> <img className='w-[100%] h-[100%] object-cover rounded' src={process.env.NEXT_PUBLIC_BASIC_URL + serverPlaylist.picture} /></div>
+            <div className='w-[500px] h-[350px] mb-4 mt-2 '>  <Image alt="Albom picture" className='w-[100%] h-[100%] object-cover rounded' src={serverPlaylist.picture ? process.env.NEXT_PUBLIC_BASIC_URL + serverPlaylist.picture : albomPicture} /></div>
                 <div className="ml-8 mt-2">
                     <div className="font-semibold mb-4 mt-8 text-4xl max-w-full">Назва плейлиста: {serverPlaylist.name}</div>
                     <div className="font-bold mb-24 text-7xl  max-w-full">Автор:{serverPlaylist.username}</div>
@@ -45,7 +45,7 @@ const PlaylistPage = ({ serverPlaylist }: PlaylistPageProps) => {
 
 export default PlaylistPage
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context:any) {
     const { id } = context.params
     const response = await axios.get(process.env.NEXT_PUBLIC_BASIC_URL + "alboms/" + id)
     const serverPlaylist = response.data

@@ -1,14 +1,13 @@
 import React from 'react'
 import { ITrack } from '../types/track'
-import { Button, Card, Grid, IconButton } from '@mui/material';
+import { Card, Grid, IconButton } from '@mui/material';
 import Pause from '@mui/icons-material/Pause'
 import PlayArrow from '@mui/icons-material/PlayArrow';
-import Delete from '@mui/icons-material/Delete';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
-import { setActiveTrack, setPlay, setAudio, setActivePlaylist, setPause, setTaken, setFree } from '../store/playerSlice';
+import { setActiveTrack, setPlay, setActivePlaylist, setPause, setTaken, setFree } from '../store/playerSlice';
 import { useTypedSelector } from './../hooks/useTypedSelector';
-import axios from 'axios';
+
 interface TrackItemProps {
     track: ITrack
     tracklist:ITrack[]
@@ -22,7 +21,7 @@ const TrackItem: React.FC<TrackItemProps> = ({red, track, index, tracklist,}) =>
     const isTrackPlaying=active?._id===track._id
     const dispatch = useDispatch();
     const router = useRouter()
-    const  pushAndPlay = (e) => {
+    const  pushAndPlay = (e:React.MouseEvent<HTMLElement>) => {
         e.stopPropagation()
         dispatch(setPause())
         dispatch(setFree())
@@ -32,17 +31,13 @@ const TrackItem: React.FC<TrackItemProps> = ({red, track, index, tracklist,}) =>
         // dispatch(setAudio(track))
         // setAudio(track,dispatch,volume,true,)
     }
-     const playOrPause=(e)=>{
+     const playOrPause=(e:React.MouseEvent<HTMLElement>)=>{
         e.stopPropagation()
             if (pause) {
               dispatch(setPlay())
             } else {
               dispatch(setPause())
             }
-    }
-    const deleteItem = (e) => {
-        e.stopPropagation()
-        axios.delete(process.env.NEXT_PUBLIC_BASIC_URL + "tracks/" + track._id).then((r) => console.log("track deleted good"))
     }
     return (
         <Card sx={{

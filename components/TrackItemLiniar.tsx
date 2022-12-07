@@ -1,17 +1,16 @@
 import React from 'react'
 import { ITrack } from '../types/track'
-import { Button, Card, Grid, IconButton } from '@mui/material';
+import {Grid, IconButton } from '@mui/material';
 import Pause from '@mui/icons-material/Pause'
 import PlayArrow from '@mui/icons-material/PlayArrow';
-import Delete from '@mui/icons-material/Delete';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import { setMorePopup} from '../store/trackSlice';
-import { setActiveTrack, setPlay, setAudio, setActivePlaylist, setPause, setTaken, setFree } from '../store/playerSlice';
+import { setActiveTrack, setPlay, setActivePlaylist, setPause, setTaken, setFree } from '../store/playerSlice';
 import { useTypedSelector } from '../hooks/useTypedSelector';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import axios from 'axios';
 import { addTrackToAlbom } from '../store/userSlice';
+
 interface TrackItemProps {
     track: ITrack
     tracklist:ITrack[]
@@ -24,7 +23,7 @@ const TrackItem: React.FC<TrackItemProps> = ({red, track, tracklist,}) => {
     const isTrackPlaying=active?._id===track._id
     const dispatch = useDispatch();
     const router = useRouter()
-    const  pushAndPlay = (e) => {
+    const  pushAndPlay = (e:React.MouseEvent<HTMLElement>) => {
         e.stopPropagation()
         dispatch(setPause())
         dispatch(setFree())
@@ -34,7 +33,7 @@ const TrackItem: React.FC<TrackItemProps> = ({red, track, tracklist,}) => {
         // dispatch(setAudio(track))
         // setAudio(track,dispatch,volume,true,)
     }
-     const playOrPause=(e)=>{
+     const playOrPause=(e:React.MouseEvent<HTMLElement>)=>{
         e.stopPropagation()
             if (pause) {
               dispatch(setPlay())
@@ -42,11 +41,11 @@ const TrackItem: React.FC<TrackItemProps> = ({red, track, tracklist,}) => {
               dispatch(setPause())
             }
     }
-    const deleteItem = (e) => {
-        e.stopPropagation()
-        axios.delete(process.env.NEXT_PUBLIC_BASIC_URL + "tracks/" + track._id).then((r) => console.log("track deleted good"))
-    }
-    const onMoreClickHandler =(e)=>{
+    // const deleteItem = (e:React.MouseEvent<HTMLElement>) => {
+    //     e.stopPropagation()
+    //     axios.delete(process.env.NEXT_PUBLIC_BASIC_URL + "tracks/" + track._id).then((r) => console.log("track deleted good"))
+    // }
+    const onMoreClickHandler =(e:React.MouseEvent<HTMLElement>)=>{
          e.stopPropagation()
          dispatch(setMorePopup(track._id))
     }
@@ -68,15 +67,20 @@ const TrackItem: React.FC<TrackItemProps> = ({red, track, tracklist,}) => {
             </Grid>
             <div className=' relative'>
             <IconButton className='  hover:scale-110   hover:!bg-red   transition-all  duration-500' onClick={onMoreClickHandler}><MoreVertIcon/></IconButton>
-            { morePopup==track._id && <Popup setPopup={(str)=>dispatch(setMorePopup(str))} trackId={track._id} />}
+            { morePopup==track._id && <Popup setPopup={(str:string)=>dispatch(setMorePopup(str))} trackId={track._id} />}
             </div>
         </div>
     )
 }
-const Popup = ({trackId, setPopup}:any) => {
-    const dispatch=useDispatch()
-    const {user,alboms} = useTypedSelector((state) => state.user)
-    const addTrackToAlbomHandler=(albomId)=>{
+
+interface PopupProps {
+    trackId:string
+    setPopup:(arg:string)=>void
+}
+const Popup:React.FC<PopupProps> = ({trackId, setPopup}) => {
+    const dispatch=useDispatch<any>()
+    const {alboms} = useTypedSelector((state) => state.user)
+    const addTrackToAlbomHandler=(albomId:string)=>{
         setPopup("")
         dispatch(addTrackToAlbom({albomId,trackId}))
     }

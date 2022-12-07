@@ -66,7 +66,7 @@ export const userAPI = {
     return $api.post("users/updateProfile", data);
   },
   addToLiked (id){
-    return $api.post("users/liked", id);
+    return $api.post("users/liked", {id});
   },
   removeFromLiked (id){
     return $api.delete(`users/liked/${id}`);

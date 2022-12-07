@@ -1,29 +1,26 @@
 import React from 'react'
-import { ITrack } from '../types/track'
-import { Button, Card, Grid, IconButton } from '@mui/material';
+import { Card, Grid, IconButton } from '@mui/material';
 import Pause from '@mui/icons-material/Pause'
 import PlayArrow from '@mui/icons-material/PlayArrow';
-import Delete from '@mui/icons-material/Delete';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
-import { setActiveTrack, setPlay, setAudio, setActivePlaylist, setPause, setTaken, setFree } from '../store/playerSlice';
+import { setActiveTrack, setPlay, setActivePlaylist, setPause, setTaken, setFree } from '../store/playerSlice';
 import { useTypedSelector } from '../hooks/useTypedSelector';
 import { IPlaylist } from './../types/playlist';
 
 interface PlaylistItemProps {
     playlist: IPlaylist
-    tracklist:ITrack[]
     index:number
     red?:boolean
 }
 
-const PlaylistItem: React.FC<PlaylistItemProps> = ({ playlist, index, tracklist,}) => {
+const PlaylistItem: React.FC<PlaylistItemProps> = ({ playlist}) => {
     const { active, pause } = useTypedSelector((state) => state.player)
     const tracksWithIndex = playlist.tracks.map((t,index)=>({...t,index}))
     const isPlaylistPlaying=playlist.tracks.find((t)=>t._id===active?._id)
     const dispatch = useDispatch();
     const router = useRouter()
-    const  pushAndPlay = (e) => {
+    const  pushAndPlay = (e:React.MouseEvent<HTMLElement>) => {
         e.stopPropagation()
         dispatch(setPause())
         dispatch(setFree())
@@ -33,7 +30,7 @@ const PlaylistItem: React.FC<PlaylistItemProps> = ({ playlist, index, tracklist,
         // dispatch(setAudio(track))
         // setAudio(track,dispatch,volume,true,)
     }
-     const playOrPause=(e)=>{
+     const playOrPause=(e:React.MouseEvent<HTMLElement>)=>{
         e.stopPropagation()
             if (pause) {
               dispatch(setPlay())

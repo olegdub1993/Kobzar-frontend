@@ -38,10 +38,10 @@ export const playerSlice = createSlice({
   initialState,
   reducers: {
     // Action to set the authentication status
-    setPause(state, action) {
+    setPause(state) {
       state.pause = true
     },
-    setPlay(state, action) {
+    setPlay(state) {
       state.pause = false
     },
     setVolume(state, action) {
@@ -65,10 +65,10 @@ export const playerSlice = createSlice({
     setPrevPlaylist(state, action) {
       state.prevPlaylist = action.payload
     },
-    setTaken(state, action) {
+    setTaken(state) {
       state.taken = true
     },
-    setFree(state, action) {
+    setFree(state) {
       state.taken = false
     },
     setDisabled(state, action) {

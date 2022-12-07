@@ -1,12 +1,12 @@
-import { Grid, Box } from '@mui/material';
+
 import React from 'react'
-import { ITrack } from '../types/track';
 import PlaylistItem from './PlaylistItem';
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import { IPlaylist } from './../types/playlist';
 
 interface PlaylistsProps {
-  playlists: any[]
+  playlists: IPlaylist[]
 }
 
 const Playlists: React.FC<PlaylistsProps> = ({ playlists }) => {
@@ -34,7 +34,7 @@ const Playlists: React.FC<PlaylistsProps> = ({ playlists }) => {
              <Carousel responsive={responsive}  >
               {/* customLeftArrow={<CustomLeftArrow />}
               customRightArrow={<CustomRightArrow />}> */}
-             {playlists?.map((playlist, index) => <PlaylistItem index={index} key={playlist._id} tracklist={playlists} playlist={playlist} />)}
+             {playlists?.map((playlist, index) => <PlaylistItem index={index} key={playlist._id}  playlist={playlist} />)}
             </Carousel>
         // </div>
     )

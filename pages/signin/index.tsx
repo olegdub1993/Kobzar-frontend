@@ -14,7 +14,6 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useDispatch } from 'react-redux';
 import { login } from '../../store/authSlice';
-import axios from 'axios';
 import { useTypedSelector } from './../../hooks/useTypedSelector';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -83,7 +82,7 @@ export default function SignIn() {
                     </Typography>
                     <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                         <TextField
-                            onClick={()=>setInternalError("")}
+                            onClick={()=>setInternalError({name:""})}
                             margin="normal"
                             required
                             fullWidth
@@ -94,7 +93,7 @@ export default function SignIn() {
                             autoFocus
                         />
                         <TextField
-                            onClick={()=>setInternalError("")}
+                            onClick={()=>setInternalError({name:""})}
                             margin="normal"
                             required
                             fullWidth

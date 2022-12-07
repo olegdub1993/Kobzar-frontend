@@ -1,5 +1,5 @@
 import React from 'react'
-import c from './TrackProgress.module.css'
+
 interface TrackProgressProps{
     left:number
     right:number
@@ -9,10 +9,10 @@ interface TrackProgressProps{
 }
 const TrackProgress:React.FC<TrackProgressProps> = ({left, right, onChange, width, audioRow}) => {
     let minutes=Math.floor(left / 60);
-    let seconds = left - minutes * 60;
+    let seconds:string| number = left - minutes * 60;
     seconds=seconds<10?"0"+seconds:seconds
     let minutesAll=Math.floor(right / 60);
-    let secondsAll = right - minutesAll * 60; 
+    let secondsAll:string| number = right - minutesAll * 60; 
     secondsAll=secondsAll<10?"0"+secondsAll:secondsAll
   return (
     <>
