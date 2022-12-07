@@ -6,17 +6,87 @@ import { ITrack } from '../types/track'
 import axios from "axios";
 import { IUser } from '../types/user';
 import { authAPI, userAPI } from './../API/api';
-import { setUser } from "./userSlice";
+import { getUserAlboms, setUser } from "./userSlice";
 
 // Type for our state
 export interface AuthState {
-  auth: boolean
+  isAuth: boolean
+  loading:boolean
+  error:{name:string}
 }
 
 // Initial state
 const initialState: AuthState = {
-  auth: false
+  isAuth: false,
+  loading:false,
+  error:{name:""}
 };
+export const logout= createAsyncThunk(
+  "auth/logout",
+  async (_, { rejectWithValue, dispatch }) => {
+    try {
+      const response = await authAPI.logout()
+      dispatch(setAuth(false))
+      localStorage.removeItem("token");
+      dispatch(setUser({}));
+      dispatch(getUserAlboms())
+      // const responseWithUserData = await userAPI.getUserData();
+      // console.log(responseWithUserData.data)
+      // dispatch(setUser(responseWithUserData.data));
+      // dispatch(setSignInError(""));
+      // dispatch(setIsSignin(true));
+    } catch (error) {
+      console.log(error)
+      // dispatch(setError("Some Server erroor"))
+    }
+  }
+);
+export const checkAuth= createAsyncThunk(
+  "auth/checkAuth",
+  async (_, { rejectWithValue, dispatch }) => {
+    dispatch(setLoading(true))
+    try {
+      const response = await authAPI.checkAuth()
+      dispatch(setAuth(true))
+      localStorage.setItem("token", response.data.accessToken);
+      console.log(response.data.user)
+      dispatch(setUser(response.data.user));
+      // const responseWithUserData = await userAPI.getUserData();
+      // console.log(responseWithUserData.data)
+      // dispatch(setUser(responseWithUserData.data));
+      // dispatch(setSignInError(""));
+      // dispatch(setIsSignin(true));
+    } catch (error) {
+    
+      
+    }finally{
+      dispatch(setLoading(false))
+    }
+  }
+);
+export const signup = createAsyncThunk(
+  "auth/signup",
+  async (data, { rejectWithValue, dispatch }) => {
+    try {
+      const response = await authAPI.signup(data)
+      dispatch(setAuth(true))
+      localStorage.setItem("token", response.data.accessToken);
+      console.log(response.data.user)
+      dispatch(setUser(response.data.user));
+      // const responseWithUserData = await userAPI.getUserData();
+      // console.log(responseWithUserData.data)
+      // dispatch(setUser(responseWithUserData.data));
+      // dispatch(setSignInError(""));
+      // dispatch(setIsSignin(true));
+    } catch (error) {
+      if(typeof(error.response.data.message)==="string"){
+        dispatch(setError(error.response.data.message))
+      } else{
+        dispatch(setError(error.response.data.message[0]))
+      }
+    }
+  }
+);
 export const login = createAsyncThunk(
   "auth/login",
   async (data, { rejectWithValue, dispatch }) => {
@@ -24,15 +94,19 @@ export const login = createAsyncThunk(
       const response = await authAPI.signin(data)
       dispatch(setAuth(true))
       localStorage.setItem("token", response.data.accessToken);
-      localStorage.setItem("refreshToken", response.data.refreshToken);
-      const responseWithUserData = await userAPI.getUserData();
-      console.log(responseWithUserData.data)
-      dispatch(setUser(responseWithUserData.data));
+      console.log(response.data.user)
+      dispatch(setUser(response.data.user));
+      // const responseWithUserData = await userAPI.getUserData();
+      // console.log(responseWithUserData.data)
+      // dispatch(setUser(responseWithUserData.data));
       // dispatch(setSignInError(""));
       // dispatch(setIsSignin(true));
     } catch (error) {
-      console.log(error)
-      // dispatch(setError("Some Server erroor"))
+      if(typeof(error.response.data.message)==="string"){
+        dispatch(setError(error.response.data.message))
+      } else{
+        dispatch(setError(error.response.data.message[0]))
+      }
     }
   }
 );
@@ -44,24 +118,28 @@ export const authSlice = createSlice({
 
     // Action to set the authentication status
     setAuth(state, action) {
-      state.auth = action.payload
+      state.isAuth = action.payload
     },
-    // setError(state, action) {
-    //   state.error = action.payload
-    // },
+    setLoading(state, action){
+      state.loading=action.payload
+    },
+    setError(state, action) {
+      console.log(action.payload)
+      state.error ={name:action.payload}
+    },
   },
   // Special reducer for hydrating the state. Special case for next-redux-wrapper
-  extraReducers: {
-    [HYDRATE]: (state, action) => {
-      return {
-        ...state,
-        ...action.payload.auth,
-      };
-    },
-  },
+  // extraReducers: {
+  //   [HYDRATE]: (state, action) => {
+  //     return {
+  //       ...state,
+  //       ...action.payload.auth,
+  //     };
+  //   },
+  // },
 
 });
 
-export const { setAuth, } = authSlice.actions;
+export const { setAuth, setLoading, setError} = authSlice.actions;
 
 export default authSlice.reducer;

@@ -1,15 +1,15 @@
 import { Grid, Box } from '@mui/material';
 import React from 'react'
 import { ITrack } from '../types/track';
-import TrackItem from './TrackItem';
+import PlaylistItem from './PlaylistItem';
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 
-interface TrackListProps {
-    tracks: ITrack[]
+interface PlaylistsProps {
+  playlists: any[]
 }
 
-const TrackList: React.FC<TrackListProps> = ({ tracks, }) => {
+const Playlists: React.FC<PlaylistsProps> = ({ playlists }) => {
     const responsive = {
         superLargeDesktop: {
           // the naming can be any, depends on you.
@@ -34,10 +34,10 @@ const TrackList: React.FC<TrackListProps> = ({ tracks, }) => {
              <Carousel responsive={responsive}  >
               {/* customLeftArrow={<CustomLeftArrow />}
               customRightArrow={<CustomRightArrow />}> */}
-             {tracks?.map((track, index) => <TrackItem index={index} key={track._id} tracklist={tracks} track={track} />)}
+             {playlists?.map((playlist, index) => <PlaylistItem index={index} key={playlist._id} tracklist={playlists} playlist={playlist} />)}
             </Carousel>
         // </div>
     )
 }  
 
-export default TrackList
+export default Playlists

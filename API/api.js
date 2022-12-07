@@ -1,64 +1,45 @@
 import axios from "axios";
-// import { setServerError } from "../features/auth/authSlice";
-// import { useDispatch } from "react-redux";
 
-export const url = process.env.NEXT_PUBLIC_BASIC_URL;
-export const instance = axios.create({
-  baseURL: url,
-  //  baseURL: "/api/"
-  // withCredentials: true,
-});
-// export const getModuleInfo = (path) => {
-//   return axios.get(`${url}${path}`);
-// };
-instance.interceptors.request.use((config) => {
-  config.headers.Authorization = `Bearer ${localStorage.getItem("token")}`;
+axios.defaults.withCredentials = true
+export const API_URL = process.env.NEXT_PUBLIC_BASIC_URL;
+const $api = axios.create({
+  baseURL: API_URL
+})
+
+$api.interceptors.request.use((config) => {
+  config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`
   return config;
-});
+})
 
-instance.interceptors.response.use(
-  (config) => {
-    return config;
-  },
-  async (error) => {
-    const originalRequest = error.config;
-    if (
-      error.response.status === 401 &&
-      error.config &&
-      !error.config._isRetry
-    ) {
+$api.interceptors.response.use((config) => {
+  return config;
+},async (error) => {
+  const originalRequest = error.config;
+  if (error.response.status == 401 && error.config && !error.config._isRetry) {
       originalRequest._isRetry = true;
       try {
-        const refreshToken = localStorage.getItem("refreshToken");
-        const response = await authAPI.refresh({ refreshToken });
-        localStorage.setItem("token", response.data.access_token);
-        localStorage.setItem("refreshToken", response.data.refresh_token);
-        return instance.request(originalRequest);
+          const response = await axios.get(`${API_URL}auth/refresh`,)
+          localStorage.setItem('token', response.data.accessToken);
+          return $api.request(originalRequest);
       } catch (e) {
-        console.log("Користувач не авторизований");
+          console.log('НЕ АВТОРИЗОВАНИЙ')
       }
-    }
-    throw error;
   }
-);
-// const dispatch = useDispatch;
-// instance.interceptors.response.use(
-//   (config) => {
-//     return config;
-//   },
-//   async (error) => {
-//     if (error.response.status === 500) {
-//       dispatch(setServerError(true));
-//     }
-//     throw error;
-//   }
-// );
+  throw error;
+})
+
 export const authAPI = {
   signup(data) {
-    return instance.post("signup", data);
+    return $api.post("auth/registration", data);
   },
   signin(data) {
-    return instance.post("auth/login", data);
+    return $api.post("auth/login", data);
+  },
+   checkAuth() {
+  return $api.get(`${API_URL}auth/refresh`,);
+  },
+  logout() {
+    return $api.delete("auth/logout");
   },
   // validation(data) {
   //   return instance.post("signup/validation", data);
@@ -68,9 +49,6 @@ export const authAPI = {
   // },
   // emailVerificationResend(data) {
   //   return instance.post("email/verification/resend", data);
-  // },
-  // logout() {
-  //   return instance.post("logout");
   // },
   // refresh() {
   //   return instance.post("refresh");
@@ -82,12 +60,31 @@ export const authAPI = {
 
 export const userAPI = {
   getUserData() {
-    return instance.get("users/me");
+    return $api.get("users/me");
   },
+  updateProfile (data){
+    return $api.post("users/updateProfile", data);
+  },
+  addToLiked (id){
+    return $api.post("users/liked", id);
+  },
+  removeFromLiked (id){
+    return $api.delete(`users/liked/${id}`);
+  },
+  getLiked (){
+    return $api.get("users/liked");
+  },
+  getAlboms (){
+    return $api.get("users/alboms");
+  },
+
 };
 export const tracksAPI = {
   getTracks() {
-    return instance.get("tracks");
+    return $api.get("tracks");
+  },
+  getSearchedTracks(query) {
+    return $api.get("tracks/search?query=" + query);
   },
   // getMakerReviews() {
   //   return instance.get("maker/reviews");
@@ -99,3 +96,11 @@ export const tracksAPI = {
   //   return instance.put(`/maker/answers/${answerId}`, data);
   // },
 };
+export const albomAPI = {
+  createAlbom (data){
+    return $api.post("alboms", data);
+  },
+  addTrackToAlbom(data){
+    return $api.post(`alboms/${data.albomId}`, {id:data.trackId});
+  }
+}

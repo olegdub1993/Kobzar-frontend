@@ -16,10 +16,10 @@ const TrackProgress:React.FC<TrackProgressProps> = ({left, right, onChange, widt
     secondsAll=secondsAll<10?"0"+secondsAll:secondsAll
   return (
     <>
-    <div style={{display:"flex" ,alignItems:"center"}}>
-        <input  style={{width:width}} type="range" min={0} max={right} value={left} onChange={onChange}
+    <div  className="flex items-center " >
+        <input className="cursor-pointer"   style={{width:width}} type="range" min={0} max={right} value={left} onChange={onChange}
         />
-        <div style={{marginLeft:"10px"}}>{audioRow ? (<>{minutes} : {seconds} </>):(<>{left}</>)} / {audioRow? (<>{minutesAll} : {secondsAll} </>):(<>{right}</>)}</div>
+        <div className="w-[100px] ml-[10px]" >{audioRow ? (<>{minutes} : {seconds} </>):(<>{left}</>)} / {audioRow? (<>{minutesAll} : {secondsAll} </>):(<>{right}</>)}</div>
     </div>
     
     </>

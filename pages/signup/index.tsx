@@ -12,10 +12,15 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useDispatch } from 'react-redux';
+import { checkAuth, signup } from '../../store/authSlice';
+import { useTypedSelector } from '../../hooks/useTypedSelector';
+import { useEffect, useState } from 'react';
 
 function Copyright(props: any) {
+    
     return (
-        <Typography variant="body2" color="text.secondary" align="center" {...props}>
+        <Typography variant="body2" className='font-bold' align="center" {...props}>
             {'Copyright © '}
             <Link color="inherit" href="https://mui.com/">
                 Kobzar
@@ -29,36 +34,55 @@ function Copyright(props: any) {
 const theme = createTheme();
 
 export default function SignUp() {
+    const {isAuth, error} = useTypedSelector((state) => state.auth)
+    const [internalError, setError]=useState({name:""})
+    const dispatch = useDispatch() 
+    console.log("eee",error)
+    useEffect(()=>{
+        setError(error)
+    },[error])
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        console.log({
+        if(!data.get('username')||!data.get('email')||!data.get('password')){
+            setError({name:"Заповніть всі поля"})
+            return
+        }
+        dispatch(signup({
+            username:data.get('username'),
             email: data.get('email'),
             password: data.get('password'),
-        });
+        }));
     };
-
+   useEffect(()=>{},
+   [])
     return (
-        <div style={{ backgroundColor: "#ffffe3", height: "100vh", paddingTop: "100px" }}>
+        <div className=' h-screen  pt-24' >
             <ThemeProvider theme={theme} >
-                <Container component="main" maxWidth="xs" sx={{ padding: "20px" }}>
+                <Container component="main" maxWidth="xs" className='bg-yellow p-[30px] rounded shadow-xl '>
+                {isAuth? 
+                 <div className='text-red font-semibold text-3xl m-2 mt-8 mb-8 text-center' >
+                     Ви зареєструвались!) 
+                     <div className='text-red font-semibold text-2xl m-4 text-center' >Щоб активувати акaунт будь ласка перейдіть за посиланням яке ми додали  до листа надісланого на вашу пошту.</div>
+                 </div>:<>
                     <CssBaseline />
                     <Box
                         sx={{
+                            marginTop: 2,
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',
                         }}
                     >
-                        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                            <LockOutlinedIcon />
+                        <Avatar className='bg-red' sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                            <LockOutlinedIcon className='bg-red' />
                         </Avatar>
                         <Typography component="h1" variant="h5">
                             Sign up
                         </Typography>
                         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3, }} >
                             <Grid container spacing={2}>
-                                <Grid item xs={12} sm={6}>
+                                {/* <Grid item xs={12} sm={6}>
                                     <TextField
                                         autoComplete="given-name"
                                         name="firstName"
@@ -69,45 +93,49 @@ export default function SignUp() {
                                         autoFocus
                                         sx={{ color: "#10100e", border: "1px solid #10100e", }}
                                     />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
+                                </Grid> */}
+                                <Grid item xs={12} >
                                     <TextField
-                                        sx={{ background: "white" }}
+                                        // sx={{ background: "white" }}
                                         required
                                         fullWidth
-                                        id="lastName"
-                                        label="Last Name"
-                                        name="lastName"
+                                        id="username"
+                                        label="Прізвище та ім'я"
+                                        name="username"
                                         autoComplete="family-name"
+                                        onClick={()=>setError("")}
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
                                     <TextField
-                                        sx={{ background: "white" }}
+                                        // sx={{ background: "white" }}
                                         required
                                         fullWidth
                                         id="email"
-                                        label="Email Address"
+                                        label="Ваш Email"
                                         name="email"
                                         autoComplete="email"
+                                        onClick={()=>setError("")}
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
                                     <TextField
-                                        sx={{ background: "white" }}
+                                        onClick={()=>setError("")}
+                                        // sx={{ background: "white" }}
                                         required
                                         fullWidth
                                         name="password"
-                                        label="Password"
+                                        label="Пароль"
                                         type="password"
                                         id="password"
                                         autoComplete="new-password"
                                     />
                                 </Grid>
-                                <Grid item xs={12}>
+                                {internalError && <Grid item xs={12}><div className='text-center text-lg font-semibold text-error'>{internalError.name}</div> </Grid>}
+                                <Grid item xs={12} className="mt-6 mb-4">
                                     <FormControlLabel
-                                        control={<Checkbox value="allowExtraEmails" color="primary" />}
-                                        label="I want to receive inspiration, marketing promotions and updates via email."
+                                        control={<Checkbox value="allowExtraEmails"  className='bold bg-red hover:!bg-red mr-4 ml-4' />}
+                                        label="Я хочу отримувати інформацію щодо нових можливостей Kobzar."
                                     />
                                 </Grid>
                             </Grid>
@@ -115,20 +143,21 @@ export default function SignUp() {
                                 type="submit"
                                 fullWidth
                                 variant="contained"
-                                sx={{ mt: 3, mb: 2, background: "black" }}
+                                className='bg-red hover:bg-black capitalize text-lg font-bold'
+                                sx={{ mt: 3, mb: 2, }}
                             >
-                                Sign Up
+                                Зареєструватись
                             </Button>
                             <Grid container justifyContent="flex-end">
                                 <Grid item>
-                                    <Link href="/signin" variant="body2">
-                                        Already have an account? Sign in
+                                    <Link href="/signin" variant="body2" className='font-bold text-sm text-red'>
+                                        Вже маєте акаунт? Ввійти
                                     </Link>
                                 </Grid>
                             </Grid>
                         </Box>
                     </Box>
-                    <Copyright sx={{ mt: 5 }} />
+                    <Copyright sx={{ mt: 5 }} /></>}
                 </Container>
             </ThemeProvider>
         </div>

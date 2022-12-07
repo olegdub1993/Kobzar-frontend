@@ -10,20 +10,21 @@ const Create = () => {
     const [step, setStep] = useState(0);
     const [audio, setAudio] = useState(null);
     const [picture, setPicture] = useState(null);
-    const name=useInput()
-    const artist=useInput()
-    const text=useInput()
+    const [category, setCategory] = useState("")
+    const name = useInput()
+    const artist = useInput()
+    // const category = useInput()
     const next = () => {
         if (step !== 2) {
             setStep((step) => step + 1)
-        }else{
-            const formData=new FormData()
-            formData.append("name",name.value)
-            formData.append("text",text.value)
-            formData.append("artist",artist.value)
-            formData.append("audio",audio)
-            formData.append("picture",picture)
-            axios.post(process.env.NEXT_PUBLIC_BASIC_URL+"tracks",formData).then((resp)=>{})
+        } else {
+            const formData = new FormData()
+            formData.append("name", name.value)
+            formData.append("category", category)
+            formData.append("artist", artist.value)
+            formData.append("audio", audio)
+            formData.append("picture", picture)
+            axios.post(process.env.NEXT_PUBLIC_BASIC_URL + "tracks", formData).then((resp) => { })
         }
 
     }
@@ -37,10 +38,18 @@ const Create = () => {
                 {step === 0 && <Grid container direction={"column"} >
                     <TextField {...name} label="Tracks name" sx={{ margin: "20px" }} />
                     <TextField {...artist} label="Tracks author" sx={{ margin: "20px" }} />
-                    <TextField {...text} label="Tracks text" multiline rows={4} sx={{ margin: "20px" }} />
+                    <select onChange={(e: any) => setCategory(e.target.value)}>
+                        <option value="rock">Рок</option>
+                        <option value="christmas">Різдво</option>
+                        <option value="popular">Популярні</option>
+                        <option value="folk">Народні</option>
+                        <option value="forSoul">Для душі</option>
+                        <option value="remix">Ремікси</option>
+                    </select>
+
                 </Grid>}
-                {step === 1 && <FileUpload  setFile={setPicture} accept="image/*"><Button>Upload Image</Button></FileUpload>}
-                {step === 2 && <FileUpload  setFile={setAudio} accept="audio/*"><Button>Upload Track</Button></FileUpload>}
+                {step === 1 && <FileUpload setFile={setPicture} accept="image/*"><Button>Upload Image</Button></FileUpload>}
+                {step === 2 && <FileUpload setFile={setAudio} accept="audio/*"><Button>Upload Track</Button></FileUpload>}
             </StepWrapper>
             <Grid container justifyContent={"space-between"} >
                 <Button color='success' variant='contained' disabled={step === 0} onClick={back} > Go back</Button>

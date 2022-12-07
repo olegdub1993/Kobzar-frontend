@@ -7,27 +7,28 @@ import Delete from '@mui/icons-material/Delete';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import { setActiveTrack, setPlay, setAudio, setActivePlaylist, setPause, setTaken, setFree } from '../store/playerSlice';
-import { useTypedSelector } from './../hooks/useTypedSelector';
-import axios from 'axios';
-interface TrackItemProps {
-    track: ITrack
+import { useTypedSelector } from '../hooks/useTypedSelector';
+import { IPlaylist } from './../types/playlist';
+
+interface PlaylistItemProps {
+    playlist: IPlaylist
     tracklist:ITrack[]
-    active?: boolean
     index:number
     red?:boolean
 }
 
-const TrackItem: React.FC<TrackItemProps> = ({red, track, index, tracklist,}) => {
+const PlaylistItem: React.FC<PlaylistItemProps> = ({ playlist, index, tracklist,}) => {
     const { active, pause } = useTypedSelector((state) => state.player)
-    const isTrackPlaying=active?._id===track._id
+    const tracksWithIndex = playlist.tracks.map((t,index)=>({...t,index}))
+    const isPlaylistPlaying=playlist.tracks.find((t)=>t._id===active?._id)
     const dispatch = useDispatch();
     const router = useRouter()
     const  pushAndPlay = (e) => {
         e.stopPropagation()
         dispatch(setPause())
         dispatch(setFree())
-        dispatch(setActiveTrack(track))
-        dispatch(setActivePlaylist(tracklist))
+        dispatch(setActiveTrack(tracksWithIndex[0]))
+        dispatch(setActivePlaylist(tracksWithIndex))
         setTimeout(() => { dispatch(setTaken()) }, 500)
         // dispatch(setAudio(track))
         // setAudio(track,dispatch,volume,true,)
@@ -40,10 +41,10 @@ const TrackItem: React.FC<TrackItemProps> = ({red, track, index, tracklist,}) =>
               dispatch(setPause())
             }
     }
-    const deleteItem = (e) => {
-        e.stopPropagation()
-        axios.delete(process.env.NEXT_PUBLIC_BASIC_URL + "tracks/" + track._id).then((r) => console.log("track deleted good"))
-    }
+    // const deleteItem = (e) => {
+    //     e.stopPropagation()
+    //     axios.delete(process.env.NEXT_PUBLIC_BASIC_URL + "tracks/" + track._id).then((r) => console.log("track deleted good"))
+    // }
     return (
         <Card sx={{
             display: 'flex',
@@ -53,21 +54,21 @@ const TrackItem: React.FC<TrackItemProps> = ({red, track, index, tracklist,}) =>
             padding: "10px",
             width: "230px",
         }}
-            className={`${red?'!bg-red':'' } bg-black pr-6 pl-6 hover:!scale-105 hover:!shadow-lg transition-all  duration-500  w-[230px] min-w-[230px] shadow-sm cursor-pointer`}
-            onClick={() => router.push("/tracks/" + track._id)}
+            className={` bg-black pr-6 pl-6 hover:!scale-105 hover:!shadow-lg transition-all  duration-500  w-[230px] min-w-[230px] shadow-sm cursor-pointer`}
+            onClick={() => router.push("/playlist/" + playlist._id)}
         >
-            <div className='m-auto w-[180px] h-[150px] mb-4 mt-2 '> <img className='w-[100%] h-[100%] object-cover rounded' src={process.env.NEXT_PUBLIC_BASIC_URL + track.picture} /></div>
+            <div className='m-auto w-[180px] h-[150px] mb-4 mt-2 '> <img className='w-[100%] h-[100%] object-cover rounded' src={process.env.NEXT_PUBLIC_BASIC_URL + playlist.picture} /></div>
             <div className=' mb-2'>
-            {isTrackPlaying?  <IconButton className='bg-green-dark hover:!bg-green-dark  hover:scale-125 transition-all  duration-500' onClick={playOrPause}>{!pause ? <Pause color='error'  /> : <PlayArrow color='error' />}</IconButton>:
+            {isPlaylistPlaying?  <IconButton className='bg-green-dark hover:!bg-green-dark  hover:scale-125 transition-all  duration-500' onClick={playOrPause}>{!pause ? <Pause color='error'  /> : <PlayArrow color='error' />}</IconButton>:
             <IconButton className='bg-green-dark  hover:scale-125   hover:!bg-green-dark   transition-all  duration-500' onClick={pushAndPlay}><PlayArrow color='error' /></IconButton>
             }
                 </div>
             <Grid container className="max-w-full text-red" direction={"column"}>
-                <div className="font-bold truncate max-w-full">{track.name}</div>
-                <div className="font-semibold truncate max-w-full">{track.artist}</div>
+                <div className="font-bold truncate max-w-full">{playlist.name}</div>
+                <div className="font-semibold truncate max-w-full">{playlist.username}</div>
             </Grid>
         </Card >
     )
 }
 
-export default TrackItem
+export default PlaylistItem

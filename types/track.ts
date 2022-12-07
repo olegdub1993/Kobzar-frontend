@@ -5,11 +5,12 @@ export interface IComment {
 }
 export interface ITrack {
     _id: string,
-    text: string,
+    category: string,
     audio: string,
     picture: string,
     artist: string,
     name: string,
     listens: number,
-    comments: IComment[]
+    comments: IComment[],
+    index: number
 }
