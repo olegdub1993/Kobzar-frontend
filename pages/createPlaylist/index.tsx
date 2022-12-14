@@ -57,7 +57,7 @@ const CreatePlaylist = () => {
                </div>
                </div>
                {internalError && <div className='text-center text-xl font-semibold text-error'>{internalError.name}</div>}
-                <Button color='success' variant='contained' className="bg-green-dark text-lg font-semibold capitalize mt-8" onClick={createPlaylistHandler}>Створити плейлист</Button>
+                <Button  variant='contained' className="bg-green-dark hover:bg-green-dark  hover:opacity-90 text-lg font-semibold capitalize mt-8" onClick={createPlaylistHandler}>Створити плейлист</Button>
             </div>
         </MainLayout>
     )

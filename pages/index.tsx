@@ -1,23 +1,17 @@
-import { Grid, Card, Box } from '@mui/material'
-import Head from 'next/head'
-import Image from 'next/image'
-import Navigation from '../components/Navbar'
+
 import TrackList from '../components/TrackList'
 import Playlists from '../components/Playlists'
 import MainLayout from '../layouts/MainLayout'
 import { wrapper } from '../store/store'
 import { fetchTracks, fetchPlaylists} from '../store/trackSlice'
-import styles from '../styles/Home.module.css'
 import { useTypedSelector } from './../hooks/useTypedSelector';
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { checkAuth } from '../store/authSlice'
+
+
 
 export default function Home() {
-  const dispatch=useDispatch()
-  const { tracks, playlists, error } = useTypedSelector((state) => state.track)
-  const { isAuth} = useTypedSelector((state) => state.auth)
-  const { user} = useTypedSelector((state) => state.user)
+  const { tracks, playlists, } = useTypedSelector((state) => state.track)
+  // const { isAuth} = useTypedSelector((state) => state.auth)
+  // const { user} = useTypedSelector((state) => state.user)
   const rock = tracks.filter((t) => t.category === 'rock').map((t,index)=>({...t,index}))
   const popular = tracks.filter((t) => t.category === 'popular').map((t,index)=>({...t,index}))
   const christmas = tracks.filter((t) => t.category === 'christmas').map((t,index)=>({...t,index}))

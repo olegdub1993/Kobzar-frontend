@@ -37,7 +37,7 @@ const theme = createTheme();
 export default function SignIn() {  
  const {isAuth, error} = useTypedSelector((state) => state.auth)
     const [internalError, setInternalError]=useState({name:""})
-    const dispatch = useDispatch() 
+    const dispatch = useDispatch<any>() 
     console.log("eee",error)
     
     useEffect(()=>{
@@ -62,9 +62,9 @@ export default function SignIn() {
     if(isAuth) {router.push("/")}
 
     return (
-        <div className=' h-screen  pt-24' >
+        <div className=' h-screen bg-gradient-to-b from-[rgba(54,0,2,1)] to-[rgba(140,0,0,1)]  pt-24' >
         <ThemeProvider theme={theme}>
-            <Container component="main" maxWidth="xs" className='bg-yellow p-[30px] rounded shadow-xl'>
+            <Container component="main" maxWidth="xs" className='bg-yellow p-[30px] rounded shadow-[0px_0px_23px_5px_rgba(0,0,0,0.96)]'>
                 <CssBaseline />
                 <Box
                     sx={{

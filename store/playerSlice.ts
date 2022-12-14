@@ -5,7 +5,9 @@ import { HYDRATE } from "next-redux-wrapper";
 import { ITrack } from '../types/track'
 // Type for our state
 export interface PlayerState {
+  allPlaylists:[]
   activePlaylist: ITrack[]
+  activePlaylistId:string
   active: ITrack
   volume: number
   duration: number
@@ -19,7 +21,9 @@ export interface PlayerState {
 }
 // Initial state
 const initialState: PlayerState = {
-  active: {} as ITrack,
+  active: null,
+  activePlaylistId:"",
+  allPlaylists:[],
   activePlaylist: [],
   volume: 50,
   duration: 0,
@@ -78,6 +82,12 @@ export const playerSlice = createSlice({
     setRepeat(state, action) {
       state.repeat = action.payload
     },
+    setActivePlaylistId(state, action) {
+      state.activePlaylistId = action.payload
+    },
+    setAllPlaylists(state, action) {
+      state.allPlaylists.push(action.payload)
+    },
   },
   // Special reducer for hydrating the state. Special case for next-redux-wrapper
   extraReducers: {
@@ -90,7 +100,7 @@ export const playerSlice = createSlice({
   },
 });
 
-export const {setActivePlaylist,setRepeat,setPrevVolume,setPrevPlaylist, setDisabled, setFree, setTaken, setPause, setPlay, setVolume, setCurrentTime, setDuration, setActiveTrack } = playerSlice.actions;
+export const {setActivePlaylist, setActivePlaylistId, setAllPlaylists,  setRepeat,setPrevVolume,setPrevPlaylist, setDisabled, setFree, setTaken, setPause, setPlay, setVolume, setCurrentTime, setDuration, setActiveTrack } = playerSlice.actions;
 
 // export const selectPauseState = (state: AppState) => state.player.pause;
 

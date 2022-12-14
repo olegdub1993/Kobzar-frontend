@@ -13,7 +13,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useDispatch } from 'react-redux';
-import { checkAuth, signup } from '../../store/authSlice';
+import { signup } from '../../store/authSlice';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { useEffect, useState } from 'react';
 
@@ -36,7 +36,7 @@ const theme = createTheme();
 export default function SignUp() {
     const {isAuth, error} = useTypedSelector((state) => state.auth)
     const [internalError, setError]=useState({name:""})
-    const dispatch = useDispatch() 
+    const dispatch = useDispatch<any>() 
     console.log("eee",error)
     useEffect(()=>{
         setError(error)
@@ -57,9 +57,9 @@ export default function SignUp() {
    useEffect(()=>{},
    [])
     return (
-        <div className=' h-screen  pt-24' >
+        <div className=' h-screen bg-gradient-to-b from-[rgba(54,0,2,1)] to-[rgba(140,0,0,1)]  pt-24' >
             <ThemeProvider theme={theme} >
-                <Container component="main" maxWidth="xs" className='bg-yellow p-[30px] rounded shadow-xl '>
+                <Container component="main" maxWidth="xs" className='bg-yellow p-[30px] rounded shadow-[0px_0px_23px_5px_rgba(0,0,0,0.96)] '>
                 {isAuth? 
                  <div className='text-red font-semibold text-3xl m-2 mt-8 mb-8 text-center' >
                      Ви зареєструвались!) 
@@ -103,7 +103,7 @@ export default function SignUp() {
                                         label="Прізвище та ім'я"
                                         name="username"
                                         autoComplete="family-name"
-                                        onClick={()=>setError("")}
+                                        onClick={()=>setError({name:""})}
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
@@ -115,12 +115,12 @@ export default function SignUp() {
                                         label="Ваш Email"
                                         name="email"
                                         autoComplete="email"
-                                        onClick={()=>setError("")}
+                                        onClick={()=>setError({name:""})}
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
                                     <TextField
-                                        onClick={()=>setError("")}
+                                        onClick={()=>setError({name:""})}
                                         // sx={{ background: "white" }}
                                         required
                                         fullWidth

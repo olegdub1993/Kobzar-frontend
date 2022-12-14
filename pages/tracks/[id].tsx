@@ -1,25 +1,28 @@
 import React, { useState } from 'react'
-import { useRouter } from 'next/router';
 import MainLayout from './../../layouts/MainLayout';
-import { Button, Grid, TextField ,IconButton} from '@mui/material';
-import { IComment, ITrack } from './../../types/track';
+import { Grid,IconButton} from '@mui/material';
+import {ITrack } from './../../types/track';
 import axios from 'axios';
-import { useInput } from '../../hooks/useInput';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { useDispatch } from 'react-redux';
-import { addTrackToAlbom } from '../../store/userSlice';
+import { addTrackToAlbom,addToLiked ,removeFromLiked } from '../../store/userSlice';
 import { Pause, PlayArrow } from '@mui/icons-material';
-import { setActiveTrack, setPlay, setAudio, setActivePlaylist, setPause, setTaken, setFree } from '../../store/playerSlice';
+import { setActiveTrack, setPlay, setActivePlaylist, setPause, setTaken, setFree } from '../../store/playerSlice';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+
 interface TrackPageProps {
     serverTrack: ITrack
 }
 const TrackPage = ({ serverTrack }: TrackPageProps) => {
     const [track, setTrack] = useState<ITrack>(serverTrack)
-    const { active, pause } = useTypedSelector((state) => state.player)
+    const { active,disabled, pause } = useTypedSelector((state) => state.player)
+    const { user} = useTypedSelector((state) => state.user)     
+    const isLiked=user?.liked?.find((id)=>id===track?._id)
     const isTrackPlaying=active?._id===track._id
     const dispatch=useDispatch()
-    const  pushAndPlay = (e) => {
+    const  pushAndPlay = (e:React.MouseEvent<HTMLElement>) => {
         e.stopPropagation()
         dispatch(setPause())
         dispatch(setFree())
@@ -30,7 +33,7 @@ const TrackPage = ({ serverTrack }: TrackPageProps) => {
         // dispatch(setAudio(track))
         // setAudio(track,dispatch,volume,true,)
     }
-     const playOrPause=(e)=>{
+     const playOrPause=(e:React.MouseEvent<HTMLElement>)=>{
         e.stopPropagation()
             if (pause) {
               dispatch(setPlay())
@@ -38,6 +41,15 @@ const TrackPage = ({ serverTrack }: TrackPageProps) => {
               dispatch(setPause())
             }
     }
+    const addOrRemoveFromLiked=(e:React.MouseEvent<HTMLElement>)=>{
+        e.stopPropagation()
+        if(!isLiked){
+          dispatch(addToLiked({id:track._id, type:"track"}))
+        }
+        else{
+          dispatch(removeFromLiked({id:track._id, type:"track"}))
+        }
+      }
     // const router = useRouter()
     // const username = useInput()
     // const text = useInput()
@@ -56,18 +68,23 @@ const TrackPage = ({ serverTrack }: TrackPageProps) => {
         <MainLayout title={'Kobzar ' + track.name + "-" + track.artist}
             keywords={"Music, tracks, " + track.name + ", " + track.artist} red>
             {/* <Button variant='outlined' onClick={() => router.push("/tracks")}>To list</Button> */}
-            <Grid container className="flex mb-8 ">
+            <Grid container className="flex mb-8 relative text-white">
               <div className='w-[500px] h-[350px] mb-4 mt-2 '>
                  <img className='w-[100%] h-[100%] object-cover rounded' src={process.env.NEXT_PUBLIC_BASIC_URL + track.picture} />
                 </div>
                 <div className="ml-8 mt-2 max-w-[900px] ">
+                <div className="font-semibold mb-4 mt-8 text-2xl max-w-full">Пісня</div>
                     <div className="font-semibold mt-4   mb-4  text-4xl truncate max-w-full">{track.artist}</div>
                     <div className="font-bold mb-16 text-7xl  ">{track.name}</div>
-                    
-                <div className=" group relative"> <IconButton className='bg-black hover:!bg-green-dark hover:!scale-125  transition-all  duration-500' onClick={showPopup}><MoreVertIcon color='error' className="rotate-180" /></IconButton>
-                <Popup trackId={track._id}/>
-                </div>
+                {user &&    
+                <IconButton disabled={disabled}  className='mr-[10px]  hover:scale-110 duration-300  transition-all' onClick={addOrRemoveFromLiked}>{isLiked?<FavoriteIcon  fontSize='large' color='error' />:<FavoriteBorderIcon fontSize='large' color='error' />}</IconButton>}
               </div>
+              { user &&   <div className="absolute top-[30px] right-[20px]">
+                <div className=" group relative"> <IconButton className='bg-black hover:!bg-green-dark hover:!scale-125  transition-all  duration-500' onClick={showPopup}><MoreVertIcon color='error' className="rotate-180" /></IconButton>
+                    <Popup trackId={track._id}/>
+                    </div>
+                </div>
+                }
              </Grid>
              <div className=' flex justify-center mt-16'>
             {isTrackPlaying?  <IconButton className=' bg-green-dark hover:!bg-green-dark hover:scale-105 shadow-xl  transition-all  duration-500' onClick={playOrPause}>{!pause ? <Pause color='error' className='!w-[200px]  !h-[200px] '/> : <PlayArrow color='error'  className='!w-[200px]  !h-[200px]'/>}</IconButton>:
@@ -92,17 +109,17 @@ const TrackPage = ({ serverTrack }: TrackPageProps) => {
     )
 }
 const Popup = ({trackId}:any) => {
-    const dispatch=useDispatch()
-    const {user,alboms} = useTypedSelector((state) => state.user)
-    const addTrackToAlbomHandler=(albomId)=>{
+    const dispatch=useDispatch<any>()
+    const {alboms} = useTypedSelector((state) => state.user)
+    const addTrackToAlbomHandler=(albomId:string)=>{
         dispatch(addTrackToAlbom({albomId,trackId}))
     }
   return (
-  <div  className={`group-hover:block  rounded w-[275px] hidden bg-red p-[15px] top-[0px] left-[35px]  text-black absolute `} >
+  <div  className={`group-hover:block text-white   rounded w-[275px] hidden bg-red p-[15px] top-[0px] right-[100%]  absolute `} >
            додати до альбому
          <div className="mt-4">
             {alboms?.map((albom)=><div 
-            className="text-white mt-2 cursor-pointer hover:!opacity-75" key={albom._id} onClick={()=>addTrackToAlbomHandler(albom._id)}>
+            className="mt-2 cursor-pointer hover:!opacity-75" key={albom._id} onClick={()=>addTrackToAlbomHandler(albom._id)}>
                 {albom.name}
             </div>)}
   </div>
@@ -110,11 +127,10 @@ const Popup = ({trackId}:any) => {
   )
 }
 export default TrackPage
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context:any) {
     const { id } = context.params
     const response = await axios.get(process.env.NEXT_PUBLIC_BASIC_URL + "tracks/" + id)
     const serverTrack = response.data
-    console.log(serverTrack)
     return {
         props: { serverTrack },
     }

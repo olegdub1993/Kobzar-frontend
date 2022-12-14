@@ -1,12 +1,9 @@
 
-import { createSlice, createAsyncThunk, Action } from "@reduxjs/toolkit";
-import { AppState } from "./store";
-import { HYDRATE } from "next-redux-wrapper";
-import { ITrack } from '../types/track'
-import axios from "axios";
-import { IUser } from '../types/user';
-import { authAPI, userAPI } from './../API/api';
-import { getUserAlboms, setUser } from "./userSlice";
+import { createSlice, createAsyncThunk, } from "@reduxjs/toolkit";
+// import { AppState } from "./store";
+// import { HYDRATE } from "next-redux-wrapper";
+import { authAPI } from './../API/api';
+import { getUserPlaylists, setUser } from "./userSlice";
 
 // Type for our state
 export interface AuthState {
@@ -25,11 +22,11 @@ export const logout= createAsyncThunk(
   "auth/logout",
   async (_, { rejectWithValue, dispatch }) => {
     try {
-      const response = await authAPI.logout()
+      await authAPI.logout()
       dispatch(setAuth(false))
       localStorage.removeItem("token");
-      dispatch(setUser({}));
-      dispatch(getUserAlboms())
+      dispatch(setUser(null));
+      dispatch(getUserPlaylists())
       // const responseWithUserData = await userAPI.getUserData();
       // console.log(responseWithUserData.data)
       // dispatch(setUser(responseWithUserData.data));
@@ -66,7 +63,7 @@ export const checkAuth= createAsyncThunk(
 );
 export const signup = createAsyncThunk(
   "auth/signup",
-  async (data, { rejectWithValue, dispatch }) => {
+  async (data:any, { rejectWithValue, dispatch }) => {
     try {
       const response = await authAPI.signup(data)
       dispatch(setAuth(true))
@@ -78,7 +75,7 @@ export const signup = createAsyncThunk(
       // dispatch(setUser(responseWithUserData.data));
       // dispatch(setSignInError(""));
       // dispatch(setIsSignin(true));
-    } catch (error) {
+    } catch (error:any) {
       if(typeof(error.response.data.message)==="string"){
         dispatch(setError(error.response.data.message))
       } else{
@@ -89,7 +86,7 @@ export const signup = createAsyncThunk(
 );
 export const login = createAsyncThunk(
   "auth/login",
-  async (data, { rejectWithValue, dispatch }) => {
+  async (data:any, { rejectWithValue, dispatch }) => {
     try {
       const response = await authAPI.signin(data)
       dispatch(setAuth(true))
@@ -101,7 +98,7 @@ export const login = createAsyncThunk(
       // dispatch(setUser(responseWithUserData.data));
       // dispatch(setSignInError(""));
       // dispatch(setIsSignin(true));
-    } catch (error) {
+    } catch (error:any) {
       if(typeof(error.response.data.message)==="string"){
         dispatch(setError(error.response.data.message))
       } else{

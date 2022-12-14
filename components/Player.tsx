@@ -11,20 +11,21 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import TrackProgress from './TrackProgress';
 import { useDispatch } from 'react-redux';
 import { useTypedSelector } from '../hooks/useTypedSelector';
-import { setPlay, setPrevVolume, setPause, setVolume, setCurrentTime, setDuration, setActiveTrack, setTaken, setFree, setActivePlaylist, setRepeat, setPrevPlaylist } from '../store/playerSlice';
-import { addToLiked } from '../store/userSlice';
-import { removeFromLiked } from './../store/userSlice';
+import {setActivePlaylistId, setPlay, setPrevVolume, setPause, setVolume, setCurrentTime, setDuration, setActiveTrack, setTaken, setFree, setActivePlaylist, setRepeat, setPrevPlaylist } from '../store/playerSlice';
+import { addToLiked ,removeFromLiked} from '../store/userSlice';
 import RepeatOneOnOutlinedIcon from '@mui/icons-material/RepeatOneOnOutlined';
 import RepeatOneOutlinedIcon from '@mui/icons-material/RepeatOneOutlined';
 import Link from '@mui/material/Link';
+import { useRouter } from 'next/router'
 
 let audio: HTMLAudioElement;
 
 const Player = () => {
-  const {disabled, prevVolume, active, repeat, prevPlaylist, activePlaylist, volume, duration, taken, currentTime, pause } = useTypedSelector((state) => state.player)
+  const {disabled, allPlaylists, activePlaylistId, prevVolume, active, repeat, prevPlaylist, activePlaylist, volume, duration, taken, currentTime, pause } = useTypedSelector((state) => state.player)
   // const { tracks, error } = useTypedSelector((state) => state.track)
   const {user} = useTypedSelector((state) => state.user)
   const dispatch = useDispatch<any>()
+  const router = useRouter()
   const isLiked=user?.liked?.find((id)=>id===active?._id)
   useEffect(() => {
     if (!audio) {
@@ -39,6 +40,7 @@ const Player = () => {
   };
     // console.log(active, "taken", taken)
     if (active && !taken) {
+      console.log(active)
       audio.src = process.env.NEXT_PUBLIC_BASIC_URL + active.audio
       audio.volume = volume / 100
       audio.onloadedmetadata = () => {
@@ -51,7 +53,7 @@ const Player = () => {
     dispatch(setPlay())
     audio.play()
     }
-  }, [active, taken,activePlaylist])
+  }, [active, taken, activePlaylist])
 
 
   useEffect(()=>{
@@ -72,7 +74,23 @@ const Player = () => {
     }
   }
   const playNext = () => {
-    let nextSong= activePlaylist.length-1 > active.index ? activePlaylist[active.index+1]: activePlaylist[0]
+    // console.log(activePlaylist)
+    // console.log(allPlaylists)
+    // console.log(active.index)
+    // const  indexOfActivePlaylist =allPlaylists.findIndex((playlist)=>playlist._id===activePlaylistId)
+    // let nextSong; 
+    // if(activePlaylist.length-1 > active.index) { 
+    //   nextSong = activePlaylist[active.index+1]
+    // }else{ 
+    //  nextSong=allPlaylists[indexOfActivePlaylist+1].tracks[0]
+    //  dispatch(setActivePlaylistId(allPlaylists[indexOfActivePlaylist+1]._id))
+    //  //no activeIndex
+    //  dispatch(setActivePlaylist(allPlaylists[indexOfActivePlaylist+1].tracks))
+    // }
+
+    console.log("activePlaylist",activePlaylist)
+        console.log("active",active)
+     let nextSong= activePlaylist.length-1 > active.index ? activePlaylist[active.index+1]: activePlaylist[0]
     // dispatch(setPause())
     dispatch(setFree())
     dispatch(setActiveTrack(nextSong))
@@ -107,10 +125,10 @@ const Player = () => {
   }
     const addOrRemoveFromLiked=()=>{
       if(!isLiked){
-        dispatch(addToLiked(active._id))
+        dispatch(addToLiked({id:active._id, type:"track"}))
       }
       else{
-        dispatch(removeFromLiked(active._id))
+        dispatch(removeFromLiked({id:active._id, type:"track"}))
       }
     }
 
@@ -125,7 +143,7 @@ const Player = () => {
       dispatch(setPrevPlaylist(activePlaylist))
     }
    } 
-  if (!active.audio) return null
+   if (!active?.audio) return null
   return (
     <div style={{
       width: "100%", paddingRight: "40px", paddingTop: "10px",
@@ -135,7 +153,7 @@ const Player = () => {
       <div className='h-[70px]  rounded w-[100px]'><img src={process.env.NEXT_PUBLIC_BASIC_URL + active.picture} className='w-[100%] h-[100%] object-cover rounded'  /></div>
       </Grid>
       <Grid container direction={"column"} className="w-[150px] mr-12">
-        <Link href={"/tracks/" + active._id} className=' text-white truncate max-w-full cursor-pointer  hover:underline'>{active.name}</Link>
+        <div onClick={(e)=>router.push("/tracks/" + active._id)} className=' text-white truncate max-w-full cursor-pointer  hover:underline'>{active.name}</div>
         <div className='truncate max-w-full'>{active.artist}</div>
       </Grid>
       <div className='mr-24'>

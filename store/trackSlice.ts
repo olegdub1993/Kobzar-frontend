@@ -1,12 +1,13 @@
 
-import { createSlice, createAsyncThunk, Action } from "@reduxjs/toolkit";
-import { AppState } from "./store";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { HYDRATE } from "next-redux-wrapper";
-import { ITrack } from '../types/track'
+import { ITrack, } from '../types/track'
 import axios from "axios";
-import { tracksAPI } from "../API/api";
+import { tracksAPI,playlistAPI} from "../API/api";
+import { IPlaylist } from "../types/playlist";
 // Type for our state
-export interface TrackState {
+export interface TrackState { 
+  playlistForPage:IPlaylist
   playlists:any[]
   tracks: ITrack[]
   error: string
@@ -18,6 +19,7 @@ export interface TrackState {
 
 // Initial state
 const initialState: TrackState = {
+  playlistForPage:{} as IPlaylist,
   tracks: [],
   searchedTracks:[],
   mostSearchedTracks:[],
@@ -30,8 +32,10 @@ export const fetchTracks = createAsyncThunk(
   "track/fetchTracks",
   async (_, { rejectWithValue, dispatch }) => {
     try {
-      const response = await axios.get("http://localhost:5000/tracks")
-      dispatch(setTracks(response.data))
+     const response = await  axios.get(process.env.NEXT_PUBLIC_BASIC_URL+"tracks")
+      // const response =  await tracksAPI.getTracks()
+      //no localeStorage
+      dispatch(setTracks(response.data)) 
     } catch (error) {
       dispatch(setError("Some Server erroor"))
     }
@@ -42,7 +46,9 @@ export const fetchPlaylists = createAsyncThunk(
   "track/fetchPlaylists",
   async (_, { rejectWithValue, dispatch }) => {
     try {
-      const response = await axios.get("http://localhost:5000/alboms")
+      const response = await axios.get(process.env.NEXT_PUBLIC_BASIC_URL+"playlists")
+      // playlistAPI.getPlaylists()
+      //no localeStorage
       dispatch(setPlaylists(response.data))
     } catch (error) {
       dispatch(setError("Some Server erroor"))
@@ -51,7 +57,7 @@ export const fetchPlaylists = createAsyncThunk(
 );
 export const searchTracks = createAsyncThunk(
   "track/searchTracks",
-  async (query, { rejectWithValue, dispatch }) => {
+  async (query:string, { rejectWithValue, dispatch }) => {
     try {
       const response = await tracksAPI.getSearchedTracks(query)
       if(!response.data.length){
@@ -65,6 +71,20 @@ export const searchTracks = createAsyncThunk(
     }
   }
 );
+export const fetchPlaylist = createAsyncThunk(
+  "track/fetchPlaylist",
+  async (id:string, { rejectWithValue, dispatch }) => {
+    try {
+      const response= await axios.get(process.env.NEXT_PUBLIC_BASIC_URL + "playlists/" + id)
+      let playlist=response.data
+      let tracks=playlist.tracks.map((t:any,index:any)=>({...t,index})) 
+      playlist.tracks=tracks
+      dispatch(setPlaylistForPage(playlist))
+    } catch (error) {
+      dispatch(setError("Some Server erroor"))
+    }
+  }
+);
 export const trackSlice = createSlice({
   name: "track",
   initialState,
@@ -73,6 +93,10 @@ export const trackSlice = createSlice({
     // Action to set the authentication status
     setTracks(state, action) {
       state.tracks = action.payload
+      // console.log("insettracks",  state.tracks )
+    },
+    setPlaylistForPage(state, action) {
+      state.playlistForPage = action.payload
       // console.log("insettracks",  state.tracks )
     },
     setPlaylists(state, action) {
@@ -96,7 +120,6 @@ export const trackSlice = createSlice({
   // Special reducer for hydrating the state. Special case for next-redux-wrapper
   extraReducers: {
     [HYDRATE]: (state, action) => {
-      console.log(state)
       return {
         ...state,
         ...action.payload.track,
@@ -106,6 +129,6 @@ export const trackSlice = createSlice({
 
 });
 
-export const { setTracks, setError,setMorePopup, setPlaylists, setNoTracks, setSearchedTracks} = trackSlice.actions;
+export const { setTracks, setError,setMorePopup, setPlaylists, setNoTracks, setSearchedTracks, setPlaylistForPage} = trackSlice.actions;
 
 export default trackSlice.reducer;

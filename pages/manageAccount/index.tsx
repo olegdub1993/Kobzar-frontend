@@ -17,7 +17,7 @@ const Index = () => {
     const [username,setUsername]=useState(user?.username)
     const[editMode,setEditMode]=useState(false)
     const [internalError, setInternalError]=useState({name:""})
-     const dispatch=useDispatch()
+     const dispatch=useDispatch<any>()
     const setUserPictureHandler=(pictureFile:File)=>{
         const oFReader = new FileReader();
         oFReader.readAsDataURL(pictureFile)

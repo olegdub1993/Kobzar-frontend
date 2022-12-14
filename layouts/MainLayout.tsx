@@ -6,10 +6,10 @@ import Player from '../components/Player';
 import { useDispatch } from 'react-redux';
 import { checkAuth } from '../store/authSlice';
 import { useTypedSelector } from '../hooks/useTypedSelector';
-import { getUserAlboms } from '../store/userSlice';
+import { getUserPlaylists } from '../store/userSlice';
 import SuccesOperation from '../components/SuccesOperation';
 import { setMorePopup} from '../store/trackSlice';
-
+import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 type propsType = {
     title?: string
     description?: string
@@ -20,16 +20,17 @@ type propsType = {
 
 const MainLayout: React.FC<propsType> = ({ children, title, description, keywords ,red}: propsType) => {
     const {loading} = useTypedSelector((state) => state.auth)
-    const dispatch=useDispatch() 
+    const dispatch=useDispatch<any>() 
     const [restrictPopup, setRestrictPopup] = React.useState("");
     useEffect(()=>{
         if (localStorage.getItem("token")){
-          dispatch(checkAuth()).then(()=>dispatch(getUserAlboms()))
-         
+          dispatch(checkAuth()).then(()=>dispatch(getUserPlaylists()))
         }
         },[])
 
-     if(loading) return <div>Завантаження</div>
+     if(loading) return <div className="bg-gradient-to-b h-screen flex items-center justify-center from-[rgba(54,0,2,1)] to-[rgba(140,0,0,1)]">
+                         <HourglassBottomIcon className='!w-[100px]  !h-[100px]'/>
+                        </div>
 
     return (
         <>

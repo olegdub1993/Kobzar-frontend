@@ -15,7 +15,7 @@ $api.interceptors.response.use((config) => {
   return config;
 },async (error) => {
   const originalRequest = error.config;
-  if (error.response.status == 401 && error.config && !error.config._isRetry) {
+  if (error?.response?.status == 401 && error.config && !error.config._isRetry) {
       originalRequest._isRetry = true;
       try {
           const response = await axios.get(`${API_URL}auth/refresh`,)
@@ -65,17 +65,20 @@ export const userAPI = {
   updateProfile (data){
     return $api.post("users/updateProfile", data);
   },
-  addToLiked (id){
-    return $api.post("users/liked", {id});
+  addToLiked ({id,type}){
+    return $api.post(`users/liked?type=${type}`, {id});
   },
-  removeFromLiked (id){
-    return $api.delete(`users/liked/${id}`);
+   removeFromLiked ({id,type}){
+    return $api.delete(`users/liked/${id}?type=${type}`);
   },
-  getLiked (){
-    return $api.get("users/liked");
+  // removeFromLiked (id){
+  //   return $api.delete(`users/liked/${id}`);
+  // },
+  getLiked (type){
+    return $api.get(`users/liked?type=${type}`);
   },
-  getAlboms (){
-    return $api.get("users/alboms");
+  getUserPlaylists (){
+    return $api.get("users/playlists");
   },
 
 };
@@ -96,11 +99,37 @@ export const tracksAPI = {
   //   return instance.put(`/maker/answers/${answerId}`, data);
   // },
 };
-export const albomAPI = {
-  createAlbom (data){
-    return $api.post("alboms", data);
+export const playlistAPI = {
+  getPlaylists() {
+    return $api.get("playlists");
   },
-  addTrackToAlbom(data){
-    return $api.post(`alboms/${data.albomId}`, {id:data.trackId});
+  createPlaylist(data){
+    return $api.post("playlists", data);
+  },
+  updatePlaylist(data){
+    return $api.put("playlists", data);
+  },
+  addTrackToPlaylist(data){
+    return $api.post(`playlists/${data.albomId}`, {id:data.trackId});
+  },
+  removePlaylist (id){
+    return $api.delete(`playlists/${id}`);
+  },
+  removeTrackFromPlaylist(data){
+    return $api.put(`playlists/${data.playlistId}`, {id:data.trackId});
   }
 }
+// export const albomAPI = {
+//   createAlbom (data){
+//     return $api.post("alboms", data);
+//   },
+//   addTrackToAlbom(data){
+//     return $api.post(`alboms/${data.albomId}`, {id:data.trackId});
+//   },
+//   removePlaylist (id){
+//     return $api.delete(`alboms/${id}`);
+//   },
+//   removeTrackFromPlaylist(data){
+//     return $api.put(`alboms/${data.playlistId}`, {id:data.trackId});
+//   }
+// }

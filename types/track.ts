@@ -5,6 +5,7 @@ export interface IComment {
 }
 export interface ITrack {
     _id: string,
+    duration:number,
     category: string,
     audio: string,
     picture: string,

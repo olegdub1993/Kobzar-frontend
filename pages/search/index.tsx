@@ -1,23 +1,18 @@
-import { Box, Button, Card, debounce, Grid, TextField } from '@mui/material';
+
 import React, { useState, useEffect } from 'react'
 import MainLayout from './../../layouts/MainLayout';
-import { useRouter } from 'next/router';
-import { ITrack } from '../../types/track';
-import TrackList from '../../components/TrackList';
 import { useTypedSelector } from './../../hooks/useTypedSelector';
-import { wrapper } from '../../store/store';
-import { fetchTracks, setTracks } from '../../store/trackSlice';
+import { fetchTracks,  } from '../../store/trackSlice';
 import { useDispatch } from 'react-redux';
 import { searchTracks } from './../../store/trackSlice';
 import useDebouncedFunction from './../../hooks/useDebouncedFunc';
 import SearchTrackList from '../../components/SearchTrackList';
 
 const Search = () => {
-    const router = useRouter()
     const {searchedTracks, tracks, error, noTracks } = useTypedSelector((state) => state.track)
     const tracksWithIndex=tracks.map((t,index)=>({...t,index}))
     const searchedTracksWithIndex=searchedTracks.map((t,index)=>({...t,index}))
-    const dispatch = useDispatch()
+    const dispatch = useDispatch<any>()
     const [query, setQuery] = useState<string>("")
     const debouncedFetch = useDebouncedFunction((query: string) => { dispatch(searchTracks(query)) }, 500);
     const search = (e: React.ChangeEvent<HTMLInputElement>) => {

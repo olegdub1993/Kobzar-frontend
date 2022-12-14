@@ -16,23 +16,32 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import { useRouter } from 'next/router';
 import { Button } from '@mui/material';
 import Popup from './Popup';
 import { useTypedSelector } from '../hooks/useTypedSelector';
 import { HoverPopup } from './HoverPopup';
 import PersonIcon from '@mui/icons-material/Person';
-
-
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import SearchIcon from '@mui/icons-material/Search';
+import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
+import AppsIcon from '@mui/icons-material/Apps';
+import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 const drawerWidth = 240;
 
  
 interface AppBarProps extends MuiAppBarProps {
     open?: boolean;
 }
-const manuItems = [{ text: "Головна", href: "/" ,}, { text: "Пошук", href: "/search" }, { text: "Moя бібліотека", href: "/library",protect:true }, { text: "Tracks List", href: "/tracks",protect:true }, { text: "Alboms List", href: "/alboms",protect:true  },{ text: "Створити плейлист", href: "/createPlaylist", protect:true }, { text: "Cподобані пісні", href: "/liked", protect:true  },]
+
+const manuItems = [
+{ icon:<AppsIcon className='text-red !w-[30px]'/>,text: "Головна", href: "/" ,},
+{ icon:<SearchIcon className='text-red !w-[30px]'/>, text: "Пошук", href: "/search" },
+{ icon:<LibraryMusicIcon className='text-red !w-[30px]'/>, text: "Moя бібліотека", href: "/library",protect:true },
+// { text: "Tracks List", href: "/tracks",protect:true },
+// { text: "Alboms List", href: "/alboms",protect:true  },
+{ icon:<PlaylistAddIcon className='text-red !w-[30px]'/>, text: "Створити плейлист", href: "/createPlaylist", protect:true },
+{ icon:<FavoriteIcon className='text-red !w-[30px]'/>, text: "Cподобане", href: "/liked", protect:true  },]
 
 const AppBar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== 'open',
@@ -62,9 +71,9 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 export default function Navigation({restrictPopup,setRestrictPopup}:any) {
     const {isAuth} = useTypedSelector((state) => state.auth)
-    const {user,alboms} = useTypedSelector((state) => state.user)
+    const {user, alboms} = useTypedSelector((state) => state.user)
     const theme = useTheme();
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = React.useState(true);
     const router = useRouter()
 
     const handleDrawerOpen = () => {
@@ -142,8 +151,8 @@ export default function Navigation({restrictPopup,setRestrictPopup}:any) {
                 <List 
                    className='text-white bg-black  border-b border-white '
                 >
-                    {manuItems.map(({ text, href,protect }, index) => (
-                        <MyListItem restrictPopup={restrictPopup} setRestrictPopup={setRestrictPopup} key={text} text={text} href={href} index={index} protect={protect}/>
+                    {manuItems.map((item, index) => (
+                        <MyListItem restrictPopup={restrictPopup} setRestrictPopup={setRestrictPopup} key={item.text} index={index} navItem={item} />
                     ))}
                      
                 </List>
@@ -158,29 +167,28 @@ export default function Navigation({restrictPopup,setRestrictPopup}:any) {
         </Box >
     );
 }
-const MyListItem=({text,href,index,protect,setRestrictPopup,restrictPopup}:any)=> {
+const MyListItem=({navItem,index,setRestrictPopup,restrictPopup}:any)=> {
     const {isAuth} = useTypedSelector((state) => state.auth)
-   
     const router = useRouter()
   
 
     const onListItemClick=(e:React.MouseEvent<HTMLElement>, href:string)=>{
         e.stopPropagation()
-        if(!isAuth && protect){
-            setRestrictPopup(text)
+        if(!isAuth && navItem.protect){
+            setRestrictPopup(navItem.text)
         }
          else{
             router.push(href)
          }
     }
-    return  <ListItem  onClick={(e)=>onListItemClick(e,href)} disablePadding 
+    return  <ListItem  onClick={(e)=>onListItemClick(e, navItem.href)} disablePadding 
     className='text-white relative' >
            <ListItemButton>
                <ListItemIcon>
-                   {index % 2 === 0 ? <InboxIcon  className='text-red !w-[30px]'/> : <MailIcon  className='text-red !w-[30px]'/>}
+                   {navItem.icon}
                </ListItemIcon>
-               <ListItemText primary={text} />
+               <ListItemText primary={navItem.text} />
            </ListItemButton>
-           { restrictPopup==text && <Popup setPopup={setRestrictPopup}/>}
+           { restrictPopup===navItem.text && <Popup setPopup={setRestrictPopup}/>}
        </ListItem>
 }

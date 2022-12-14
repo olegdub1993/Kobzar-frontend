@@ -5,15 +5,17 @@ import StepWrapper from '../../components/StepWrapper';
 import { useInput } from '../../hooks/useInput';
 import MainLayout from './../../layouts/MainLayout';
 import axios from "axios";
+import { useDispatch } from 'react-redux';
+import { setSuccess } from '../../store/userSlice';
 
 const Create = () => {
     const [step, setStep] = useState(0);
-    const [audio, setAudio] = useState(null);
-    const [picture, setPicture] = useState(null);
+    const [audio, setAudio] = useState<Blob| null>(null);
+    const [picture, setPicture] = useState<Blob| null>(null);
     const [category, setCategory] = useState("")
     const name = useInput()
     const artist = useInput()
-    // const category = useInput()
+    const dispatch =useDispatch<any>()
     const next = () => {
         if (step !== 2) {
             setStep((step) => step + 1)
@@ -22,9 +24,11 @@ const Create = () => {
             formData.append("name", name.value)
             formData.append("category", category)
             formData.append("artist", artist.value)
-            formData.append("audio", audio)
-            formData.append("picture", picture)
-            axios.post(process.env.NEXT_PUBLIC_BASIC_URL + "tracks", formData).then((resp) => { })
+            formData.append("audio", audio as Blob)
+            formData.append("picture", picture as Blob)
+            axios.post(process.env.NEXT_PUBLIC_BASIC_URL + "tracks", formData).then((resp) => {
+                dispatch(setSuccess('Трек створено'))
+             })
         }
 
     }
