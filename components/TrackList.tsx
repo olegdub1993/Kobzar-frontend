@@ -31,13 +31,12 @@ const TrackList: React.FC<TrackListProps> = ({ tracks, }) => {
       };
     return (
         // <div className='flex overflow-x-auto max-w-full'  >
-             <Carousel responsive={responsive}  >
-              {/* customLeftArrow={<CustomLeftArrow />}
-              customRightArrow={<CustomRightArrow />}> */}
+             <Carousel responsive={responsive}>
              {tracks?.map((track, index) => <TrackItem index={index} key={track._id} tracklist={tracks} track={track} />)}
             </Carousel>
         // </div>
     )
 }  
+
 
 export default TrackList

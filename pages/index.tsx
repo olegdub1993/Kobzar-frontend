@@ -12,6 +12,7 @@ export default function Home() {
   const { tracks, playlists, } = useTypedSelector((state) => state.track)
   // const { isAuth} = useTypedSelector((state) => state.auth)
   // const { user} = useTypedSelector((state) => state.user)
+  console.log("trv", tracks)
   const rock = tracks.filter((t) => t.category === 'rock').map((t,index)=>({...t,index}))
   const popular = tracks.filter((t) => t.category === 'popular').map((t,index)=>({...t,index}))
   const christmas = tracks.filter((t) => t.category === 'christmas').map((t,index)=>({...t,index}))
@@ -61,16 +62,6 @@ export const getServerSideProps = wrapper.getServerSideProps((store) =>
     }
   }
 );
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import MainLayout from './../../layouts/MainLayout';
 import { Grid,IconButton} from '@mui/material';
 import {ITrack } from './../../types/track';
@@ -7,28 +7,33 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { useDispatch } from 'react-redux';
 import { addTrackToAlbom,addToLiked ,removeFromLiked } from '../../store/userSlice';
+import { fetchTrack } from '../../store/trackSlice';
 import { Pause, PlayArrow } from '@mui/icons-material';
 import { setActiveTrack, setPlay, setActivePlaylist, setPause, setTaken, setFree } from '../../store/playerSlice';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import { wrapper } from '../../store/store'
+import { NextPage } from 'next';
 
-interface TrackPageProps {
-    serverTrack: ITrack
-}
-const TrackPage = ({ serverTrack }: TrackPageProps) => {
-    const [track, setTrack] = useState<ITrack>(serverTrack)
+// interface TrackPageProps {
+//     serverTrack: ITrack
+// }
+
+const TrackPage:NextPage = () => {
     const { active,disabled, pause } = useTypedSelector((state) => state.player)
+    const { trackForPage } = useTypedSelector((state) => state.track)
     const { user} = useTypedSelector((state) => state.user)     
-    const isLiked=user?.liked?.find((id)=>id===track?._id)
-    const isTrackPlaying=active?._id===track._id
-    const dispatch=useDispatch()
+    const isLiked=user?.liked?.find((id)=>id===trackForPage?._id)
+    const isTrackPlaying=active?._id===trackForPage._id
+    const dispatch=useDispatch<any>()
+
     const  pushAndPlay = (e:React.MouseEvent<HTMLElement>) => {
         e.stopPropagation()
         dispatch(setPause())
         dispatch(setFree())
-        dispatch(setActiveTrack(track))
+        dispatch(setActiveTrack(trackForPage))
         // shoud be real playlist
-        dispatch(setActivePlaylist([track]))
+        dispatch(setActivePlaylist([trackForPage]))
         setTimeout(() => { dispatch(setTaken()) }, 500)
         // dispatch(setAudio(track))
         // setAudio(track,dispatch,volume,true,)
@@ -44,10 +49,10 @@ const TrackPage = ({ serverTrack }: TrackPageProps) => {
     const addOrRemoveFromLiked=(e:React.MouseEvent<HTMLElement>)=>{
         e.stopPropagation()
         if(!isLiked){
-          dispatch(addToLiked({id:track._id, type:"track"}))
+          dispatch(addToLiked({id:trackForPage._id, type:"track"}))
         }
         else{
-          dispatch(removeFromLiked({id:track._id, type:"track"}))
+          dispatch(removeFromLiked({id:trackForPage._id, type:"track"}))
         }
       }
     // const router = useRouter()
@@ -65,23 +70,23 @@ const TrackPage = ({ serverTrack }: TrackPageProps) => {
 
     }
     return (
-        <MainLayout title={'Kobzar ' + track.name + "-" + track.artist}
-            keywords={"Music, tracks, " + track.name + ", " + track.artist} red>
+        <MainLayout title={'Kobzar ' + trackForPage.name + "-" + trackForPage.artist}
+            keywords={"Music, tracks, " + trackForPage.name + ", " + trackForPage.artist} red>
             {/* <Button variant='outlined' onClick={() => router.push("/tracks")}>To list</Button> */}
             <Grid container className="flex mb-8 relative text-white">
               <div className='w-[500px] h-[350px] mb-4 mt-2 '>
-                 <img className='w-[100%] h-[100%] object-cover rounded' src={process.env.NEXT_PUBLIC_BASIC_URL + track.picture} />
+                 <img className='w-[100%] h-[100%] object-cover rounded' src={process.env.NEXT_PUBLIC_BASIC_URL + trackForPage.picture} />
                 </div>
-                <div className="ml-8 mt-2 max-w-[900px] ">
-                <div className="font-semibold mb-4 mt-8 text-2xl max-w-full">Пісня</div>
-                    <div className="font-semibold mt-4   mb-4  text-4xl truncate max-w-full">{track.artist}</div>
-                    <div className="font-bold mb-16 text-7xl  ">{track.name}</div>
+                <div className="ml-8 mt-2 max-w-[900px] relative ">
+                <div className="font-semibold mb-4 mt-6 text-2xl max-w-full">Пісня</div>
+                    <div className="font-bold mb-10 text-6xl  ">{trackForPage.name}</div>
+                    <div className="font-semibold mt-4   mb-4  text-4xl max-w-full">{trackForPage.artist}</div>
                 {user &&    
-                <IconButton disabled={disabled}  className='mr-[10px]  hover:scale-110 duration-300  transition-all' onClick={addOrRemoveFromLiked}>{isLiked?<FavoriteIcon  fontSize='large' color='error' />:<FavoriteBorderIcon fontSize='large' color='error' />}</IconButton>}
+                <IconButton disabled={disabled}  className='mr-[10px] absolute bottom-0 hover:scale-110 duration-300  transition-all' onClick={addOrRemoveFromLiked}>{isLiked?<FavoriteIcon  className="w-[60px] h-[60px]" color='error' />:<FavoriteBorderIcon className="w-[60px] h-[60px]" color='error' />}</IconButton>}
               </div>
               { user &&   <div className="absolute top-[30px] right-[20px]">
                 <div className=" group relative"> <IconButton className='bg-black hover:!bg-green-dark hover:!scale-125  transition-all  duration-500' onClick={showPopup}><MoreVertIcon color='error' className="rotate-180" /></IconButton>
-                    <Popup trackId={track._id}/>
+                    <Popup trackId={trackForPage._id}/>
                     </div>
                 </div>
                 }
@@ -127,11 +132,13 @@ const Popup = ({trackId}:any) => {
   )
 }
 export default TrackPage
-export async function getServerSideProps(context:any) {
-    const { id } = context.params
-    const response = await axios.get(process.env.NEXT_PUBLIC_BASIC_URL + "tracks/" + id)
-    const serverTrack = response.data
+export const getServerSideProps = wrapper.getServerSideProps((store) =>
+  async (context) => {
+    const id = context?.params?.id
+    await store.dispatch(fetchTrack(id as string));
+    // const response = await axios.get(process.env.NEXT_PUBLIC_BASIC_URL + "tracks/" + id)
+    // const serverTrack = response.data
     return {
-        props: { serverTrack },
+        props: { },
     }
-}
+})

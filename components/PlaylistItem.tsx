@@ -25,7 +25,7 @@ const PlaylistItem: React.FC<PlaylistItemProps> = ({ playlist}) => {
     const router = useRouter()
     const  pushAndPlay = (e:React.MouseEvent<HTMLElement>) => {
         e.stopPropagation()
-        dispatch(setPause())
+        dispatch(setPause()) 
         dispatch(setFree())
         dispatch(setActiveTrack(tracksWithIndex[0]))
         dispatch(setActivePlaylist(tracksWithIndex))

@@ -7,24 +7,18 @@ import { tracksAPI,playlistAPI} from "../API/api";
 import { IPlaylist } from "../types/playlist";
 // Type for our state
 export interface TrackState { 
-  playlistForPage:IPlaylist
+  trackForPage:ITrack
   playlists:any[]
   tracks: ITrack[]
   error: string
-  noTracks:boolean,
-  searchedTracks:ITrack[]
-  mostSearchedTracks:ITrack[]
   morePopup:string
 }
 
 // Initial state
 const initialState: TrackState = {
-  playlistForPage:{} as IPlaylist,
+  trackForPage:{} as ITrack,
   tracks: [],
-  searchedTracks:[],
-  mostSearchedTracks:[],
   error: "",
-  noTracks:false,
   playlists:[],
   morePopup:""
 };
@@ -32,21 +26,37 @@ export const fetchTracks = createAsyncThunk(
   "track/fetchTracks",
   async (_, { rejectWithValue, dispatch }) => {
     try {
-     const response = await  axios.get(process.env.NEXT_PUBLIC_BASIC_URL+"tracks")
+      const response = await  axios.get(process.env.NEXT_PUBLIC_BASIC_URL+"tracks")
+    // const response = await  axios.get('http://192.168.1.102:5000/'+"tracks")
       // const response =  await tracksAPI.getTracks()
       //no localeStorage
       dispatch(setTracks(response.data)) 
+    } catch (error) {
+      console.log("dddd")
+      dispatch(setError("Some Server erroor"))
+    }
+  } 
+); 
+export const fetchTrack = createAsyncThunk(
+  "track/fetchTrack", 
+  async (id:string, { rejectWithValue, dispatch }) => {
+    try {
+     const response = await  axios.get(process.env.NEXT_PUBLIC_BASIC_URL+"tracks/"+id)
+     //const response = await  axios.get('http://192.168.1.102:5000/'+"tracks/"+id)
+      // const response =  await tracksAPI.getTrack(id)
+      //no localeStorage
+      dispatch(setTrackForPage(response.data)) 
     } catch (error) {
       dispatch(setError("Some Server erroor"))
     }
   }
 );
-
 export const fetchPlaylists = createAsyncThunk(
   "track/fetchPlaylists",
   async (_, { rejectWithValue, dispatch }) => {
     try {
       const response = await axios.get(process.env.NEXT_PUBLIC_BASIC_URL+"playlists")
+      // const response = await  axios.get('192.168.1.102:5000/'+"playlists")
       // playlistAPI.getPlaylists()
       //no localeStorage
       dispatch(setPlaylists(response.data))
@@ -55,36 +65,8 @@ export const fetchPlaylists = createAsyncThunk(
     }
   }
 );
-export const searchTracks = createAsyncThunk(
-  "track/searchTracks",
-  async (query:string, { rejectWithValue, dispatch }) => {
-    try {
-      const response = await tracksAPI.getSearchedTracks(query)
-      if(!response.data.length){
-        dispatch(setNoTracks(true))
-      }else{
-        dispatch(setNoTracks(false))
-      }
-      dispatch(setSearchedTracks(response.data))
-    } catch (error) {
-      dispatch(setError("Some Server erroor"))
-    }
-  }
-);
-export const fetchPlaylist = createAsyncThunk(
-  "track/fetchPlaylist",
-  async (id:string, { rejectWithValue, dispatch }) => {
-    try {
-      const response= await axios.get(process.env.NEXT_PUBLIC_BASIC_URL + "playlists/" + id)
-      let playlist=response.data
-      let tracks=playlist.tracks.map((t:any,index:any)=>({...t,index})) 
-      playlist.tracks=tracks
-      dispatch(setPlaylistForPage(playlist))
-    } catch (error) {
-      dispatch(setError("Some Server erroor"))
-    }
-  }
-);
+
+
 export const trackSlice = createSlice({
   name: "track",
   initialState,
@@ -95,23 +77,16 @@ export const trackSlice = createSlice({
       state.tracks = action.payload
       // console.log("insettracks",  state.tracks )
     },
-    setPlaylistForPage(state, action) {
-      state.playlistForPage = action.payload
-      // console.log("insettracks",  state.tracks )
+
+    setTrackForPage(state, action) {
+      state.trackForPage = action.payload
     },
     setPlaylists(state, action) {
       state.playlists = action.payload
       // console.log("insettracks",  state.tracks )
     },
-    setSearchedTracks(state, action) {
-      state.searchedTracks = action.payload
-      // console.log("insettracks",  state.tracks )
-    },
     setError(state, action) {
       state.error = action.payload
-    },
-    setNoTracks(state, action) {
-      state.noTracks = action.payload
     },
     setMorePopup(state, action) {
       state.morePopup = action.payload
@@ -129,6 +104,6 @@ export const trackSlice = createSlice({
 
 });
 
-export const { setTracks, setError,setMorePopup, setPlaylists, setNoTracks, setSearchedTracks, setPlaylistForPage} = trackSlice.actions;
+export const { setTracks, setError,setMorePopup, setPlaylists, setTrackForPage} = trackSlice.actions;
 
 export default trackSlice.reducer;

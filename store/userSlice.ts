@@ -6,7 +6,7 @@ import { ITrack } from '../types/track'
 import { IUser } from './../types/user';
 import { playlistAPI, userAPI } from './../API/api';
 import { setDisabled } from "./playerSlice";
-import {fetchPlaylist} from "./trackSlice";
+import {fetchPlaylist} from "./playlistSlice";
 import { IPlaylist } from './../types/playlist';
 
 

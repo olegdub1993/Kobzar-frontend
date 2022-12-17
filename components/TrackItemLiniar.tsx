@@ -23,8 +23,9 @@ interface TrackItemProps {
 
 const TrackItem: React.FC<TrackItemProps> = ({red, track, playlist,}) => {
     const { user } = useTypedSelector((state) => state.user)
-    const { active, disabled, pause } = useTypedSelector((state) => state.player)
-    const {morePopup, playlistForPage } = useTypedSelector((state) => state.track)
+    const { playlistForPage } = useTypedSelector((state) => state.playlist)
+    const { active, disabled, pause,activePlaylistId} = useTypedSelector((state) => state.player)
+    const {morePopup } = useTypedSelector((state) => state.track)
     const isLiked=user?.liked?.find((id)=>id===track?._id)
     const isTrackPlaying=active?._id===track._id
     const dispatch = useDispatch<any>();
@@ -35,9 +36,11 @@ const TrackItem: React.FC<TrackItemProps> = ({red, track, playlist,}) => {
         seconds=seconds<10?"0"+seconds:seconds
 
     // nead to think
-    // useEffect(()=>{
-    //     dispatch(setActivePlaylist(playlist.tracks))
-    // },[playlistForPage])
+    useEffect(()=>{
+         if(activePlaylistId===playlistForPage._id){
+        dispatch(setActivePlaylist(playlist.tracks))
+         }
+    },[playlistForPage])
 
     const  pushAndPlay = (e:React.MouseEvent<HTMLElement>) => {
         e.stopPropagation()
@@ -128,7 +131,7 @@ const Popup:React.FC<PopupProps> = ({trackId, setPopup, playlist}) => {
   return (
   <div onClick={(e)=>e.stopPropagation()}  className={`text-white  font-bold rounded w-[225px] bg-red p-[15px] bottom-[100%] right-[0px]   absolute `} >
            {isUserAuthorOfPlaylist &&
-           <div className="mb-3 hover:opacity-80"  onClick={()=>removeTrackFromPlaylistHandler()}>Видалити з плайлиста</div>
+           <div className="mb-3 hover:opacity-80"  onClick={()=>removeTrackFromPlaylistHandler()}>Видалити з плейлиста</div>
            }
            Додати до плейлиста:
           <div className="hover:opacity-80">

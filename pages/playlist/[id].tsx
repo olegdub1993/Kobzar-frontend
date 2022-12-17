@@ -8,7 +8,8 @@ import TrackItem from '../../components/TrackItemLiniar';
 import Image from 'next/image'
 import albomPicture from './../../public/kobza.jpg'
 import { useDispatch } from 'react-redux';
-import {fetchPlaylist,setMorePopup} from '../../store/trackSlice'
+import {setMorePopup} from '../../store/trackSlice'
+import {fetchPlaylist} from '../../store/playlistSlice'
 import { wrapper } from '../../store/store'
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -17,19 +18,22 @@ import { addToLiked, removeFromLiked ,removePlaylist} from '../../store/userSlic
 import { Pause, PlayArrow } from '@mui/icons-material';
 import { setActivePlaylist, setActivePlaylistId, setActiveTrack,setPlay, setFree, setPause, setTaken } from '../../store/playerSlice';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { getTracksWord,getLikesWord } from './../../hooks/helpers/index';
+import { getTracksWord,getLikesWord,getTotalTime } from './../../hooks/helpers/index';
 import { NextPage } from 'next';
 import EditPlaylistPopup from './popups/EditPlaylistPopup';
-
+import DeletePlaylistPopup from './popups/DeletePlaylistPopup';
  
 const PlaylistPage:NextPage = () => {
-    const { playlistForPage, morePopup } = useTypedSelector((state) => state.track)
+    const { playlistForPage} = useTypedSelector((state) => state.playlist)
+    const { morePopup } = useTypedSelector((state) => state.track)
+    const [deletePopup,setDeletePopup]=useState(false)
     const { user } = useTypedSelector((state) => state.user)
     const { disabled,activePlaylistId,pause } = useTypedSelector((state) => state.player)
 
     const[editMode,setEditMode]=useState(false)
     const isPlaylistPlaying = activePlaylistId===playlistForPage?._id
     const isLiked=user?.likedPlaylists?.find((id)=>id === playlistForPage?._id)
+    const totalTime=getTotalTime(playlistForPage?.tracks)
     const tracksWord= getTracksWord(playlistForPage?.tracks)
     const likesWord=getLikesWord(playlistForPage?.likes)
 
@@ -88,8 +92,9 @@ const onMoreClickHandler =(e:React.MouseEvent<HTMLElement>)=>{
                     <div className="font-bold mb-8 text-2xl  max-w-full">{playlistForPage?.username}</div>
                     <div className="flex">
                     <div className="font-bold mb-8 text-xl mr-2 max-w-full">{playlistForPage?.tracks?.length+' '+tracksWord},</div>
-                      <div className="font-bold mb-8 text-xl  max-w-full">{playlistForPage?.likes+' '+likesWord}</div>
-                    </div>
+                      <div className="font-bold mb-8 text-xl mr-2 max-w-full">{playlistForPage?.likes+' '+likesWord},</div>
+                      <div className="font-bold mb-8 text-xl  max-w-full">{totalTime} хв</div>
+                     </div>
                 </div>
                 {isPlaylistPlaying?  <IconButton className='bg-green-dark hover:!bg-green-dark   hover:scale-125 transition-all  duration-500' onClick={playOrPause}>{!pause ? <Pause color='error'className='!w-[120px]  !h-[120px]'  /> : <PlayArrow color='error' className='!w-[120px]  !h-[120px]'/>}</IconButton>:
             <IconButton className='bg-green-dark  hover:scale-125   hover:!bg-green-dark   transition-all  duration-500' onClick={pushAndPlay}><PlayArrow color='error' className='!w-[120px]  !h-[120px]' /></IconButton>
@@ -104,7 +109,7 @@ const onMoreClickHandler =(e:React.MouseEvent<HTMLElement>)=>{
                <div className="absolute top-[30px] right-[20px]">
                       <div className=' relative'>
                       <IconButton className='  hover:scale-110  !bg-green-dark    hover:!bg-green-dark    transition-all  duration-500' onClick={onMoreClickHandler}><MoreVertIcon/></IconButton>
-                      { morePopup==playlistForPage._id && <Popup setEditMode={setEditMode} playlist={playlistForPage} setPopup={(str:string)=>dispatch(setMorePopup(str))} />}
+                      { morePopup==playlistForPage._id && <Popup setDeletePopup={setDeletePopup} setEditMode={setEditMode} playlist={playlistForPage} setPopup={(str:string)=>dispatch(setMorePopup(str))} />}
                   </div>
              </div>
              </>}
@@ -119,6 +124,7 @@ const onMoreClickHandler =(e:React.MouseEvent<HTMLElement>)=>{
                        </>}  
                 </div>
          {editMode && <EditPlaylistPopup playlist={playlistForPage} setEditMode={setEditMode}/>}
+         {deletePopup && <DeletePlaylistPopup playlist={playlistForPage} setPopup={setDeletePopup}/>}
         </MainLayout>
     )
 }
@@ -126,9 +132,10 @@ const onMoreClickHandler =(e:React.MouseEvent<HTMLElement>)=>{
 interface PopupProps {
   playlist:any
   setEditMode:(arg:boolean)=>void
+  setDeletePopup:(arg:boolean)=>void
   setPopup:(arg:string)=>void
 }
-const Popup:React.FC<PopupProps> = ({setPopup,playlist,setEditMode}) => {
+const Popup:React.FC<PopupProps> = ({setPopup,playlist,setEditMode,setDeletePopup}) => {
   const dispatch=useDispatch<any>()
   const {alboms,user} = useTypedSelector((state) => state.user)
   const isUserAuthorOfPlaylist=alboms?.find((albom)=>albom?._id===playlist._id)
@@ -141,7 +148,7 @@ const Popup:React.FC<PopupProps> = ({setPopup,playlist,setEditMode}) => {
 
  const removePlaylistHandler=()=>{
       setPopup("");
-      dispatch(removePlaylist(playlist?._id))
+      setDeletePopup(true)
  }
 
  const addOrRemoveFromLiked=()=>{
@@ -156,7 +163,7 @@ const Popup:React.FC<PopupProps> = ({setPopup,playlist,setEditMode}) => {
 }
 
 return (
-<div onClick={(e)=>e.stopPropagation()}  className={`text-white  h-[150px] font-bold rounded w-[225px] bg-black p-[15px] top-[0px] right-[100%]  absolute `} >
+<div onClick={(e)=>e.stopPropagation()}  className={`text-white  h-[120px] font-bold rounded w-[225px] bg-black p-6 top-[0px] right-[100%]  absolute `} >
         {isUserAuthorOfPlaylist ?
         <><div onClick={()=>editHandler()}  className="hover:opacity-80 mb-3 cursor-pointer"> Редагувати</div>
          <div  onClick={()=>removePlaylistHandler()} className="hover:opacity-80 cursor-pointer">Видалити</div>

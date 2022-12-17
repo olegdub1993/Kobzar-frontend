@@ -86,12 +86,12 @@ export const tracksAPI = {
   getTracks() {
     return $api.get("tracks");
   },
-  getSearchedTracks(query) {
-    return $api.get("tracks/search?query=" + query);
+  getSearchedTracks({query,type}) {
+    return $api.get(`tracks/search?query=${query}&type=${type}`);
   },
-  // getMakerReviews() {
-  //   return instance.get("maker/reviews");
-  // },
+  getTrack(id) {
+    return instance.get("tracks/"+id);
+  },
   // createAnswerToReview({ moduleId, ...data }) {
   //   return instance.post(`/maker/reviews/${moduleId}/answer`, data);
   // },

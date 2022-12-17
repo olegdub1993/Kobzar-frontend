@@ -1,8 +1,8 @@
 import { ITrack } from "../../types/track";
 
 export const getTracksWord =(tracksArray:ITrack[]):string=>{
+  let tracksWord=""
   if (tracksArray!==undefined){
-    let tracksWord;
     const trackAmountString=tracksArray.length.toString()
     const numbersArray=trackAmountString.split("")
     const lastNumber=numbersArray[numbersArray.length-1]
@@ -15,13 +15,13 @@ export const getTracksWord =(tracksArray:ITrack[]):string=>{
     }else{
       tracksWord="пісень"
     }
-    return tracksWord
   }
+  return tracksWord
 }
 
 export const getLikesWord=(likesAmount:number):string=>{
+    let likesWord=""
     if (likesAmount!==undefined){
-    let likesWord;
     const likesAmountString=likesAmount.toString()
     const numbersArray=likesAmountString.split("")
     const lastNumber=numbersArray[numbersArray.length-1]
@@ -32,6 +32,11 @@ export const getLikesWord=(likesAmount:number):string=>{
       else{
       likesWord="вподобань"
     }
-    return likesWord
   }
+  return likesWord
+}
+export const getTotalTime=(arr:ITrack[]):number=>{
+  let totalTime= arr?.reduce((sum,i)=>{return sum+=i.duration}, 0)
+  let totalMinuts=Math.round(totalTime/60)
+  return totalMinuts
 }

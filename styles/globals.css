@@ -28,6 +28,9 @@ a {
     background: black;
   }
 }
+.react-multiple-carousel__arrow{
+  background-color:#044309!important;
+}
 input[type=range]{
   -webkit-appearance: none;
   height: 12px;
