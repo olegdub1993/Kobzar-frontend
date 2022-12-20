@@ -10,6 +10,7 @@ import { useInput } from '../../hooks/useInput';
 import Image from 'next/image'
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import { AppState} from '../../store/store';
+import { useRouter } from 'next/router';
 
 const CreatePlaylist = () => {
     const dispatch=useDispatch<any>()
@@ -20,6 +21,7 @@ const CreatePlaylist = () => {
     const description = useInput()
     const [picture, setPicture] = useState<Blob | null>(null);
     const username = user?.username
+    const router=useRouter()
 
     const setPictureHandler=(pictureFile:File)=>{
         const oFReader = new FileReader();
@@ -39,7 +41,7 @@ const CreatePlaylist = () => {
             formData.append("description", description.value)
             formData.append("username", username as string)
             formData.append("picture", picture as Blob)
-            dispatch(createPlaylist(formData)) 
+            dispatch(createPlaylist(formData)).then((data:any)=>router.push("/playlist/"+data.payload._id))
         }
 
     return (

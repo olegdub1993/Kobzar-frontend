@@ -2,12 +2,14 @@ import { Button } from '@mui/material'
 import React from 'react'
 import {removePlaylist} from '../../../store/userSlice';
 import { useDispatch } from 'react-redux';
+import { useRouter } from 'next/router';
 
 const DeletePlaylistPopup = ({setPopup, playlist}:any) => {
+  const router=useRouter()
   const dispatch=useDispatch<any>()
   const deleteHandler=()=>{
     setPopup(false)
-    dispatch(removePlaylist(playlist?._id))
+    dispatch(removePlaylist(playlist?._id)).then(()=>router.push("/library"))
   }    
 
   return (

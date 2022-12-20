@@ -7,7 +7,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { useDispatch } from 'react-redux';
 import { addTrackToAlbom,addToLiked ,removeFromLiked } from '../../store/userSlice';
-import { fetchTrack } from '../../store/trackSlice';
+import { fetchTrack,setMorePopup } from '../../store/trackSlice';
 import { Pause, PlayArrow } from '@mui/icons-material';
 import { setActiveTrack, setPlay, setActivePlaylist, setPause, setTaken, setFree } from '../../store/playerSlice';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -20,8 +20,8 @@ import { NextPage } from 'next';
 // }
 
 const TrackPage:NextPage = () => {
-    const { active,disabled, pause } = useTypedSelector((state) => state.player)
-    const { trackForPage } = useTypedSelector((state) => state.track)
+    const { active, disabled, pause } = useTypedSelector((state) => state.player)
+    const { trackForPage, morePopup} = useTypedSelector((state) => state.track)
     const { user} = useTypedSelector((state) => state.user)     
     const isLiked=user?.liked?.find((id)=>id===trackForPage?._id)
     const isTrackPlaying=active?._id===trackForPage._id
@@ -66,8 +66,9 @@ const TrackPage:NextPage = () => {
     //         console.log(e)
     //     }
     // }
-    const showPopup=()=>{
-
+    const showPopup=(e)=>{
+      e.stopPropagation()
+     dispatch(setMorePopup(trackForPage._id))
     }
     return (
         <MainLayout title={'Kobzar ' + trackForPage.name + "-" + trackForPage.artist}
@@ -85,8 +86,8 @@ const TrackPage:NextPage = () => {
                 <IconButton disabled={disabled}  className='mr-[10px] absolute bottom-0 hover:scale-110 duration-300  transition-all' onClick={addOrRemoveFromLiked}>{isLiked?<FavoriteIcon  className="w-[60px] h-[60px]" color='error' />:<FavoriteBorderIcon className="w-[60px] h-[60px]" color='error' />}</IconButton>}
               </div>
               { user &&   <div className="absolute top-[30px] right-[20px]">
-                <div className=" group relative"> <IconButton className='bg-black hover:!bg-green-dark hover:!scale-125  transition-all  duration-500' onClick={showPopup}><MoreVertIcon color='error' className="rotate-180" /></IconButton>
-                    <Popup trackId={trackForPage._id}/>
+                <div className="relative"> <IconButton className='bg-black hover:!bg-green hover:!scale-125  transition-all  duration-500' onClick={showPopup}><MoreVertIcon color='error' className="rotate-180" /></IconButton>
+                   {morePopup===trackForPage._id&&<Popup trackId={trackForPage._id}/>}
                     </div>
                 </div>
                 }
@@ -120,11 +121,11 @@ const Popup = ({trackId}:any) => {
         dispatch(addTrackToAlbom({albomId,trackId}))
     }
   return (
-  <div  className={`group-hover:block text-white   rounded w-[275px] hidden bg-red p-[15px] top-[0px] right-[100%]  absolute `} >
-           додати до альбому
+  <div  className={`text-white text-lg font-semibold shadow-[0px_0px_16px_0px_rgba(0,0,0,0.96)] bg-green  rounded w-[275px]  px-4 py-6 top-[0px] right-[100%]  absolute `} >
+           Додати до альбому:
          <div className="mt-4">
             {alboms?.map((albom)=><div 
-            className="mt-2 cursor-pointer hover:!opacity-75" key={albom._id} onClick={()=>addTrackToAlbomHandler(albom._id)}>
+            className="mt-2 cursor-pointer font-bold hover:!opacity-75" key={albom._id} onClick={()=>addTrackToAlbomHandler(albom._id)}>
                 {albom.name}
             </div>)}
   </div>

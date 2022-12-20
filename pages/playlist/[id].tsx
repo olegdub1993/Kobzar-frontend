@@ -14,7 +14,7 @@ import { wrapper } from '../../store/store'
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import { addToLiked, removeFromLiked ,removePlaylist} from '../../store/userSlice';
+import { addToLiked, removeFromLiked } from '../../store/userSlice';
 import { Pause, PlayArrow } from '@mui/icons-material';
 import { setActivePlaylist, setActivePlaylistId, setActiveTrack,setPlay, setFree, setPause, setTaken } from '../../store/playerSlice';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -109,7 +109,7 @@ const onMoreClickHandler =(e:React.MouseEvent<HTMLElement>)=>{
                <div className="absolute top-[30px] right-[20px]">
                       <div className=' relative'>
                       <IconButton className='  hover:scale-110  !bg-green-dark    hover:!bg-green-dark    transition-all  duration-500' onClick={onMoreClickHandler}><MoreVertIcon/></IconButton>
-                      { morePopup==playlistForPage._id && <Popup setDeletePopup={setDeletePopup} setEditMode={setEditMode} playlist={playlistForPage} setPopup={(str:string)=>dispatch(setMorePopup(str))} />}
+                      {morePopup==playlistForPage._id && <Popup setDeletePopup={setDeletePopup} setEditMode={setEditMode} playlist={playlistForPage} setPopup={(str:string)=>dispatch(setMorePopup(str))} />}
                   </div>
              </div>
              </>}

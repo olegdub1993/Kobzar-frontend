@@ -40,3 +40,10 @@ export const getTotalTime=(arr:ITrack[]):number=>{
   let totalMinuts=Math.round(totalTime/60)
   return totalMinuts
 }
+
+// export const shuffle=(array:ITrack[])=> {
+//   for (let i = array.length - 1; i > 0; i--) {
+//     let j = Math.floor(Math.random() * (i + 1));
+//     [array[i], array[j]] = [array[j], array[i]];
+//   } 
+// }

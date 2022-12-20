@@ -7,7 +7,7 @@ export const HoverPopup = () => {
   const dispatch = useDispatch<any>();
   return (
     <div
-      className={`group-hover:block  bg-green-dark text-white  rounded w-[175px] font-semibold hidden p-[15px] top-[63px] right-[0px]   absolute `} >
+      className={`group-hover:block  bg-green text-white  rounded w-[175px] font-semibold hidden p-[15px] top-[63px] right-[0px]   absolute `} >
       <div className='text-center pb-[10px]  transition-all hover:scale-105'>
         <Link href="/manageAccount">Профіль</Link>
       </div>

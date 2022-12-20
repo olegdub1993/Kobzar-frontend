@@ -8,10 +8,12 @@ import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 import FastForwardIcon from '@mui/icons-material/FastForward';
 import FastRewindIcon from '@mui/icons-material/FastRewind';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import ShuffleOnIcon from '@mui/icons-material/ShuffleOn';
+import ShuffleIcon from '@mui/icons-material/Shuffle';
 import TrackProgress from './TrackProgress';
 import { useDispatch } from 'react-redux';
 import { useTypedSelector } from '../hooks/useTypedSelector';
-import {setActivePlaylistId, setPlay, setPrevVolume, setPause, setVolume, setCurrentTime, setDuration, setActiveTrack, setTaken, setFree, setActivePlaylist, setRepeat, setPrevPlaylist } from '../store/playerSlice';
+import {setActivePlaylistId, setPlay, setPrevVolume, setPause, setVolume, setCurrentTime, setDuration, setActiveTrack, setTaken, setFree, setActivePlaylist, setRepeat, setPrevPlaylist, setIsShuffle } from '../store/playerSlice';
 import { addToLiked ,removeFromLiked} from '../store/userSlice';
 import RepeatOneOnOutlinedIcon from '@mui/icons-material/RepeatOneOnOutlined';
 import RepeatOneOutlinedIcon from '@mui/icons-material/RepeatOneOutlined';
@@ -21,7 +23,7 @@ import { useRouter } from 'next/router'
 let audio: HTMLAudioElement;
 
 const Player = () => {
-  const {disabled, allPlaylists, activePlaylistId, prevVolume, active, repeat, prevPlaylist, activePlaylist, volume, duration, taken, currentTime, pause } = useTypedSelector((state) => state.player)
+  const {disabled, allPlaylists, activePlaylistId, prevVolume, active, repeat, isShuffle, prevPlaylist, activePlaylist, volume, duration, taken, currentTime, pause } = useTypedSelector((state) => state.player)
   // const { tracks, error } = useTypedSelector((state) => state.track)
   const {user} = useTypedSelector((state) => state.user)
   const dispatch = useDispatch<any>()
@@ -40,7 +42,7 @@ const Player = () => {
   };
     // console.log(active, "taken", taken)
     if (active && !taken) {
-      console.log(active)
+      // console.log(active)
       audio.src = process.env.NEXT_PUBLIC_BASIC_URL + active.audio
       audio.volume = volume / 100
       audio.onloadedmetadata = () => {
@@ -89,8 +91,7 @@ const Player = () => {
     // }
 
     console.log("activePlaylist",activePlaylist)
-        console.log("active",active)
-     let nextSong= activePlaylist.length-1 > active.index ? activePlaylist[active.index+1]: activePlaylist[0]
+     let nextSong= isShuffle? activePlaylist[Math.floor(Math.random() * activePlaylist.length)]:activePlaylist.length-1 > active.index ? activePlaylist[active.index+1]: activePlaylist[0]
     // dispatch(setPause())
     dispatch(setFree())
     dispatch(setActiveTrack(nextSong))
@@ -143,6 +144,13 @@ const Player = () => {
       dispatch(setPrevPlaylist(activePlaylist))
     }
    } 
+   const shuffleHandler=()=>{
+    if(isShuffle){
+      dispatch(setIsShuffle(false))
+    } else {
+      dispatch(setIsShuffle(true))
+    }
+   }
    if (!active?.audio) return null
   return (
     <div style={{
@@ -165,7 +173,7 @@ const Player = () => {
       <IconButton  className='mr-[10px] bg-green-dark hover:!bg-green-dark hover:scale-105 ' onClick={play}>{!pause ? <Pause fontSize='medium' color='error' /> : <PlayArrow color='error' fontSize='medium' />}</IconButton>
       <IconButton className='mr-[10px] hover:scale-110 duration-300  transition-all'  onClick={playNext}><FastForwardIcon fontSize='medium' color='error' /></IconButton>
       <IconButton  className={`${repeat&&""} mr-[10px] w-[30px] h-[30px] hover:scale-110 duration-300  transition-all`} onClick={repeatHandler}> {!repeat?<RepeatOneOutlinedIcon fontSize='medium' color='error' />:<RepeatOneOnOutlinedIcon fontSize='medium' color="error"  className='bg-dark-green' />}</IconButton>
-    
+      <IconButton  className={`mr-[10px] w-[30px] h-[30px] hover:scale-110 duration-300  transition-all`} onClick={shuffleHandler}> {!isShuffle?<ShuffleIcon fontSize='medium' color='error' />:<ShuffleOnIcon fontSize='medium' color="error"  className='bg-dark-green' />}</IconButton>
       <div  style={{ marginLeft: "auto", marginRight: "15px" }} onClick={turnOffVolume}> {!volume?<VolumeOffIcon className="cursor-pointer"  />: <VolumeUp className="cursor-pointer"  />}</div>
       <TrackProgress  width={"150px"} right={100} left={volume} onChange={changeVolume} />
     </div>

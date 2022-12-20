@@ -111,8 +111,9 @@ export const createPlaylist = createAsyncThunk(
   "user/createPlaylist",
   async (data:any, { rejectWithValue, dispatch }) => {
     try {
-      await playlistAPI.createPlaylist(data)
+      const response= await playlistAPI.createPlaylist(data)
       dispatch(setSuccess('Плейлист успішно створено!'))
+      return response.data
     } catch (error) {
       // dispatch(setError("Some Server erroor"))
     }
