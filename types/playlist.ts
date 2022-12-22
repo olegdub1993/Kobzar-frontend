@@ -7,5 +7,6 @@ export interface IPlaylist {
     description:string,
     likes:number,
     username:string,
-    tracks:ITrack[]
+    tracks:ITrack[],
+    userId:string
 }

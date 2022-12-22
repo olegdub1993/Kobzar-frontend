@@ -65,6 +65,9 @@ export const userAPI = {
   updateProfile (data){
     return $api.post("users/updateProfile", data);
   },
+  getUserProfile(id) {
+    return $api.get(`users/${id}`);
+  },
   addToLiked ({id,type}){
     return $api.post(`users/liked?type=${type}`, {id});
   },

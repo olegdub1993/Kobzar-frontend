@@ -5,19 +5,18 @@ import MainLayout from '../layouts/MainLayout'
 import { wrapper } from '../store/store'
 import { fetchTracks, fetchPlaylists} from '../store/trackSlice'
 import { useTypedSelector } from './../hooks/useTypedSelector';
-
+import {ITrack } from './../types/track';
 
 
 export default function Home() {
   const { tracks, playlists, } = useTypedSelector((state) => state.track)
   // const { isAuth} = useTypedSelector((state) => state.auth)
   // const { user} = useTypedSelector((state) => state.user)
-  console.log("trv", tracks)
-  const rock = tracks.filter((t) => t.category === 'rock').map((t,index)=>({...t,index}))
-  const popular = tracks.filter((t) => t.category === 'popular').map((t,index)=>({...t,index}))
-  const christmas = tracks.filter((t) => t.category === 'christmas').map((t,index)=>({...t,index}))
-  const forSoul = tracks.filter((t) => t.category === 'forSoul').map((t,index)=>({...t,index}))
-  const remix = tracks.filter((t) => t.category === 'remix').map((t,index)=>({...t,index}))
+  const rock = tracks.filter((track:ITrack) => track.category === 'rock')
+  const popular = tracks.filter((track:ITrack) => track.category === 'popular')
+  const christmas = tracks.filter((track:ITrack) => track.category === 'christmas')
+  const forSoul = tracks.filter((track:ITrack) => track.category === 'forSoul')
+  const remix = tracks.filter((track:ITrack) => track.category === 'remix')
 
   return (
     <>

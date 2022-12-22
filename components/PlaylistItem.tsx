@@ -4,7 +4,7 @@ import Pause from '@mui/icons-material/Pause'
 import PlayArrow from '@mui/icons-material/PlayArrow';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
-import { setActiveTrack, setPlay, setActivePlaylist,setAllPlaylists, setActivePlaylistId, setPause, setTaken, setFree } from '../store/playerSlice';
+import { setActiveTrack,setActiveTrackIndex, setPlay, setActivePlaylist,setAllPlaylists, setActivePlaylistId, setPause, setTaken, setFree } from '../store/playerSlice';
 import { useTypedSelector } from '../hooks/useTypedSelector';
 import { IPlaylist } from './../types/playlist';
 import Image from 'next/image'
@@ -28,6 +28,7 @@ const PlaylistItem: React.FC<PlaylistItemProps> = ({ playlist}) => {
         dispatch(setPause()) 
         dispatch(setFree())
         dispatch(setActiveTrack(tracksWithIndex[0]))
+        dispatch(setActiveTrackIndex(0))
         dispatch(setActivePlaylist(tracksWithIndex))
         dispatch(setActivePlaylistId(playlist._id))
         setTimeout(() => { dispatch(setTaken()) }, 500)

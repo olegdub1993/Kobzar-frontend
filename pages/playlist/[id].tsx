@@ -89,11 +89,14 @@ const onMoreClickHandler =(e:React.MouseEvent<HTMLElement>)=>{
                     <div className="font-semibold mb-4 mt-6 text-2xl max-w-full">Плейлист</div>
                     <div className="font-semibold mb-8 mt-8 text-7xl max-w-full">{playlistForPage?.name}</div>
                     {playlistForPage?.description&&<div className="font-bold mb-10 text-4xl  max-w-full">{playlistForPage?.description}</div>}
-                    <div className="font-bold mb-8 text-2xl  max-w-full">{playlistForPage?.username}</div>
+                    <div className="flex items-center mb-2">
+                    <Image alt="Albom picture" className='object-cover mr-4 rounded-full !h-[60px]' width={60} height={60} src={playlistForPage?.userPicture ? process.env.NEXT_PUBLIC_BASIC_URL + playlistForPage?.userPicture : albomPicture} /> 
+                    <div onClick={(e)=>router.push("/users/" + playlistForPage.userId)} className=" hover:underline cursor-pointer font-semibold  text-2xl  max-w-full">{playlistForPage?.username}</div>
+                   </div>
                     <div className="flex">
                     <div className="font-bold mb-8 text-xl mr-2 max-w-full">{playlistForPage?.tracks?.length+' '+tracksWord},</div>
                       <div className="font-bold mb-8 text-xl mr-2 max-w-full">{playlistForPage?.likes+' '+likesWord},</div>
-                      <div className="font-bold mb-8 text-xl  max-w-full">{totalTime} хв</div>
+                      <div className="font-bold mb-8 text-xl  max-w-full">приблизно {totalTime} хв</div>
                      </div>
                 </div>
                 {isPlaylistPlaying?  <IconButton className='bg-green-dark hover:!bg-green-dark   hover:scale-125 transition-all  duration-500' onClick={playOrPause}>{!pause ? <Pause color='error'className='!w-[120px]  !h-[120px]'  /> : <PlayArrow color='error' className='!w-[120px]  !h-[120px]'/>}</IconButton>:
@@ -117,7 +120,7 @@ const onMoreClickHandler =(e:React.MouseEvent<HTMLElement>)=>{
                 <div> 
                   {playlistForPage?.tracks?.length?    
                   <div  >
-                   {playlistForPage?.tracks?.map((track)=>  <TrackItem key={track._id} track={track} playlist={playlistForPage} />)}
+                   {playlistForPage?.tracks?.map((track,index)=>  <TrackItem key={track._id} index={index}  track={track} playlist={playlistForPage} />)}
                   </div>:
                     <> <div className='text-white text-center text-2xl font-bold mb-2'>У цьому альбомі поки що немає пісень</div>
                      <div className='flex justify-center mt-8'> <Button onClick={()=>router.push('/search')} className='text-white bg-green-dark hover:bg-green-dark hover:opacity-90 capitalize text-2xl px-4 py-2 font-bold mb-2'>Знайти та додати пісні</Button></div> 

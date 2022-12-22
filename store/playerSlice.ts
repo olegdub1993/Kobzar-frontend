@@ -19,6 +19,8 @@ export interface PlayerState {
   prevVolume:number
   prevPlaylist:null|ITrack[]
   isShuffle:boolean
+  activeTrackIndex:number
+  prevActiveTrackIndex:number
 }
 // Initial state
 const initialState: PlayerState = {
@@ -35,7 +37,9 @@ const initialState: PlayerState = {
   repeat:false,
   prevVolume:0,
   prevPlaylist:null,
-  isShuffle:false
+  isShuffle:false,
+  activeTrackIndex:0,
+  prevActiveTrackIndex:0
 };
 
 // Actual Slice
@@ -87,8 +91,14 @@ export const playerSlice = createSlice({
     setIsShuffle(state, action) {
       state.isShuffle = action.payload
     },
+    setActiveTrackIndex(state, action){
+      state.activeTrackIndex = action.payload 
+    },
     setActivePlaylistId(state, action) {
       state.activePlaylistId = action.payload
+    },
+    setPrevActiveTrackIndex(state, action) {
+      state.prevActiveTrackIndex = action.payload
     },
     setAllPlaylists(state, action) {
       state.allPlaylists.push(action.payload)
@@ -105,7 +115,7 @@ export const playerSlice = createSlice({
   },
 });
 
-export const {setActivePlaylist, setActivePlaylistId, setAllPlaylists, setIsShuffle,  setRepeat,setPrevVolume,setPrevPlaylist, setDisabled, setFree, setTaken, setPause, setPlay, setVolume, setCurrentTime, setDuration, setActiveTrack } = playerSlice.actions;
+export const {setActivePlaylist, setPrevActiveTrackIndex, setActiveTrackIndex, setActivePlaylistId, setAllPlaylists, setIsShuffle,  setRepeat,setPrevVolume,setPrevPlaylist, setDisabled, setFree, setTaken, setPause, setPlay, setVolume, setCurrentTime, setDuration, setActiveTrack } = playerSlice.actions;
 
 // export const selectPauseState = (state: AppState) => state.player.pause;
 

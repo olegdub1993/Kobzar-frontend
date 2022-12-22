@@ -1,14 +1,14 @@
 
 import { createSlice, createAsyncThunk, } from "@reduxjs/toolkit";
 // import { AppState } from "./store";
-// import { HYDRATE } from "next-redux-wrapper";
+import { HYDRATE } from "next-redux-wrapper";
 import { ITrack } from '../types/track'
 import { IUser } from './../types/user';
 import { playlistAPI, userAPI } from './../API/api';
 import { setDisabled } from "./playerSlice";
 import {fetchPlaylist} from "./playlistSlice";
 import { IPlaylist } from './../types/playlist';
-
+import axios from "axios";
 
 // Type for our state
 export interface UserState {
@@ -17,6 +17,7 @@ export interface UserState {
   liked: ITrack[] | IPlaylist[]
   alboms:null| any[]
   success:string
+  userForPage:null | IUser
 }
 
 // Initial state
@@ -26,6 +27,7 @@ const initialState: UserState = {
   // likedPlaylists:[],
   alboms: null,
   success:"",
+  userForPage:null
 };
 
 export const addToLiked = createAsyncThunk(
@@ -154,6 +156,20 @@ export const fetchUser = createAsyncThunk(
     }
   }
 );
+export const fetchUserProfile = createAsyncThunk(
+  "user/fetchUserProfile",
+  async (id:string, { rejectWithValue, dispatch }) => {
+    try {
+      const response = await  axios.get(process.env.NEXT_PUBLIC_BASIC_URL+"users/"+id)
+      // no locale storage
+      // const response = await userAPI.getUserProfile(id)
+      dispatch(setUserForPage(response.data))
+      // dispatch(getUserAlboms())
+    } catch (error) {
+      // dispatch(setError("Some Server erroor"))
+    }
+  }
+);
 export const removePlaylist = createAsyncThunk(
   "user/removePlaylist",
   async (id:number, { rejectWithValue, dispatch }) => {
@@ -167,7 +183,6 @@ export const removePlaylist = createAsyncThunk(
     }
   }
 );
-removePlaylist
 export const userSlice = createSlice({
   name: "user",
   initialState,
@@ -176,6 +191,9 @@ export const userSlice = createSlice({
     // Action to set the authentication status
     setUser(state, action) {
       state.user = action.payload
+    },
+    setUserForPage(state, action) {
+      state.userForPage = action.payload
     },
     setLiked(state, action) {
       state.liked = action.payload
@@ -214,18 +232,19 @@ export const userSlice = createSlice({
     //   state.error = action.payload
     // },
   },
-  // Special reducer for hydrating the state. Special case for next-redux-wrapper
-  // extraReducers: {
-  //   [HYDRATE]: (state, action) => {
-  //     return {
-  //       ...state,
-  //       ...action.payload.user,
-  //     };
-  //   },
-  // },
+ // Special reducer for hydrating the state. Special case for next-redux-wrapper
+  // could be errors, because was commented before
+  extraReducers: {
+    [HYDRATE]: (state, action) => {
+      return {
+        ...state,
+        ...action.payload.user,
+      };
+    },
+  },
 
 });
 
-export const {setUser,setLiked, setSuccess, setAlboms, addToLikedTracksId, addToLikedPlaylistsId, removeLikedId,removeLikedPlaylistsId} = userSlice.actions;
+export const {setUser, setUserForPage, setLiked, setSuccess, setAlboms, addToLikedTracksId, addToLikedPlaylistsId, removeLikedId,removeLikedPlaylistsId} = userSlice.actions;
 
 export default userSlice.reducer;

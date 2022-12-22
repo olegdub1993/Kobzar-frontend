@@ -5,7 +5,7 @@ import Pause from '@mui/icons-material/Pause'
 import PlayArrow from '@mui/icons-material/PlayArrow';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
-import { setActiveTrack, setPlay, setActivePlaylist, setPause, setTaken, setFree } from '../store/playerSlice';
+import { setActiveTrack, setPlay, setActivePlaylist,setActiveTrackIndex, setPause, setTaken, setFree } from '../store/playerSlice';
 import { useTypedSelector } from './../hooks/useTypedSelector';
 
 interface TrackItemProps {
@@ -26,6 +26,7 @@ const TrackItem: React.FC<TrackItemProps> = ({red, track, index, tracklist,}) =>
         dispatch(setPause())
         dispatch(setFree())
         dispatch(setActiveTrack(track))
+        dispatch(setActiveTrackIndex(index))
         dispatch(setActivePlaylist(tracklist))
         setTimeout(() => { dispatch(setTaken()) }, 500)
         // dispatch(setAudio(track))

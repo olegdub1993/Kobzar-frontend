@@ -13,17 +13,17 @@ import ShuffleIcon from '@mui/icons-material/Shuffle';
 import TrackProgress from './TrackProgress';
 import { useDispatch } from 'react-redux';
 import { useTypedSelector } from '../hooks/useTypedSelector';
-import {setActivePlaylistId, setPlay, setPrevVolume, setPause, setVolume, setCurrentTime, setDuration, setActiveTrack, setTaken, setFree, setActivePlaylist, setRepeat, setPrevPlaylist, setIsShuffle } from '../store/playerSlice';
+import {setActivePlaylistId,setPrevActiveTrackIndex, setActiveTrackIndex, setPlay, setPrevVolume, setPause, setVolume, setCurrentTime, setDuration, setActiveTrack, setTaken, setFree, setActivePlaylist, setRepeat, setPrevPlaylist, setIsShuffle } from '../store/playerSlice';
 import { addToLiked ,removeFromLiked} from '../store/userSlice';
 import RepeatOneOnOutlinedIcon from '@mui/icons-material/RepeatOneOnOutlined';
 import RepeatOneOutlinedIcon from '@mui/icons-material/RepeatOneOutlined';
 import Link from '@mui/material/Link';
 import { useRouter } from 'next/router'
-
+import {shuffle} from './../hooks/helpers'
 let audio: HTMLAudioElement;
 
 const Player = () => {
-  const {disabled, allPlaylists, activePlaylistId, prevVolume, active, repeat, isShuffle, prevPlaylist, activePlaylist, volume, duration, taken, currentTime, pause } = useTypedSelector((state) => state.player)
+  const {disabled,prevActiveTrackIndex, allPlaylists, activePlaylistId, prevVolume, activeTrackIndex, active, repeat, isShuffle, prevPlaylist, activePlaylist, volume, duration, taken, currentTime, pause } = useTypedSelector((state) => state.player)
   // const { tracks, error } = useTypedSelector((state) => state.track)
   const {user} = useTypedSelector((state) => state.user)
   const dispatch = useDispatch<any>()
@@ -34,7 +34,15 @@ const Player = () => {
       audio = new Audio()
     }
     audio.onended = function() {
-      let nextSong= activePlaylist.length-1 > active.index ? activePlaylist[active.index+1]: activePlaylist[0]
+      //let nextSong= activePlaylist.length-1 > activeTrackIndex ? activePlaylist[activeTrackIndex+1]: activePlaylist[0]
+      let nextSong; 
+      if(activePlaylist.length-1 > activeTrackIndex) { 
+       nextSong = activePlaylist[activeTrackIndex+1]
+       dispatch(setActiveTrackIndex(activeTrackIndex+1))
+     }else{ 
+      nextSong=activePlaylist[0]
+      dispatch(setActiveTrackIndex(0))
+     }
       // dispatch(setPause())
       dispatch(setFree())
       dispatch(setActiveTrack(nextSong))
@@ -78,29 +86,46 @@ const Player = () => {
   const playNext = () => {
     // console.log(activePlaylist)
     // console.log(allPlaylists)
-    // console.log(active.index)
+    // console.log(activeTrackIndex)
     // const  indexOfActivePlaylist =allPlaylists.findIndex((playlist)=>playlist._id===activePlaylistId)
     // let nextSong; 
-    // if(activePlaylist.length-1 > active.index) { 
-    //   nextSong = activePlaylist[active.index+1]
+    // if(activePlaylist.length-1 > activeTrackIndex) { 
+    //   nextSong = activePlaylist[activeTrackIndex+1]
     // }else{ 
     //  nextSong=allPlaylists[indexOfActivePlaylist+1].tracks[0]
     //  dispatch(setActivePlaylistId(allPlaylists[indexOfActivePlaylist+1]._id))
     //  //no activeIndex
     //  dispatch(setActivePlaylist(allPlaylists[indexOfActivePlaylist+1].tracks))
     // }
-
-    console.log("activePlaylist",activePlaylist)
-     let nextSong= isShuffle? activePlaylist[Math.floor(Math.random() * activePlaylist.length)]:activePlaylist.length-1 > active.index ? activePlaylist[active.index+1]: activePlaylist[0]
-    // dispatch(setPause())
+    let nextSong; 
+     if(activePlaylist.length-1 > activeTrackIndex) { 
+      nextSong = activePlaylist[activeTrackIndex+1]
+      dispatch(setActiveTrackIndex(activeTrackIndex+1))
+    }else{ 
+     nextSong=activePlaylist[0]
+     dispatch(setActiveTrackIndex(0))
+    }
+    //console.log("activePlaylist",activePlaylist)
+     //let nextSong= isShuffle? activePlaylist[Math.floor(Math.random() * activePlaylist.length)]:activePlaylist.length-1 > activeTrackIndex ? activePlaylist[activeTrackIndex+1]: activePlaylist[0]
+    // let nextSong= activePlaylist.length-1 > activeTrackIndex ? activePlaylist[activeTrackIndex+1]: activePlaylist[0]
+     
+     // dispatch(setPause())
     dispatch(setFree())
     dispatch(setActiveTrack(nextSong))
     setTimeout(() => { dispatch(setTaken()) }, 500)
   }
   const playPrev = () => {
-    console.log(active.index)
-     let prevSong = activePlaylist.length > active.index && active.index !==0? activePlaylist[active.index-1]:activePlaylist[activePlaylist.length-1]
-    // let prevSong= active.index> 0 ? activePlaylist[active.index-1]: activePlaylist[activePlaylist.length-1]
+    console.log(activeTrackIndex)
+     let prevSong;
+     if( activePlaylist.length > activeTrackIndex && activeTrackIndex !==0){
+      prevSong=activePlaylist[activeTrackIndex-1]
+      dispatch(setActiveTrackIndex(activeTrackIndex-1))
+     }else{
+        prevSong=activePlaylist[activePlaylist.length-1]
+        dispatch(setActiveTrackIndex(activePlaylist.length-1))
+      }
+
+    // let prevSong= activeTrackIndex> 0 ? activePlaylist[activeTrackIndex-1]: activePlaylist[activePlaylist.length-1]
     // dispatch(setPause())
     dispatch(setFree())
     dispatch(setActiveTrack(prevSong))
@@ -137,18 +162,28 @@ const Player = () => {
     if(repeat){
       dispatch(setRepeat(false))
       dispatch(setActivePlaylist(prevPlaylist))
+      dispatch(setActiveTrackIndex(prevActiveTrackIndex))
     } else {
       const playlist=[active]
       dispatch(setRepeat(true))
       dispatch(setActivePlaylist(playlist))
       dispatch(setPrevPlaylist(activePlaylist))
+      dispatch(setPrevActiveTrackIndex(activeTrackIndex))
     }
    } 
    const shuffleHandler=()=>{
-    if(isShuffle){
+    if(isShuffle){ 
+      dispatch(setActivePlaylist(prevPlaylist))
       dispatch(setIsShuffle(false))
+      const activeTrackIndex=prevPlaylist?.findIndex((track)=>track._id===active._id)
+      dispatch(setActiveTrackIndex(activeTrackIndex))
     } else {
+      const playlist= [...activePlaylist]
+      shuffle(playlist)
       dispatch(setIsShuffle(true))
+      dispatch(setActivePlaylist(playlist))
+      dispatch(setPrevPlaylist(activePlaylist))
+      // dispatch(setPrevActiveTrackIndex(activeTrackIndex))
     }
    }
    if (!active?.audio) return null

@@ -28,10 +28,13 @@ const Index = () => {
     }
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        setEditMode(false)
         const formData = new FormData(event.currentTarget);
+        if(!formData.get('username')){
+            setInternalError({name:"Введіть нове ім'я"})
+            return
+        }
+        setEditMode(false)
            formData.append("picture", userPicture as Blob)
-
             dispatch(updateProfile(formData))
     };
     return (

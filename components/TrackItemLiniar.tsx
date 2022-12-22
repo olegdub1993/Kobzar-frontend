@@ -6,7 +6,7 @@ import PlayArrow from '@mui/icons-material/PlayArrow';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import { setMorePopup} from '../store/trackSlice';
-import { setActiveTrack, setPlay, setActivePlaylist,setActivePlaylistId, setPause, setTaken, setFree } from '../store/playerSlice';
+import { setActiveTrack,setActiveTrackIndex, setPlay, setActivePlaylist,setActivePlaylistId, setPause, setTaken, setFree } from '../store/playerSlice';
 import { useTypedSelector } from '../hooks/useTypedSelector';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import {addToLiked ,removeFromLiked, addTrackToAlbom, removeTrackFromPlaylist } from '../store/userSlice';
@@ -16,12 +16,13 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 
 interface TrackItemProps {
+    index:number
     track: ITrack
     playlist:IPlaylist
     red?:boolean
 }
 
-const TrackItem: React.FC<TrackItemProps> = ({red, track, playlist,}) => {
+const TrackItem: React.FC<TrackItemProps> = ({red, track, playlist,index}) => {
     const { user } = useTypedSelector((state) => state.user)
     const { playlistForPage } = useTypedSelector((state) => state.playlist)
     const { active, disabled, pause,activePlaylistId} = useTypedSelector((state) => state.player)
@@ -47,6 +48,7 @@ const TrackItem: React.FC<TrackItemProps> = ({red, track, playlist,}) => {
         dispatch(setPause())
         dispatch(setFree())
         dispatch(setActiveTrack(track))
+        dispatch(setActiveTrackIndex(index))
         // console.log("dd",track)
         // console.log("dd",track)
         dispatch(setActivePlaylistId(playlist._id))
