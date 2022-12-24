@@ -74,6 +74,12 @@ export const userAPI = {
    removeFromLiked ({id,type}){
     return $api.delete(`users/liked/${id}?type=${type}`);
   },
+  createSubscription (id){
+    return $api.post(`users/subscribe`, {id});
+  },
+  deleteSubscription (id){
+    return $api.delete(`users/subscribe/${id}`);
+  },
   // removeFromLiked (id){
   //   return $api.delete(`users/liked/${id}`);
   // },

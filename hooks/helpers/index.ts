@@ -18,6 +18,60 @@ export const getTracksWord =(tracksArray:ITrack[]):string=>{
   }
   return tracksWord
 }
+export const getPlaylistsWord =(playlistsArray:IPlaylists[]):string=>{
+  let playlistsWord=""
+  if (playlistsArray!==undefined){
+    const playlistsAmountString=playlistsArray.length.toString()
+    const numbersArray=playlistsAmountString.split("")
+    const lastNumber=numbersArray[numbersArray.length-1]
+    const predlastNumber=numbersArray[numbersArray.length-2]
+    
+    if(lastNumber ==="1" && predlastNumber!=='1'){
+      playlistsWord="плейлист"
+    }else if((lastNumber==="2"||lastNumber==="3"||lastNumber==="4")&& predlastNumber!=='1'){
+      playlistsWord="плейлисти"
+    }else{
+      playlistsWord="плейлистів"
+    }
+  }
+  return playlistsWord
+}
+export const getSubscribersWord =(playlistsArray:IPlaylists[]):string=>{
+  let playlistsWord=""
+  if (playlistsArray!==undefined){
+    const playlistsAmountString=playlistsArray.length.toString()
+    const numbersArray=playlistsAmountString.split("")
+    const lastNumber=numbersArray[numbersArray.length-1]
+    const predlastNumber=numbersArray[numbersArray.length-2]
+    
+    if(lastNumber ==="1" && predlastNumber!=='1'){
+      playlistsWord="підписник"
+    }else if((lastNumber==="2"||lastNumber==="3"||lastNumber==="4")&& predlastNumber!=='1'){
+      playlistsWord="підписники"
+    }else{
+      playlistsWord="підписників"
+    }
+  }
+  return playlistsWord
+}
+  export const getSubscriptionsWord =(playlistsArray:IPlaylists[]):string=>{
+    let playlistsWord=""
+    if (playlistsArray!==undefined){
+      const playlistsAmountString=playlistsArray.length.toString()
+      const numbersArray=playlistsAmountString.split("")
+      const lastNumber=numbersArray[numbersArray.length-1]
+      const predlastNumber=numbersArray[numbersArray.length-2]
+      
+      if(lastNumber ==="1" && predlastNumber!=='1'){
+        playlistsWord="підписка"
+      }else if((lastNumber==="2"||lastNumber==="3"||lastNumber==="4")&& predlastNumber!=='1'){
+        playlistsWord="підписки"
+      }else{
+        playlistsWord="підписок"
+      }
+    }
+    return playlistsWord
+  }
 
 export const getLikesWord=(likesAmount:number):string=>{
     let likesWord=""

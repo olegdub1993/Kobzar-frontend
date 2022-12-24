@@ -1,6 +1,6 @@
 import { Container } from '@mui/material';
 import Head from 'next/head';
-import React, { useEffect } from 'react'
+import React, { useEffect,useState } from 'react'
 import Navigation from '../components/Navbar'
 import Player from '../components/Player';
 import { useDispatch } from 'react-redux';
@@ -21,7 +21,7 @@ type propsType = {
 const MainLayout: React.FC<propsType> = ({ children, title, description, keywords ,red}: propsType) => {
     const {loading} = useTypedSelector((state) => state.auth)
     const dispatch=useDispatch<any>() 
-    const [restrictPopup, setRestrictPopup] = React.useState("");
+    const [restrictPopup, setRestrictPopup] = useState("");
     useEffect(()=>{
         if (localStorage.getItem("token")){
           dispatch(checkAuth()).then(()=>dispatch(getUserPlaylists()))
@@ -53,7 +53,7 @@ const MainLayout: React.FC<propsType> = ({ children, title, description, keyword
                 
             </div>
             <SuccesOperation/>
-            <Player />
+            <Player setRestrictPopup={setRestrictPopup} restrictPopup={restrictPopup}  />
             </div>
         </>
     )

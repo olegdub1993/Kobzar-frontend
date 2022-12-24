@@ -17,7 +17,7 @@ export interface UserState {
   liked: ITrack[] | IPlaylist[]
   alboms:null| any[]
   success:string
-  userForPage:null | IUser
+  userForPage:IUser
 }
 
 // Initial state
@@ -27,9 +27,36 @@ const initialState: UserState = {
   // likedPlaylists:[],
   alboms: null,
   success:"",
-  userForPage:null
+  userForPage:{} as IUser
 };
 
+export const createSubscription = createAsyncThunk(
+  "user/createSubscription",
+  async (id:string, { rejectWithValue, dispatch }) => {
+    dispatch(setDisabled(true))
+    try {
+      const response= await userAPI.createSubscription(id);
+      dispatch(addToSubscriptionsId(response.data));
+      dispatch(setSuccess('Ви успішно підписались'))
+    } catch (error) {
+      // dispatch(setError("Some Server erroor"))
+    }finally{
+      dispatch(setDisabled(false))
+    }
+  }
+);
+export const deleteSubscription = createAsyncThunk(
+  "user/deleteSubscription",
+  async (id:string, { rejectWithValue, dispatch }) => {
+    try {
+     const response= await userAPI.deleteSubscription(id)
+        dispatch(removeFromSubscriptionsId(response.data))
+        dispatch(setSuccess('Ви успішно відписались'))
+    } catch (error) {
+      // dispatch(setError("Some Server erroor"))
+    }
+  }
+);
 export const addToLiked = createAsyncThunk(
   "user/addToLiked",
   async (data:any, { rejectWithValue, dispatch }) => {
@@ -201,6 +228,16 @@ export const userSlice = createSlice({
     // setLikedPlaylists(state, action) {
     //   state.likedPlaylists = action.payload
     // },
+    addToSubscriptionsId(state, action) {
+      if(state.user){
+      state.user = {...state.user, subscriptions:[...state.user.subscriptions, action.payload]}
+      }
+    },
+    removeFromSubscriptionsId(state, action) {
+      if(state.user){
+      state.user = {...state.user, subscriptions:state.user.subscriptions.filter((id)=>id!==action.payload)}
+      }
+    },
     addToLikedTracksId(state, action) {
       if(state.user){
       state.user = {...state.user, liked:[...state.user.liked, action.payload]}
@@ -245,6 +282,6 @@ export const userSlice = createSlice({
 
 });
 
-export const {setUser, setUserForPage, setLiked, setSuccess, setAlboms, addToLikedTracksId, addToLikedPlaylistsId, removeLikedId,removeLikedPlaylistsId} = userSlice.actions;
+export const {setUser, removeFromSubscriptionsId, addToSubscriptionsId, setUserForPage, setLiked, setSuccess, setAlboms, addToLikedTracksId, addToLikedPlaylistsId, removeLikedId,removeLikedPlaylistsId} = userSlice.actions;
 
 export default userSlice.reducer;

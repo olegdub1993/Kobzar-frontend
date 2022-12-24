@@ -20,9 +20,10 @@ import RepeatOneOutlinedIcon from '@mui/icons-material/RepeatOneOutlined';
 import Link from '@mui/material/Link';
 import { useRouter } from 'next/router'
 import {shuffle} from './../hooks/helpers'
+import Popup from './Popup';
 let audio: HTMLAudioElement;
 
-const Player = () => {
+const Player = ({setRestrictPopup, restrictPopup}:any) => {
   const {disabled,prevActiveTrackIndex, allPlaylists, activePlaylistId, prevVolume, activeTrackIndex, active, repeat, isShuffle, prevPlaylist, activePlaylist, volume, duration, taken, currentTime, pause } = useTypedSelector((state) => state.player)
   // const { tracks, error } = useTypedSelector((state) => state.track)
   const {user} = useTypedSelector((state) => state.user)
@@ -149,12 +150,18 @@ const Player = () => {
     audio.currentTime = Number(e.target.value)
     dispatch(setCurrentTime(Number(e.target.value)))
   }
-    const addOrRemoveFromLiked=()=>{
+
+  const addOrRemoveFromLiked=(e:any)=>{
+      if(!user){
+        e.stopPropagation()
+        setRestrictPopup("like")
+        return
+      }
       if(!isLiked){
-        dispatch(addToLiked({id:active._id, type:"track"}))
+        dispatch(addToLiked({id:active?._id, type:"track"}))
       }
       else{
-        dispatch(removeFromLiked({id:active._id, type:"track"}))
+        dispatch(removeFromLiked({id:active?._id, type:"track"}))
       }
     }
 
@@ -175,7 +182,7 @@ const Player = () => {
     if(isShuffle){ 
       dispatch(setActivePlaylist(prevPlaylist))
       dispatch(setIsShuffle(false))
-      const activeTrackIndex=prevPlaylist?.findIndex((track)=>track._id===active._id)
+      const activeTrackIndex=prevPlaylist?.findIndex((track)=>track._id===active?._id)
       dispatch(setActiveTrackIndex(activeTrackIndex))
     } else {
       const playlist= [...activePlaylist]
@@ -202,9 +209,14 @@ const Player = () => {
       <div className='mr-24'>
       <TrackProgress audioRow width={"300px"} right={duration} left={currentTime} onChange={changeCurrentTime} />
       </div>
-      {user &&
-       <IconButton disabled={disabled}  className='mr-[10px] hover:scale-110 duration-300  transition-all' onClick={addOrRemoveFromLiked}>{isLiked?<FavoriteIcon fontSize='medium' color='error' />:<FavoriteBorderIcon fontSize='medium' color='error' />}</IconButton>}
-      <IconButton className='mr-[10px] hover:scale-110 duration-300  transition-all' onClick={playPrev}> <FastRewindIcon fontSize='medium' color='error' /></IconButton>
+      <div className="relative">
+       <IconButton disabled={disabled}  className='mr-[10px] hover:scale-110 duration-300  transition-all' onClick={addOrRemoveFromLiked}>
+         {isLiked?<FavoriteIcon fontSize='medium' color='error' />:<FavoriteBorderIcon fontSize='medium' color='error' />}
+      </IconButton>
+      {restrictPopup === "like" && <Popup setPopup={setRestrictPopup} className="bottom-[80px] left-[50%] translate-x-[-50%]"/>}
+      </div>
+      <IconButton className='mr-[10px] hover:scale-110 duration-300  transition-all' onClick={playPrev}> <FastRewindIcon fontSize='medium' color='error' />
+      </IconButton>
       <IconButton  className='mr-[10px] bg-green-dark hover:!bg-green-dark hover:scale-105 ' onClick={play}>{!pause ? <Pause fontSize='medium' color='error' /> : <PlayArrow color='error' fontSize='medium' />}</IconButton>
       <IconButton className='mr-[10px] hover:scale-110 duration-300  transition-all'  onClick={playNext}><FastForwardIcon fontSize='medium' color='error' /></IconButton>
       <IconButton  className={`${repeat&&""} mr-[10px] w-[30px] h-[30px] hover:scale-110 duration-300  transition-all`} onClick={repeatHandler}> {!repeat?<RepeatOneOutlinedIcon fontSize='medium' color='error' />:<RepeatOneOnOutlinedIcon fontSize='medium' color="error"  className='bg-dark-green' />}</IconButton>

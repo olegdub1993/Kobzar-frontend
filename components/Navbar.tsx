@@ -189,6 +189,6 @@ const MyListItem=({navItem,index,setRestrictPopup,restrictPopup}:any)=> {
                </ListItemIcon>
                <ListItemText primary={navItem.text} />
            </ListItemButton>
-           { restrictPopup===navItem.text && <Popup setPopup={setRestrictPopup}/>}
+           { restrictPopup===navItem.text && <Popup setPopup={setRestrictPopup} className='left-[220px] top-[0px]'/>}
        </ListItem>
 }

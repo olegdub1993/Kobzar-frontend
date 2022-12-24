@@ -4,10 +4,12 @@ import { HYDRATE } from "next-redux-wrapper";
 import { ITrack, } from '../types/track'
 import { tracksAPI,playlistAPI} from "../API/api";
 import { IPlaylist } from "../types/playlist";
+import { IUser } from './../types/user';
 
 export type SearchData = { 
-  tracks:ITracks[],
+  tracks:ITrack[],
   playlists:IPlaylist[]
+  users:IUser[]
 }
 
 // Type for our state
@@ -20,7 +22,7 @@ export interface SearchState {
 // Initial state
 const initialState: SearchState = {
   searchedData:null as SearchData,
-  noTracks:false,
+  noContent:false,
   error: "",
 };
 
@@ -29,7 +31,7 @@ export const searchContent = createAsyncThunk(
   async (queryData:any, { rejectWithValue, dispatch }) => {
     try {
       const response = await tracksAPI.getSearchedTracks(queryData)
-      if(response.data.length==0||(response.data.tracks?.length==0&&response.data.playlists?.length==0)){
+      if(response.data.length==0||(response.data.tracks?.length==0&&response.data.playlists?.length==0&&response.data.users?.length==0)){
         dispatch(setNoContent(true))
       }else{
         dispatch(setNoContent(false))

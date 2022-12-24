@@ -9,6 +9,7 @@ import useDebouncedFunction from './../../hooks/useDebouncedFunc';
 import SearchTrackList from '../../components/SearchTrackList';
 import { Button } from '@mui/material';
 import Playlists from '../../components/Playlists'
+import UserItem from './../../components/UserItem';
 
 type TabType ={
     type:string,
@@ -17,7 +18,8 @@ type TabType ={
   const tabs:TabType[]=[
   {type:"all", text:"все"},
   {type:"tracks", text:"пісні"},
-  {type:"playlists", text:"плейлисти"}]
+  {type:"playlists", text:"плейлисти"},
+  {type:"users", text:"профілі"}]
 
 
 const Search = () => {
@@ -25,8 +27,9 @@ const Search = () => {
     const {searchedData, noContent } = useTypedSelector((state) => state.search)
     const [selectedTab,setSelectedTab]=useState("all")
     const tracksWithIndex=tracks.map((t,index)=>({...t,index}))
-    const searchedTracksWithIndex=searchedData?.tracks?.map((t,index)=>({...t,index}))
+    const searchedTracks=searchedData?.tracks
     const searchedPlaylists=searchedData?.playlists
+    const searchedUsers=searchedData?.users
     const dispatch = useDispatch<any>()
     const [query, setQuery] = useState<string>("")
     const debouncedFetch = useDebouncedFunction((query: string) => { dispatch(searchContent({query,type:selectedTab})) }, 500);
@@ -58,22 +61,29 @@ const Search = () => {
               </div> 
                {(noContent && query) && 
                <div className='text-white text-2xl font-bold mb-2 '>За вашим запитом нічого не знайдено</div>}
-            {(!searchedTracksWithIndex?.length && !searchedPlaylists?.length) ?
+            {(!searchedTracks?.length && !searchedPlaylists?.length && !searchedUsers?.length)?
                 <>
                     <div className='text-white text-2xl mt-8 font-bold  mb-2'>Пісні, які найчастіше шукають:</div>
                     <SearchTrackList  tracks={tracksWithIndex} />
                 </>:
                 <>
-                    {searchedTracksWithIndex?.length ? 
+                    {searchedTracks?.length ? 
                     <>
                     <div className='text-white text-2xl font-bold mt-4 mb-2'>Пісні</div>
-                    <SearchTrackList  tracks={searchedTracksWithIndex} />
+                    <SearchTrackList  tracks={searchedTracks} />
                     </>:""}
                     {searchedPlaylists?.length ?
                         <div className='mb-4'>
                             <div className='text-white text-2xl font-bold  mt-4 mb-2 '>Плейлисти</div>
                             <Playlists playlists={searchedPlaylists} />
                         </div>:""  }
+                    {searchedUsers?.length ?
+                        <div className='mb-4'>
+                            <div className='text-white text-2xl font-bold  mt-4 mb-2 '>Профілі</div>
+                            <div className="flex">
+                       {searchedUsers.map((searchedUser) => <UserItem  key={searchedUser._id}  user={searchedUser} />)}
+                </div>
+                        </div>:""  }    
                   </>  }
         </MainLayout>
 
