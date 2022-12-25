@@ -12,7 +12,7 @@ import {updateProfile  } from '../../../store/userSlice';
 
 interface EditProfilePopup {
 setEditMode:(arg:boolean)=>void
-// playlist:IPlaylist
+setImageUrl:(arg:any)=>void
 }
 
 const EditProfilePopup: React.FC<EditProfilePopup> = ({setEditMode,setImageUrl}) => {

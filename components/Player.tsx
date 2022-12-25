@@ -29,7 +29,7 @@ const Player = ({setRestrictPopup, restrictPopup}:any) => {
   const {user} = useTypedSelector((state) => state.user)
   const dispatch = useDispatch<any>()
   const router = useRouter()
-  const isLiked=user?.liked?.find((id)=>id===active?._id)
+  const isLiked=user?.liked?.find((id:string)=>id===active?._id)
   useEffect(() => {
     if (!audio) {
       audio = new Audio()

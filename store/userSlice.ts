@@ -6,52 +6,52 @@ import { ITrack } from '../types/track'
 import { IUser } from './../types/user';
 import { playlistAPI, userAPI } from './../API/api';
 import { setDisabled } from "./playerSlice";
-import {fetchPlaylist} from "./playlistSlice";
+import { fetchPlaylist } from "./playlistSlice";
 import { IPlaylist } from './../types/playlist';
 import axios from "axios";
 
 // Type for our state
 export interface UserState {
-  user: null | IUser
+  user: null | any
   // likedPlaylists: IPlaylist[]
-  liked: ITrack[] | IPlaylist[]
-  alboms:null| any[]
-  success:string
-  userForPage:IUser
+  liked: any[]
+  alboms: null | any[]
+  success: string
+  userForPage: IUser
 }
 
 // Initial state
 const initialState: UserState = {
   user: null,
-  liked:[],
+  liked: [],
   // likedPlaylists:[],
   alboms: null,
-  success:"",
-  userForPage:{} as IUser
+  success: "",
+  userForPage: {} as IUser
 };
 
 export const createSubscription = createAsyncThunk(
   "user/createSubscription",
-  async (id:string, { rejectWithValue, dispatch }) => {
+  async (id: string, { rejectWithValue, dispatch }) => {
     dispatch(setDisabled(true))
     try {
-      const response= await userAPI.createSubscription(id);
+      const response = await userAPI.createSubscription(id);
       dispatch(addToSubscriptionsId(response.data));
       dispatch(setSuccess('Ви успішно підписались'))
     } catch (error) {
       // dispatch(setError("Some Server erroor"))
-    }finally{
+    } finally {
       dispatch(setDisabled(false))
     }
   }
 );
 export const deleteSubscription = createAsyncThunk(
   "user/deleteSubscription",
-  async (id:string, { rejectWithValue, dispatch }) => {
+  async (id: string, { rejectWithValue, dispatch }) => {
     try {
-     const response= await userAPI.deleteSubscription(id)
-        dispatch(removeFromSubscriptionsId(response.data))
-        dispatch(setSuccess('Ви успішно відписались'))
+      const response = await userAPI.deleteSubscription(id)
+      dispatch(removeFromSubscriptionsId(response.data))
+      dispatch(setSuccess('Ви успішно відписались'))
     } catch (error) {
       // dispatch(setError("Some Server erroor"))
     }
@@ -59,53 +59,55 @@ export const deleteSubscription = createAsyncThunk(
 );
 export const addToLiked = createAsyncThunk(
   "user/addToLiked",
-  async (data:any, { rejectWithValue, dispatch }) => {
+  async (data: any, { rejectWithValue, dispatch }) => {
     dispatch(setDisabled(true))
     try {
-      const response= await userAPI.addToLiked(data);
-      if(data.type==="track") {
-      dispatch(addToLikedTracksId(response.data));
-      dispatch(setSuccess('Додано до пісень, що сподобались'))}
-      else{
-      dispatch(setSuccess('Додано до сподобаних плейлистів'));
-      dispatch(addToLikedPlaylistsId(response.data))}
+      const response = await userAPI.addToLiked(data);
+      if (data.type === "track") {
+        dispatch(addToLikedTracksId(response.data));
+        dispatch(setSuccess('Додано до пісень, що сподобались'))
+      }
+      else {
+        dispatch(setSuccess('Додано до сподобаних плейлистів'));
+        dispatch(addToLikedPlaylistsId(response.data))
+      }
     } catch (error) {
       // dispatch(setError("Some Server erroor"))
-    }finally{
+    } finally {
       dispatch(setDisabled(false))
     }
   }
 );
 export const updateProfile = createAsyncThunk(
   "user/updateProfile",
-  async (data:any, { rejectWithValue, dispatch }) => {
+  async (data: any, { rejectWithValue, dispatch }) => {
     try {
       await userAPI.updateProfile(data)
       dispatch(setSuccess('Ваш профіль успішно відредаговано'))
     } catch (error) {
       // dispatch(setError("Some Server erroor"))
-    }finally{
+    } finally {
       // dispatch(setDisabled(false))
     }
   }
 );
-export const addTrackToAlbom= createAsyncThunk(
+export const addTrackToAlbom = createAsyncThunk(
   "user/addTrackToAlbom",
-  async (data:any, { rejectWithValue, dispatch }) => {
+  async (data: any, { rejectWithValue, dispatch }) => {
     try {
       await playlistAPI.addTrackToPlaylist(data)
       dispatch(setSuccess('Додано до плейліста'))
       // dispatch(addToLikedId(track._id))
     } catch (error) {
       // dispatch(setError("Some Server erroor"))
-    }finally{
+    } finally {
       // dispatch(setDisabled(false))
     }
   }
 );
-export const removeTrackFromPlaylist= createAsyncThunk(
+export const removeTrackFromPlaylist = createAsyncThunk(
   "user/removeTrackFromPlaylist",
-  async (data:any, { rejectWithValue, dispatch }) => {
+  async (data: any, { rejectWithValue, dispatch }) => {
     try {
       await playlistAPI.removeTrackFromPlaylist(data)
       dispatch(setSuccess('Видалено до плейліста'))
@@ -113,7 +115,7 @@ export const removeTrackFromPlaylist= createAsyncThunk(
       // dispatch(addToLikedId(track._id))
     } catch (error) {
       // dispatch(setError("Some Server erroor"))
-    }finally{
+    } finally {
       // dispatch(setDisabled(false))
     }
   }
@@ -121,15 +123,17 @@ export const removeTrackFromPlaylist= createAsyncThunk(
 
 export const removeFromLiked = createAsyncThunk(
   "user/removeFromLiked",
-  async (data:any, { rejectWithValue, dispatch }) => {
+  async (data: any, { rejectWithValue, dispatch }) => {
     try {
-     const response= await userAPI.removeFromLiked(data)
-      if(data.type==="track") {
+      const response = await userAPI.removeFromLiked(data)
+      if (data.type === "track") {
         dispatch(setSuccess('Видалено з пісень, що сподобались'))
-        dispatch(removeLikedId(response.data))}
-        else{
+        dispatch(removeLikedId(response.data))
+      }
+      else {
         dispatch(setSuccess('Видалено із сподобаних плейлистів'));
-        dispatch(removeLikedPlaylistsId(response.data))}
+        dispatch(removeLikedPlaylistsId(response.data))
+      }
 
     } catch (error) {
       // dispatch(setError("Some Server erroor"))
@@ -138,9 +142,9 @@ export const removeFromLiked = createAsyncThunk(
 );
 export const createPlaylist = createAsyncThunk(
   "user/createPlaylist",
-  async (data:any, { rejectWithValue, dispatch }) => {
+  async (data: any, { rejectWithValue, dispatch }) => {
     try {
-      const response= await playlistAPI.createPlaylist(data)
+      const response = await playlistAPI.createPlaylist(data)
       dispatch(setSuccess('Плейлист успішно створено!'))
       return response.data
     } catch (error) {
@@ -150,7 +154,7 @@ export const createPlaylist = createAsyncThunk(
 );
 export const getLiked = createAsyncThunk(
   "user/getLiked",
-  async (type:string, { rejectWithValue, dispatch }) => {
+  async (type: string, { rejectWithValue, dispatch }) => {
     try {
       const response = await userAPI.getLiked(type)
       dispatch(setLiked(response.data))
@@ -176,7 +180,7 @@ export const fetchUser = createAsyncThunk(
   async (token, { rejectWithValue, dispatch }) => {
     try {
       // const response = await userAPI.getUserData(token)
-      console.log("dere",response.data)
+      // console.log("dere", response.data)
       // dispatch(setUser(response.data))
       // dispatch(getUserAlboms())
     } catch (error) {
@@ -186,9 +190,9 @@ export const fetchUser = createAsyncThunk(
 );
 export const fetchUserProfile = createAsyncThunk(
   "user/fetchUserProfile",
-  async (id:string, { rejectWithValue, dispatch }) => {
+  async (id: string, { rejectWithValue, dispatch }) => {
     try {
-      const response = await  axios.get(process.env.NEXT_PUBLIC_BASIC_URL+"users/"+id)
+      const response = await axios.get(process.env.NEXT_PUBLIC_BASIC_URL + "users/" + id)
       // no locale storage
       // const response = await userAPI.getUserProfile(id)
       dispatch(setUserForPage(response.data))
@@ -200,7 +204,7 @@ export const fetchUserProfile = createAsyncThunk(
 );
 export const removePlaylist = createAsyncThunk(
   "user/removePlaylist",
-  async (id:number, { rejectWithValue, dispatch }) => {
+  async (id: number, { rejectWithValue, dispatch }) => {
     try {
       const response = await playlistAPI.removePlaylist(id)
       dispatch(setSuccess('Плейлист успішно видалено!'))
@@ -230,47 +234,47 @@ export const userSlice = createSlice({
     //   state.likedPlaylists = action.payload
     // },
     addToSubscriptionsId(state, action) {
-      if(state.user){
-      state.user = {...state.user, subscriptions:[...state.user.subscriptions, action.payload]}
+      if (state.user) {
+        state.user = { ...state.user, subscriptions: [...state.user.subscriptions, action.payload] }
       }
     },
     removeFromSubscriptionsId(state, action) {
-      if(state.user){
-      state.user = {...state.user, subscriptions:state.user.subscriptions.filter((id)=>id!==action.payload)}
+      if (state.user) {
+        state.user = { ...state.user, subscriptions: state.user.subscriptions.filter((id:string) => id !== action.payload) }
       }
     },
     addToLikedTracksId(state, action) {
-      if(state.user){
-      state.user = {...state.user, liked:[...state.user.liked, action.payload]}
+      if (state.user) {
+        state.user = { ...state.user, liked: [...state.user.liked, action.payload] }
       }
     },
     addToLikedPlaylistsId(state, action) {
-      if(state.user){
-      state.user = {...state.user, likedPlaylists:[...state.user.likedPlaylists, action.payload]}
+      if (state.user) {
+        state.user = { ...state.user, likedPlaylists: [...state.user.likedPlaylists, action.payload] }
       }
     },
     removeLikedId(state, action) {
-      if(state.user){
-      state.user = {...state.user, liked:state.user.liked.filter((id)=>id!==action.payload)}
+      if (state.user) {
+        state.user = { ...state.user, liked: state.user.liked.filter((id:string) => id !== action.payload) }
       }
     },
     removeLikedPlaylistsId(state, action) {
-        if(state.user){
-        state.user = {...state.user, likedPlaylists:state.user.likedPlaylists.filter((id)=>id!==action.payload)}
-        }
+      if (state.user) {
+        state.user = { ...state.user, likedPlaylists: state.user.likedPlaylists.filter((id:string) => id !== action.payload) }
+      }
     },
     setAlboms(state, action) {
       state.alboms = action.payload
     },
     setSuccess(state, action) {
-      console.log("ddd",action.payload)
+      console.log("ddd", action.payload)
       state.success = action.payload
     },
     // setError(state, action) {
     //   state.error = action.payload
     // },
   },
- // Special reducer for hydrating the state. Special case for next-redux-wrapper
+  // Special reducer for hydrating the state. Special case for next-redux-wrapper
   // could be errors, because was commented before
   // extraReducers: {
   //   [HYDRATE]: (state, action) => {
@@ -283,6 +287,6 @@ export const userSlice = createSlice({
 
 });
 
-export const {setUser, removeFromSubscriptionsId, addToSubscriptionsId, setUserForPage, setLiked, setSuccess, setAlboms, addToLikedTracksId, addToLikedPlaylistsId, removeLikedId,removeLikedPlaylistsId} = userSlice.actions;
+export const { setUser, removeFromSubscriptionsId, addToSubscriptionsId, setUserForPage, setLiked, setSuccess, setAlboms, addToLikedTracksId, addToLikedPlaylistsId, removeLikedId, removeLikedPlaylistsId } = userSlice.actions;
 
 export default userSlice.reducer;

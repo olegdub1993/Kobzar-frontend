@@ -27,7 +27,7 @@ const TrackItem: React.FC<TrackItemProps> = ({red, track, playlist,index}) => {
     const { playlistForPage } = useTypedSelector((state) => state.playlist)
     const { active, disabled, pause,activePlaylistId} = useTypedSelector((state) => state.player)
     const {morePopup } = useTypedSelector((state) => state.track)
-    const isLiked=user?.liked?.find((id)=>id===track?._id)
+    const isLiked=user?.liked?.find((id:string)=>id===track?._id)
     const isTrackPlaying=active?._id===track._id
     const dispatch = useDispatch<any>();
     const router = useRouter()

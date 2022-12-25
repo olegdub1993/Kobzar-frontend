@@ -1,26 +1,16 @@
-import { Box, Button, Card,  Grid, TextField } from '@mui/material';
-import React, { useState } from 'react'
+import { Box, Button, Card, Grid, } from '@mui/material';
+import React from 'react'
 import MainLayout from './../../layouts/MainLayout';
 import { useRouter } from 'next/router';
 import TrackList from '../../components/TrackList';
 import { useTypedSelector } from './../../hooks/useTypedSelector';
 import { wrapper } from '../../store/store';
 import { fetchTracks, } from '../../store/trackSlice';
-import { useDispatch } from 'react-redux';
-import { searchTracks } from './../../store/trackSlice';
-import useDebouncedFunction from './../../hooks/useDebouncedFunc';
+
 
 const Index = () => {
     const router = useRouter()
     const { tracks, error } = useTypedSelector((state) => state.track)
-    const dispatch = useDispatch<any>()
-    const [query, setQuery] = useState<string>("")
-    const debouncedFetch = useDebouncedFunction((query: string) => { dispatch(searchTracks(query)) }, 500);
-    const search = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setQuery(e.target.value)
-        debouncedFetch(e.target.value);
-    }
-
     if (error) return (<MainLayout><div>{error}</div></MainLayout>)
     return (
         <MainLayout title={'Kobzar - tracks list '}>
@@ -34,9 +24,6 @@ const Index = () => {
                             <Button onClick={() => router.push("/tracks/create")} >Download</Button>
                         </Grid>
                     </Box>
-                    <TextField fullWidth
-                        value={query}
-                        onChange={search} />
                     <TrackList tracks={tracks} />
                 </Card>
             </Grid>

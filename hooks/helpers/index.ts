@@ -1,5 +1,6 @@
 import { ITrack } from "../../types/track";
-
+import { IPlaylist } from "../../types/playlist";
+import { IUser } from "../../types/user";
 export const getTracksWord =(tracksArray:ITrack[]):string=>{
   let tracksWord=""
   if (tracksArray!==undefined){
@@ -18,7 +19,7 @@ export const getTracksWord =(tracksArray:ITrack[]):string=>{
   }
   return tracksWord
 }
-export const getPlaylistsWord =(playlistsArray:IPlaylists[]):string=>{
+export const getPlaylistsWord =(playlistsArray:IPlaylist[]):string=>{
   let playlistsWord=""
   if (playlistsArray!==undefined){
     const playlistsAmountString=playlistsArray.length.toString()
@@ -36,7 +37,7 @@ export const getPlaylistsWord =(playlistsArray:IPlaylists[]):string=>{
   }
   return playlistsWord
 }
-export const getSubscribersWord =(playlistsArray:IPlaylists[]):string=>{
+export const getSubscribersWord =(playlistsArray:IUser[]):string=>{
   let playlistsWord=""
   if (playlistsArray!==undefined){
     const playlistsAmountString=playlistsArray.length.toString()
@@ -54,7 +55,7 @@ export const getSubscribersWord =(playlistsArray:IPlaylists[]):string=>{
   }
   return playlistsWord
 }
-  export const getSubscriptionsWord =(playlistsArray:IPlaylists[]):string=>{
+  export const getSubscriptionsWord =(playlistsArray:IUser[]):string=>{
     let playlistsWord=""
     if (playlistsArray!==undefined){
       const playlistsAmountString=playlistsArray.length.toString()

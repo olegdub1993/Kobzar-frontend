@@ -2,38 +2,38 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { HYDRATE } from "next-redux-wrapper";
 import { ITrack, } from '../types/track'
-import { tracksAPI,playlistAPI} from "../API/api";
+import { tracksAPI, playlistAPI } from "../API/api";
 import { IPlaylist } from "../types/playlist";
 import { IUser } from './../types/user';
 
-export type SearchData = { 
-  tracks:ITrack[],
-  playlists:IPlaylist[]
-  users:IUser[]
+export type SearchData = {
+  tracks: ITrack[],
+  playlists: IPlaylist[]
+  users: IUser[]
 }
 
 // Type for our state
-export interface SearchState { 
-  noContent:boolean,
-  searchedData:SearchData,
+export interface SearchState {
+  noContent: boolean,
+  searchedData: SearchData | null,
   error: string,
 }
 
 // Initial state
 const initialState: SearchState = {
-  searchedData:null as SearchData,
-  noContent:false,
+  searchedData: null,
+  noContent: false,
   error: "",
 };
 
 export const searchContent = createAsyncThunk(
   "search/searchContent",
-  async (queryData:any, { rejectWithValue, dispatch }) => {
+  async (queryData: any, { rejectWithValue, dispatch }) => {
     try {
       const response = await tracksAPI.getSearchedTracks(queryData)
-      if(response.data.length==0||(response.data.tracks?.length==0&&response.data.playlists?.length==0&&response.data.users?.length==0)){
+      if (response.data.length == 0 || (response.data.tracks?.length == 0 && response.data.playlists?.length == 0 && response.data.users?.length == 0)) {
         dispatch(setNoContent(true))
-      }else{
+      } else {
         dispatch(setNoContent(false))
       }
       dispatch(setSearchedData(response.data))

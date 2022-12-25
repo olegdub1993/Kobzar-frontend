@@ -2,7 +2,12 @@ import { Button } from '@mui/material'
 import { useRouter } from 'next/router'
 import React from 'react'
 
-const Popup = ({setPopup,className}) => {
+interface RestrictPopupProps {
+  className:string
+  setPopup:(arg:string)=> void
+}
+
+const RestrictPopup:React.FC<RestrictPopupProps> = ({setPopup,className}) => {
     const router = useRouter()
   return (
     <div className={`${className} shadow-[0px_0px_23px_2px_rgba(0,0,0,0.96) p-6 absolute h-[160px] rounded w-[270px] bg-green-dark text-center text-white text-lg z-[1500]`}>
@@ -16,4 +21,4 @@ const Popup = ({setPopup,className}) => {
   )
 }
 
-export default Popup
+export default RestrictPopup

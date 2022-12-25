@@ -22,7 +22,7 @@ function Copyright(props: any) {
     return (
         <Typography variant="body2" className='font-bold' align="center" {...props}>
             {'Copyright © '}
-            <Link color="inherit" href="https://mui.com/">
+            <Link  href="https://mui.com/">
                 Kobzar
             </Link>{' '}
             {new Date().getFullYear()}
@@ -150,7 +150,7 @@ export default function SignUp() {
                             </Button>
                             <Grid container justifyContent="flex-end">
                                 <Grid item>
-                                    <Link href="/signin" variant="body2" className='font-bold text-sm text-red'>
+                                    <Link href="/signin" className='font-bold text-sm text-red'>
                                         Вже маєте акаунт? Ввійти
                                     </Link>
                                 </Grid>

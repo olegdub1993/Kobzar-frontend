@@ -5,41 +5,41 @@ import { HYDRATE } from "next-redux-wrapper";
 import { ITrack } from '../types/track'
 // Type for our state
 export interface PlayerState {
-  allPlaylists:[]
+  allPlaylists: any[]
   activePlaylist: ITrack[]
-  activePlaylistId:string
+  activePlaylistId: string
   active: ITrack | null
   volume: number
   duration: number
   currentTime: number
-  disabled:boolean
+  disabled: boolean
   pause: boolean
   taken: boolean
-  repeat:boolean
-  prevVolume:number
-  prevPlaylist:null|ITrack[]
-  isShuffle:boolean
-  activeTrackIndex:number
-  prevActiveTrackIndex:number
+  repeat: boolean
+  prevVolume: number
+  prevPlaylist: null | ITrack[]
+  isShuffle: boolean
+  activeTrackIndex: number
+  prevActiveTrackIndex: number
 }
 // Initial state
 const initialState: PlayerState = {
   active: null,
-  activePlaylistId:"",
-  allPlaylists:[],
+  activePlaylistId: "",
+  allPlaylists: [],
   activePlaylist: [],
   volume: 50,
   duration: 0,
   currentTime: 0,
   pause: true,
   taken: false,
-  disabled:false,
-  repeat:false,
-  prevVolume:0,
-  prevPlaylist:null,
-  isShuffle:false,
-  activeTrackIndex:0,
-  prevActiveTrackIndex:0
+  disabled: false,
+  repeat: false,
+  prevVolume: 0,
+  prevPlaylist: null,
+  isShuffle: false,
+  activeTrackIndex: 0,
+  prevActiveTrackIndex: 0
 };
 
 // Actual Slice
@@ -91,8 +91,8 @@ export const playerSlice = createSlice({
     setIsShuffle(state, action) {
       state.isShuffle = action.payload
     },
-    setActiveTrackIndex(state, action){
-      state.activeTrackIndex = action.payload 
+    setActiveTrackIndex(state, action) {
+      state.activeTrackIndex = action.payload
     },
     setActivePlaylistId(state, action) {
       state.activePlaylistId = action.payload
@@ -100,9 +100,9 @@ export const playerSlice = createSlice({
     setPrevActiveTrackIndex(state, action) {
       state.prevActiveTrackIndex = action.payload
     },
-    setAllPlaylists(state, action) {
-      state.allPlaylists.push(action.payload)
-    },
+    // setAllPlaylists(state, action) {
+    //   state.allPlaylists = [...state.allPlaylists, ...action.payload]
+    // },
   },
   // Special reducer for hydrating the state. Special case for next-redux-wrapper
   extraReducers: {
@@ -111,11 +111,11 @@ export const playerSlice = createSlice({
     //     ...state,
     //     ...action.payload.player,
     //   };
-    // },
+    // }, 
   },
 });
 
-export const {setActivePlaylist, setPrevActiveTrackIndex, setActiveTrackIndex, setActivePlaylistId, setAllPlaylists, setIsShuffle,  setRepeat,setPrevVolume,setPrevPlaylist, setDisabled, setFree, setTaken, setPause, setPlay, setVolume, setCurrentTime, setDuration, setActiveTrack } = playerSlice.actions;
+export const { setActivePlaylist, setPrevActiveTrackIndex, setActiveTrackIndex, setActivePlaylistId, setIsShuffle, setRepeat, setPrevVolume, setPrevPlaylist, setDisabled, setFree, setTaken, setPause, setPlay, setVolume, setCurrentTime, setDuration, setActiveTrack } = playerSlice.actions;
 
 // export const selectPauseState = (state: AppState) => state.player.pause;
 
