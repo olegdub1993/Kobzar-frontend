@@ -173,10 +173,11 @@ export const getUserPlaylists = createAsyncThunk(
 );
 export const fetchUser = createAsyncThunk(
   "user/fetchUser",
-  async (_, { rejectWithValue, dispatch }) => {
+  async (token, { rejectWithValue, dispatch }) => {
     try {
-      const response = await userAPI.getUserData()
-      dispatch(setUser(response.data))
+      // const response = await userAPI.getUserData(token)
+      console.log("dere",response.data)
+      // dispatch(setUser(response.data))
       // dispatch(getUserAlboms())
     } catch (error) {
       // dispatch(setError("Some Server erroor"))
@@ -271,14 +272,14 @@ export const userSlice = createSlice({
   },
  // Special reducer for hydrating the state. Special case for next-redux-wrapper
   // could be errors, because was commented before
-  extraReducers: {
-    [HYDRATE]: (state, action) => {
-      return {
-        ...state,
-        ...action.payload.user,
-      };
-    },
-  },
+  // extraReducers: {
+  //   [HYDRATE]: (state, action) => {
+  //     return {
+  //       ...state,
+  //       ...action.payload.user,
+  //     };
+  //   },
+  // },
 
 });
 

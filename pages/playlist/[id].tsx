@@ -22,7 +22,9 @@ import { getTracksWord,getLikesWord,getTotalTime } from './../../hooks/helpers/i
 import { NextPage } from 'next';
 import EditPlaylistPopup from './popups/EditPlaylistPopup';
 import DeletePlaylistPopup from './popups/DeletePlaylistPopup';
- 
+import { parseCookies} from "nookies";
+import { fetchUser } from '../../store/userSlice'
+
 const PlaylistPage:NextPage = () => {
     const { playlistForPage} = useTypedSelector((state) => state.playlist)
     const { morePopup } = useTypedSelector((state) => state.track)
@@ -81,6 +83,7 @@ const onMoreClickHandler =(e:React.MouseEvent<HTMLElement>)=>{
     return (
         <MainLayout title={'Kobzar ' + playlistForPage?.name }
             keywords={"Music, tracks, " + playlistForPage?.name} red >
+              <div>
             <Grid container className="flex mb-12 items-center text-white relative">
               <div className='w-[500px] h-[350px] mb-4 mt-2 '>  
                  <Image alt="Albom picture" className='w-[100%] h-[100%] object-cover rounded' width={500} height={350} src={playlistForPage?.picture ? process.env.NEXT_PUBLIC_BASIC_URL + playlistForPage?.picture : albomPicture} />
@@ -128,6 +131,7 @@ const onMoreClickHandler =(e:React.MouseEvent<HTMLElement>)=>{
                 </div>
          {editMode && <EditPlaylistPopup playlist={playlistForPage} setEditMode={setEditMode}/>}
          {deletePopup && <DeletePlaylistPopup playlist={playlistForPage} setPopup={setDeletePopup}/>}
+         </div>
         </MainLayout>
     )
 }
@@ -181,6 +185,10 @@ export default PlaylistPage
 
 export const getServerSideProps = wrapper.getServerSideProps((store) =>
   async (context) => {
+       // in case of auth on next js side
+    // const {accessToken} = parseCookies(context);
+    //  const response =  await store.dispatch(fetchUser(accessToken));
+
     const id = context?.params?.id
     await store.dispatch(fetchPlaylist(id as string));
     //  const response = await axios.get(process.env.NEXT_PUBLIC_BASIC_URL + "alboms/" + id)

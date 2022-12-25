@@ -3,6 +3,7 @@ import { playerSlice } from "./playerSlice";
 import { trackSlice } from "./trackSlice";
 import { createWrapper } from "next-redux-wrapper";
 import { userSlice } from './userSlice';
+import { usersSlice } from './usersSlice';
 import { authSlice } from "./authSlice";
 import { searchSlice } from "./searchSlice";
 import { playlistSlice } from "./playlistSlice";
@@ -12,6 +13,7 @@ const makeStore = () =>
       [playerSlice.name]: playerSlice.reducer,
       [trackSlice.name]: trackSlice.reducer,
       [userSlice.name]: userSlice.reducer,
+      [usersSlice.name]: usersSlice.reducer,
       [authSlice.name]: authSlice.reducer,
       [playlistSlice.name]: playlistSlice.reducer,
       [searchSlice.name]: searchSlice.reducer,

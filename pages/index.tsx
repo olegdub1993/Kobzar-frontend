@@ -6,7 +6,9 @@ import { wrapper } from '../store/store'
 import { fetchTracks, fetchPlaylists} from '../store/trackSlice'
 import { useTypedSelector } from './../hooks/useTypedSelector';
 import {ITrack } from './../types/track';
-
+import { parseCookies} from "nookies";
+import { checkAuth } from './../store/authSlice';
+import { fetchUser } from '../store/userSlice'
 
 export default function Home() {
   const { tracks, playlists, } = useTypedSelector((state) => state.track)
@@ -54,6 +56,10 @@ export default function Home() {
 }
 export const getServerSideProps = wrapper.getServerSideProps((store) =>
   async (context) => {
+       // in case of auth on next js side
+       // if dont use then delete nookies
+  // const {accessToken} = parseCookies(context);
+  //  const response =  await store.dispatch(fetchUser(accessToken));
     await store.dispatch(fetchTracks());
     await store.dispatch(fetchPlaylists());
     return {

@@ -50,7 +50,8 @@ const Search = () => {
       }
     return (
         <MainLayout title={'Kobzar - tracks list '} red>
-            <div className="flex mb-8 mt-4 ">
+            <div>
+         <div className="flex mb-8 mt-4 ">
                     <input 
                         style={{backgroundColor:"transparent"}}
                         className='w-[400px] h-[50px] p-2 mr-24 text-white  bg- bg-opacity-0 outline-none bg-none rouded-sm text-semibold placeholder:text-semibold placeholder:text-white  border-b-2 border-white'
@@ -85,6 +86,7 @@ const Search = () => {
                 </div>
                         </div>:""  }    
                   </>  }
+                  </div>
         </MainLayout>
 
     )

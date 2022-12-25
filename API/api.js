@@ -59,9 +59,16 @@ export const authAPI = {
 };
 
 export const userAPI = {
-  getUserData() {
-    return $api.get("users/me");
-  },
+   // need to think 
+   // in case of auth on next js side
+  // getUserData(token) {
+  //   return axios.get(`${process.env.NEXT_PUBLIC_BASIC_URL}users/me`,{
+  //     headers:{
+  //       Authorization:`Bearer ${token}`
+  //     }
+  //   }
+  //   );
+  // },
   updateProfile (data){
     return $api.post("users/updateProfile", data);
   },

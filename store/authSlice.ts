@@ -4,19 +4,21 @@ import { createSlice, createAsyncThunk, } from "@reduxjs/toolkit";
 // import { HYDRATE } from "next-redux-wrapper";
 import { authAPI } from './../API/api';
 import { getUserPlaylists, setUser } from "./userSlice";
-
+import { setCookie } from "nookies";
 // Type for our state
 export interface AuthState {
   isAuth: boolean
   loading:boolean
   error:{name:string}
+  restrictPopup:string
 }
 
 // Initial state
 const initialState: AuthState = {
   isAuth: false,
   loading:false,
-  error:{name:""}
+  error:{name:""},
+  restrictPopup:''
 };
 export const logout= createAsyncThunk(
   "auth/logout",
@@ -44,6 +46,10 @@ export const checkAuth= createAsyncThunk(
     dispatch(setLoading(true))
     try {
       const response = await authAPI.checkAuth()
+      setCookie(null, "accessToken", response.data.accessToken, {
+        maxAge: 30 * 24 * 60 * 60,
+        path: "/"
+      });
       dispatch(setAuth(true))
       localStorage.setItem("token", response.data.accessToken);
       console.log(response.data.user)
@@ -66,6 +72,10 @@ export const signup = createAsyncThunk(
   async (data:any, { rejectWithValue, dispatch }) => {
     try {
       const response = await authAPI.signup(data)
+      setCookie(null, "accessToken", response.data.accessToken, {
+        maxAge: 30 * 24 * 60 * 60,
+        path: "/"
+      });
       dispatch(setAuth(true))
       localStorage.setItem("token", response.data.accessToken);
       console.log(response.data.user)
@@ -89,6 +99,10 @@ export const login = createAsyncThunk(
   async (data:any, { rejectWithValue, dispatch }) => {
     try {
       const response = await authAPI.signin(data)
+      setCookie(null, "accessToken", response.data.accessToken, {
+        maxAge: 30 * 24 * 60 * 60,
+        path: "/"
+      });
       dispatch(setAuth(true))
       localStorage.setItem("token", response.data.accessToken);
       console.log(response.data.user)
@@ -124,6 +138,9 @@ export const authSlice = createSlice({
       console.log(action.payload)
       state.error ={name:action.payload}
     },
+    setRestrictPopup(state, action) {
+      state.restrictPopup = action.payload
+    },
   },
   // Special reducer for hydrating the state. Special case for next-redux-wrapper
   // extraReducers: {
@@ -137,6 +154,6 @@ export const authSlice = createSlice({
 
 });
 
-export const { setAuth, setLoading, setError} = authSlice.actions;
+export const { setAuth, setLoading, setError, setRestrictPopup} = authSlice.actions;
 
 export default authSlice.reducer;
