@@ -90,8 +90,8 @@ const PlaylistPage: NextPage = () => {
           </div>
           <div className="ml-8 mr-24 mt-2">
             <div className="font-semibold mb-4 mt-6 text-2xl max-w-full">Плейлист</div>
-            <div className="font-semibold mb-8 mt-8 text-7xl max-w-full">{playlistForPage?.name}</div>
-            {playlistForPage?.description && <div className="font-bold mb-10 text-4xl  max-w-full">{playlistForPage?.description}</div>}
+            <div className="font-semibold mb-8 mt-8 text-5xl max-w-full">{playlistForPage?.name}</div>
+            {playlistForPage?.description && <div className="font-bold min-h-[72px] mb-10 text-3xl max-w-[600px]">{playlistForPage?.description}</div>}
             <div className="flex items-center mb-2">
               <Image alt="Albom picture" className='object-cover mr-4 rounded-full !h-[60px]' width={60} height={60} src={playlistForPage?.userPicture ? process.env.NEXT_PUBLIC_BASIC_URL + playlistForPage?.userPicture : albomPicture} />
               <div onClick={(e) => router.push("/users/" + playlistForPage.userId)} className=" hover:underline cursor-pointer font-semibold  text-2xl  max-w-full">{playlistForPage?.username}</div>
@@ -102,8 +102,8 @@ const PlaylistPage: NextPage = () => {
               <div className="font-bold mb-8 text-xl  max-w-full">приблизно {totalTime} хв</div>
             </div>
           </div>
-          {isPlaylistPlaying ? <IconButton className='bg-green-dark hover:!bg-green-dark   hover:scale-125 transition-all  duration-500' onClick={playOrPause}>{!pause ? <Pause color='error' className='!w-[120px]  !h-[120px]' /> : <PlayArrow color='error' className='!w-[120px]  !h-[120px]' />}</IconButton> :
-            <IconButton className='bg-green-dark  hover:scale-125   hover:!bg-green-dark   transition-all  duration-500' onClick={pushAndPlay}><PlayArrow color='error' className='!w-[120px]  !h-[120px]' /></IconButton>
+          {isPlaylistPlaying ? <IconButton className='!bg-green-dark hover:!bg-green-dark   hover:!scale-125 !transition-all  !duration-500' onClick={playOrPause}>{!pause ? <Pause color='error' className='!w-[120px]  !h-[120px]' /> : <PlayArrow color='error' className='!w-[120px]  !h-[120px]' />}</IconButton> :
+            <IconButton className='!bg-green-dark  hover:!scale-125   hover:!bg-green-dark   !transition-all  !duration-500' onClick={pushAndPlay}><PlayArrow color='error' className='!w-[120px]  !h-[120px]' /></IconButton>
           }
           {user &&
             <>

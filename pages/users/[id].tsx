@@ -71,7 +71,7 @@ const UserPage: NextPage = (props) => {
             {user?.id === userForPage?._id &&
               <Button
                 onClick={() => setEditMode(true)}
-                className='bg-green-dark w-[250px] hover:bg-black capitalize text-lg font-bold'
+                className='!bg-green-dark !w-[250px] hover:!bg-black !capitalize !text-lg !font-bold'
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
@@ -81,7 +81,7 @@ const UserPage: NextPage = (props) => {
             }
             {user?.id !== userForPage?._id &&
               <div className="relative">
-                <Button disabled={disabled} onClick={(e) => createOrRemoveSubscription(e)} className='bg-white capitalize w-[150px] hover:!bg-light-red text-black font-semibold'>{isSubscription ? "Відписатись" : "Підписатись"}</Button>
+                <Button disabled={disabled} onClick={(e) => createOrRemoveSubscription(e)} className='!bg-white !capitalize !w-[150px] hover:!bg-light-red !text-black !font-semibold'>{isSubscription ? "Відписатись" : "Підписатись"}</Button>
                 {restrictPopup === "subscribe" && <Popup setPopup={() => dispatch(setRestrictPopup(""))} className="bottom-[80px] left-[50%] translate-x-[-50%]" />}
               </div>
             }

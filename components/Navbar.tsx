@@ -29,19 +29,19 @@ import AppsIcon from '@mui/icons-material/Apps';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 const drawerWidth = 240;
 
- 
+
 interface AppBarProps extends MuiAppBarProps {
     open?: boolean;
 }
 
 const manuItems = [
-{ icon:<AppsIcon className='text-red !w-[30px]'/>,text: "Головна", href: "/" ,},
-{ icon:<SearchIcon className='text-red !w-[30px]'/>, text: "Пошук", href: "/search" },
-{ icon:<LibraryMusicIcon className='text-red !w-[30px]'/>, text: "Moя бібліотека", href: "/library",protect:true },
-// { text: "Tracks List", href: "/tracks",protect:true },
-// { text: "Alboms List", href: "/alboms",protect:true  },
-{ icon:<PlaylistAddIcon className='text-red !w-[30px]'/>, text: "Створити плейлист", href: "/createPlaylist", protect:true },
-{ icon:<FavoriteIcon className='text-red !w-[30px]'/>, text: "Cподобане", href: "/liked", protect:true  },]
+    { icon: <AppsIcon className='text-red !w-[30px]' />, text: "Головна", href: "/", },
+    { icon: <SearchIcon className='text-red !w-[30px]' />, text: "Пошук", href: "/search" },
+    { icon: <LibraryMusicIcon className='text-red !w-[30px]' />, text: "Moя бібліотека", href: "/library", protect: true },
+    // { text: "Tracks List", href: "/tracks",protect:true },
+    // { text: "Alboms List", href: "/alboms",protect:true  },
+    { icon: <PlaylistAddIcon className='text-red !w-[30px]' />, text: "Створити плейлист", href: "/createPlaylist", protect: true },
+    { icon: <FavoriteIcon className='text-red !w-[30px]' />, text: "Cподобане", href: "/liked", protect: true },]
 
 const AppBar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== 'open',
@@ -69,21 +69,21 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     justifyContent: 'flex-end',
 }));
 
-export default function Navigation({restrictPopup,setRestrictPopup}:any) {
-    const {isAuth} = useTypedSelector((state) => state.auth)
-    const {user, alboms} = useTypedSelector((state) => state.user)
+export default function Navigation({ restrictPopup, setRestrictPopup }: any) {
+    const { isAuth } = useTypedSelector((state) => state.auth)
+    const { user, alboms } = useTypedSelector((state) => state.user)
     const theme = useTheme();
     const [open, setOpen] = React.useState(true);
     const router = useRouter()
 
     const handleDrawerOpen = () => {
-        setOpen(true); 
+        setOpen(true);
     };
 
     const handleDrawerClose = () => {
         setOpen(false);
     };
- 
+
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
@@ -105,21 +105,21 @@ export default function Navigation({restrictPopup,setRestrictPopup}:any) {
                             KOBZAR
                         </Typography>
                         {/* <Button onClick={()=>dispatch(fetchUser())} className='bg-white capitalize text-black font-semibold'>Реєстрація</Button> */}
-                       {/* <div className="w-[70px]" > <img src={kobza} alt="kobza" /></div>  */}
+                        {/* <div className="w-[70px]" > <img src={kobza} alt="kobza" /></div>  */}
                     </div>
-                    {!isAuth ?<> <Typography className='text-green-dark' variant="h6" noWrap component="div">
+                    {!isAuth ? <> <Typography className='text-green-dark' variant="h6" noWrap component="div">
                         Зареєструйтесь щоб отримати доступ до всіх можливостей Kobzar
                     </Typography >
-                        <Button onClick={() => router.push("/signup")} className='bg-white hover:!bg-red capitalize text-black font-semibold'>Реєстрація</Button></>:
-                         <div className='group flex items-center relative h-[64px]'>
-                           {user?.picture ? <img className="rounded-full w-[40px] h-[40px] bg-red mr-4" 
-                            src={process.env.NEXT_PUBLIC_BASIC_URL + user.picture} />:
-                            <div className="flex items-center justify-center rounded-full w-[40px] h-[40px] bg-red mr-4"><PersonIcon className="mb-[5px]" /></div>}
+                        <Button onClick={() => router.push("/signup")} className='!bg-white hover:!bg-red !capitalize !text-black !font-semibold'>Реєстрація</Button></> :
+                        <div className='group flex items-center relative h-[64px]'>
+                            {user?.picture ? <img className="rounded-full w-[40px] h-[40px] bg-red mr-4"
+                                src={process.env.NEXT_PUBLIC_BASIC_URL + user.picture} /> :
+                                <div className="flex items-center justify-center rounded-full w-[40px] h-[40px] bg-red mr-4"><PersonIcon className="mb-[5px]" /></div>}
                             <Typography className='text-white' variant="h6" noWrap component="div">
                                 {user?.username}
                             </Typography>
                             <HoverPopup />
-                       </div>
+                        </div>
                     }
                 </Toolbar>
             </AppBar>
@@ -129,13 +129,13 @@ export default function Navigation({restrictPopup,setRestrictPopup}:any) {
                     width: drawerWidth,
                     flexShrink: 0,
                     '& .MuiDrawer-paper': {
-                        overflowY:"visible !important" ,
+                        overflowY: "visible !important",
                         width: drawerWidth,
                         boxSizing: 'border-box',
                         bgcolor: "black"
                     },
                 }}
-            
+
                 variant="persistent"
                 anchor="left"
                 open={open}
@@ -144,51 +144,51 @@ export default function Navigation({restrictPopup,setRestrictPopup}:any) {
                     bgcolor: "black"
                 }} >
                     <IconButton onClick={handleDrawerClose}>
-                        {theme.direction === 'ltr' ? <ChevronLeftIcon fontSize='large'  color='error' /> : <ChevronRightIcon fontSize='large'  color='error' />}
+                        {theme.direction === 'ltr' ? <ChevronLeftIcon fontSize='large' color='error' /> : <ChevronRightIcon fontSize='large' color='error' />}
                     </IconButton>
                 </DrawerHeader>
                 <Divider />
-                <List 
-                   className='text-white bg-black  border-b border-white '
+                <List
+                    className='text-white bg-black  border-b border-white '
                 >
                     {manuItems.map((item, index) => (
                         <MyListItem restrictPopup={restrictPopup} setRestrictPopup={setRestrictPopup} key={item.text} index={index} navItem={item} />
                     ))}
-                     
+
                 </List>
-                
-                <List     className='text-white bg-black ' >
-                    {alboms?.map((albom) => (<div 
-                     onClick={()=>router.push(`/playlist/${albom._id}`)} className='ml-[75px] cursor-pointer mt-3 mb-3' key={albom._id} >{albom.name}</div>
+
+                <List className='text-white bg-black ' >
+                    {alboms?.map((albom) => (<div
+                        onClick={() => router.push(`/playlist/${albom._id}`)} className='ml-[75px] cursor-pointer mt-3 mb-3' key={albom._id} >{albom.name}</div>
                     ))}
-                     
+
                 </List>
             </Drawer>
         </Box >
     );
 }
-const MyListItem=({navItem,index,setRestrictPopup,restrictPopup}:any)=> {
-    const {isAuth} = useTypedSelector((state) => state.auth)
+const MyListItem = ({ navItem, index, setRestrictPopup, restrictPopup }: any) => {
+    const { isAuth } = useTypedSelector((state) => state.auth)
     const router = useRouter()
-  
 
-    const onListItemClick=(e:React.MouseEvent<HTMLElement>, href:string)=>{
+
+    const onListItemClick = (e: React.MouseEvent<HTMLElement>, href: string) => {
         e.stopPropagation()
-        if(!isAuth && navItem.protect){
+        if (!isAuth && navItem.protect) {
             setRestrictPopup(navItem.text)
         }
-         else{
+        else {
             router.push(href)
-         }
+        }
     }
-    return  <ListItem  onClick={(e)=>onListItemClick(e, navItem.href)} disablePadding 
-    className='text-white relative' >
-           <ListItemButton>
-               <ListItemIcon>
-                   {navItem.icon}
-               </ListItemIcon>
-               <ListItemText primary={navItem.text} />
-           </ListItemButton>
-           { restrictPopup===navItem.text && <Popup setPopup={setRestrictPopup} className='left-[220px] top-[0px]'/>}
-       </ListItem>
+    return <ListItem onClick={(e) => onListItemClick(e, navItem.href)} disablePadding
+        className='text-white relative' >
+        <ListItemButton>
+            <ListItemIcon>
+                {navItem.icon}
+            </ListItemIcon>
+            <ListItemText primary={navItem.text} />
+        </ListItemButton>
+        {restrictPopup === navItem.text && <Popup setPopup={setRestrictPopup} className='left-[220px] top-[0px]' />}
+    </ListItem>
 }

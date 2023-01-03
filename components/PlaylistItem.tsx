@@ -54,30 +54,23 @@ const PlaylistItem: React.FC<PlaylistItemProps> = ({ playlist }) => {
     //     axios.delete(process.env.NEXT_PUBLIC_BASIC_URL + "tracks/" + track._id).then((r) => console.log("track deleted good"))
     // }
     return (
-        <Card sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: "center",
-            margin: "10px",
-            padding: "10px",
-            width: "230px",
-        }}
-            className={` bg-black pr-6 pl-6 hover:!scale-105 hover:!shadow-lg transition-all  duration-500  w-[230px] min-w-[230px] shadow-sm cursor-pointer`}
+        <div
+            className={`flex flex-col items-center m-[10px] p-[10px] bg-black pr-6 pl-6 hover:!scale-105 hover:!shadow-lg transition-all  duration-500 rounded w-[230px] min-w-[230px] shadow-sm cursor-pointer`}
             onClick={() => router.push("/playlist/" + playlist._id)}
         >
             <div className='m-auto w-[180px] h-[150px] mb-4 mt-2 '>
                 <Image className='w-[100%] h-[100%] object-cover rounded' height={250} width={250} src={playlist.picture ? process.env.NEXT_PUBLIC_BASIC_URL + playlist.picture : albomPicture} alt="Albom picture" />
             </div>
             <div className=' mb-2'>
-                {isPlaylistPlaying ? <IconButton className='bg-green-dark hover:!bg-green-dark  hover:scale-125 transition-all  duration-500' onClick={playOrPause}>{!pause ? <Pause color='error' /> : <PlayArrow color='error' />}</IconButton> :
-                    <IconButton className='bg-green-dark  hover:scale-125   hover:!bg-green-dark   transition-all  duration-500' onClick={pushAndPlay}><PlayArrow color='error' /></IconButton>
+                {isPlaylistPlaying ? <IconButton className='!bg-green-dark hover:!bg-green-dark  hover:!scale-125 !transition-all  !duration-500' onClick={playOrPause}>{!pause ? <Pause color='error' /> : <PlayArrow color='error' />}</IconButton> :
+                    <IconButton className='!bg-green-dark  hover:!scale-125   hover:!bg-green-dark   !transition-all  !duration-500' onClick={pushAndPlay}><PlayArrow color='error' /></IconButton>
                 }
             </div>
             <Grid container className="max-w-full text-red" direction={"column"}>
-                <div className="font-bold truncate max-w-full">{playlist.name}</div>
-                <div className="font-semibold truncate max-w-full">{playlist.username}</div>
+                <div className="!font-bold truncate max-w-full">{playlist.name}</div>
+                <div className="!font-semibold truncate max-w-full">{playlist.username}</div>
             </Grid>
-        </Card >
+        </div >
     )
 }
 

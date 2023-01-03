@@ -53,12 +53,12 @@ const EditPlaylistPopup: React.FC<EditPlaylistProps> = ({ setEditMode, playlist 
             <div className="flex mb-4 w-full justify-between">
                 <div className="flex flex-col items-center w-[50%] ">
                     {imgUrl ? <img className='m-auto rounded-lg mb-4 w-[320px] h-[250px]' src={imgUrl} /> : playlist?.picture ? <img className='m-auto rounded-lg mb-4 w-[320px] h-[250px]' src={process.env.NEXT_PUBLIC_BASIC_URL + playlist.picture} /> :
-                        <div className='bg-black m-auto rounded-lg mb-4 flex justify-center items-center w-[250px] h-[250px]'><AddPhotoAlternateIcon className='text-white rounded-full w-[150px] h-[150px]' /></div>}
-                    <FileUpload setFile={setPlaylistPictureHandler} accept="image/*"><Button className=" text-red text-lg font-semibold">{imgUrl ? "Змінити" : "Додати"} обкладинку</Button></FileUpload>
+                        <div className='bg-black m-auto rounded-lg mb-4 flex justify-center items-center w-[250px] h-[250px]'><AddPhotoAlternateIcon className='!text-white !rounded-full !w-[150px] !h-[150px]' /></div>}
+                    <FileUpload setFile={setPlaylistPictureHandler} accept="image/*"><Button className=" !text-red !text-lg !font-semibold">{imgUrl ? "Змінити" : "Додати"} обкладинку</Button></FileUpload>
                 </div>
                 <div className="flex flex-col w-[50%] items-center">
                     <TextField
-                        className="w-[300px]"
+                        className="!w-[300px]"
                         onClick={() => setInternalError({ name: "" })}
                         onChange={(e) => setName(e.target.value)}
                         margin="normal"
@@ -70,7 +70,7 @@ const EditPlaylistPopup: React.FC<EditPlaylistProps> = ({ setEditMode, playlist 
                         id="name"
                     />
                     <TextField
-                        className="w-[300px]"
+                        className="!w-[300px]"
                         onClick={() => setInternalError({ name: "" })}
                         onChange={(e) => setDescription(e.target.value)}
                         margin="normal"
@@ -83,10 +83,10 @@ const EditPlaylistPopup: React.FC<EditPlaylistProps> = ({ setEditMode, playlist 
                     />
                 </div>
             </div>
-            {internalError && <Grid item xs={12}><div className='text-center  text-lg font-semibold text-error'>{internalError.name}</div> </Grid>}
+            {internalError && <Grid item xs={12}><div className='!text-center  !text-lg !font-semibold !text-error'>{internalError.name}</div> </Grid>}
             <div className="flex justify-center">
                 <Button
-                    className='bg-red hover:bg-black capitalize text-lg font-bold w-[200px] mr-10'
+                    className='!bg-red hover:!bg-black !capitalize !text-lg !font-bold !w-[200px] !mr-10'
                     //   type="submit"
                     onClick={updatePlaylistHandler}
                     fullWidth
@@ -97,7 +97,7 @@ const EditPlaylistPopup: React.FC<EditPlaylistProps> = ({ setEditMode, playlist 
                 </Button>
                 <Button
                     onClick={() => setEditMode(false)}
-                    className='bg-black hover:bg-black capitalize text-lg font-bold w-[200px]'
+                    className='!bg-black hover:!bg-black !capitalize !text-lg !font-bold !w-[200px]'
                     fullWidth
                     variant="contained"
                     sx={{ mt: 3, mb: 2 }}
