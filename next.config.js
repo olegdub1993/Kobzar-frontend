@@ -3,7 +3,7 @@ const nextConfig = {
   // reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ['localhost','192.168.1.102','https://kobzar.onrender.com']
+    domains: ['localhost', '192.168.1.102','kobzar.onrender.com']
   },
 }
 
