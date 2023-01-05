@@ -9,6 +9,7 @@ import { useTypedSelector } from '../hooks/useTypedSelector';
 import { IPlaylist } from './../types/playlist';
 import Image from 'next/image'
 import albomPicture from './../public/kobza.jpg'
+import { AppState } from '../store/store';
 
 interface PlaylistItemProps {
     playlist: IPlaylist
@@ -17,7 +18,7 @@ interface PlaylistItemProps {
 }
 
 const PlaylistItem: React.FC<PlaylistItemProps> = ({ playlist }) => {
-    const { active, pause, activePlaylist, activePlaylistId } = useTypedSelector((state) => state.player)
+    const { active, pause, activePlaylist, activePlaylistId } = useTypedSelector((state:AppState) => state.player)
     const tracksWithIndex = playlist.tracks?.map((t, index) => ({ ...t, index }))
     // const isPlaylistPlaying=playlist.tracks.find((t)=>t._id===active?._id)
     const isPlaylistPlaying = activePlaylistId === playlist._id
