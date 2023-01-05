@@ -81,7 +81,7 @@ const Search = () => {
                         {searchedUsers?.length ?
                             <div className='mb-4'>
                                 <div className='text-white text-2xl font-bold  mt-4 mb-2 '>Профілі</div>
-                                <div className="flex">
+                                <div className='grid md:grid-cols-4  xl:grid-cols-4 2xl:grid-cols-5 min-[1800px]:grid-cols-6'>
                                     {searchedUsers.map((searchedUser) => <UserItem key={searchedUser._id} user={searchedUser} />)}
                                 </div>
                             </div> : ""}

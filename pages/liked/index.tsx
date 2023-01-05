@@ -45,7 +45,7 @@ const Playlist = () => {
             (<>
               {liked?.length ?
                 <> <div className='text-white text-2xl font-bold mb-4'>Плейлисти, що сподобались:</div>
-                  <div className='flex'> {liked.map((playlist, index) => <PlaylistItem index={index} key={playlist._id} playlist={playlist} />)}</div>
+                  <div className='grid md:grid-cols-4  xl:grid-cols-4 2xl:grid-cols-5 min-[1800px]:grid-cols-6'> {liked.map((playlist, index) => <PlaylistItem index={index} key={playlist._id} playlist={playlist} />)}</div>
                   {/* <SearchTrackList tracks={liked} /> */}
                 </> :
 
