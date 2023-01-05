@@ -126,7 +126,7 @@ const PlaylistPage: NextPage = () => {
               {playlistForPage?.tracks?.map((track, index) => <TrackItem key={track._id} index={index} track={track} playlist={playlistForPage} />)}
             </div> :
             <> <div className='text-white text-center text-2xl font-bold mb-2'>У цьому альбомі поки що немає пісень</div>
-              <div className='flex justify-center mt-8'> <Button onClick={() => router.push('/search')} className='text-white bg-green-dark hover:bg-green-dark hover:opacity-90 capitalize text-2xl px-4 py-2 font-bold mb-2'>Знайти та додати пісні</Button></div>
+              <div className='flex justify-center mt-8'> <Button onClick={() => router.push('/search')} className='!text-white hover:!bg-green-dark hover:!opacity-75  !bg-green-dark !capitalize !text-xl !py-2 px-4 !font-bold !mb-2'>Знайти та додати пісні</Button></div>
             </>}
         </div>
         {editMode && <EditPlaylistPopup playlist={playlistForPage} setEditMode={setEditMode} />}
