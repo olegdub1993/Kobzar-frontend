@@ -58,7 +58,7 @@ const Search = () => {
                         value={query}
                         placeholder="Пошук"
                         onChange={search} />
-                    {tabs.map((tab) => <Button key={tab.type} onClick={() => setSelectedTabHandler(tab)} className={`${selectedTab === tab.type ? "!shadow-[inset_0px_0px_13px_-2px_rgba(0,0,0,0.96)]" : "!shadow-[0px_0px_13px_-2px_rgba(0,0,0,0.96)]"} !text-white !min-w-[80px] hover:!bg-green-dark hover:!opacity-75 !rounded-3xl !border !border-white !bg-green-dark !mr-8  !capitalize !text-lg !py-2 !px-4 !font-semibold `}>{tab.text}</Button>)}
+                    {tabs.map((tab) => <Button key={tab.type} onClick={() => setSelectedTabHandler(tab)} className={`${selectedTab === tab.type ? "!shadow-[inset_0px_0px_13px_-2px_rgba(0,0,0,0.96)]" : "!shadow-[0px_0px_13px_-2px_rgba(0,0,0,0.96)]"} !text-white !min-w-[80px] hover:!bg-green-dark hover:!opacity-75 !rounded-3xl !border !border-white !bg-green-dark !mr-8  !capitalize !text-lg !py-2 !px-4 !font-semibold !duration-300  !transition-all `}>{tab.text}</Button>)}
                 </div>
                 {(noContent && query) &&
                     <div className='text-white text-2xl font-bold mb-2 '>За вашим запитом нічого не знайдено</div>}

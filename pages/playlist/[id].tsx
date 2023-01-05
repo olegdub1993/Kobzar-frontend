@@ -108,7 +108,7 @@ const PlaylistPage: NextPage = () => {
           {user &&
             <>
               <div>
-                <IconButton disabled={disabled} className='ml-16  hover:scale-110 duration-300  transition-all' onClick={addOrRemoveFromLiked}>
+                <IconButton disabled={disabled} className='!ml-16  hover:!scale-110 !duration-300  !transition-all' onClick={addOrRemoveFromLiked}>
                   {isLiked ? <FavoriteIcon fontSize='medium' className='!w-[120px]  !h-[120px]' color='error' /> : <FavoriteBorderIcon fontSize='medium' className='!w-[120px]  !h-[120px]' color='error' />}
                 </IconButton>
               </div>

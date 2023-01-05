@@ -64,7 +64,7 @@ export default function SignIn() {
     return (
         <div className=' h-screen bg-gradient-to-b from-[rgba(54,0,2,1)] to-[rgba(140,0,0,1)]  pt-24' >
             <ThemeProvider theme={theme}>
-                <Container component="main" maxWidth="xs" className='bg-yellow p-[30px] rounded shadow-[0px_0px_23px_5px_rgba(0,0,0,0.96)]'>
+                <Container component="main" maxWidth="xs" className='bg-yellow !p-[30px] rounded shadow-[0px_0px_23px_5px_rgba(0,0,0,0.96)]'>
                     <CssBaseline />
                     <Box
                         sx={{
@@ -74,8 +74,8 @@ export default function SignIn() {
                             alignItems: 'center',
                         }}
                     >
-                        <Avatar className='bg-red' sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                            <LockOutlinedIcon className='bg-red' />
+                        <Avatar className='!bg-red' sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                            <LockOutlinedIcon className='!bg-red' />
                         </Avatar>
                         <Typography component="h1" variant="h5">
                             Sign in
@@ -104,14 +104,14 @@ export default function SignIn() {
                                 autoComplete="current-password"
                             />
                             {internalError && <Grid item xs={12}><div className='text-center text-lg font-semibold text-error'>{internalError.name}</div> </Grid>}
-                            <Grid item xs={12} className="mt-6 mb-4">
+                            <Grid item xs={12} className="!mt-6 !mb-4">
                                 <FormControlLabel
-                                    control={<Checkbox value="remember" color="primary" className='bg-red font-bold hover:!bg-red mr-4 ml-4' />}
+                                    control={<Checkbox value="remember" color="primary" className='!bg-red !font-bold hover:!bg-red !mr-4 !ml-4' />}
                                     label="Запам'ятати мене"
                                 />
                             </Grid>
                             <Button
-                                className='bg-red hover:bg-black capitalize text-lg font-bold'
+                                className='!bg-red hover:!bg-black !capitalize !text-lg !font-bold'
                                 type="submit"
                                 fullWidth
                                 variant="contained"

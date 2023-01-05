@@ -12,7 +12,7 @@ const UserItem: React.FC<UserItemProps> = ({ user }) => {
 
     return (
         <div
-            className=' flex flex-col items-center m-[10px] p-[10px]  bg-black pr-6 pl-6 hover:!scale-105 hover:!shadow-lg transition-all  duration-500  w-[230px] min-w-[230px] shadow-sm cursor-pointer'
+            className=' flex flex-col items-center m-[10px] p-[10px]  bg-black pr-6 pl-6 hover:!scale-105 hover:!shadow-lg !transition-all rounded  !duration-500  w-[230px] min-w-[230px] shadow-sm cursor-pointer'
             onClick={() => router.push("/users/" + user._id)}
         >
             <div className='m-auto w-[150px] h-[150px] mb-8 mt-2 '> <img className='w-[100%] h-[100%] object-cover rounded-full' src={process.env.NEXT_PUBLIC_BASIC_URL + user.picture} /></div>

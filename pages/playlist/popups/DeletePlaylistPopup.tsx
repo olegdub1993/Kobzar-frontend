@@ -17,8 +17,8 @@ const DeletePlaylistPopup = ({setPopup, playlist}:any) => {
         {/* Увійдіть, щоб переглянути збережені пісні, подкасти, виконавців і плейлісти в розділі "Моя бібліотека". */}
          <div className="text-2xl mb-8 pl-4 pr-4 text-center"> Цей плейлист буде видалено </div>
         <div className="flex justify-between center ">
-        <Button onClick={(e) =>{setPopup(false)}} className='bg-white w-[150px] capitalize hover:!bg-light-red text-black font-semibold'>Відмінити</Button>
-        <Button onClick={() => deleteHandler()} className='bg-white w-[150px] hover:!bg-light-red capitalize text-black font-semibold'>Видалити</Button>
+        <Button onClick={(e) =>{setPopup(false)}} className='!bg-white !w-[150px] !capitalize hover:!bg-light-red !text-black !font-semibold'>Відмінити</Button>
+        <Button onClick={() => deleteHandler()} className='!bg-white !w-[150px]  hover:!bg-light-red !font-semibold'>Видалити</Button>
   </div>
     </div>
   )

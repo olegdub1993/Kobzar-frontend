@@ -50,16 +50,16 @@ const CreatePlaylist = () => {
                 <div className="flex mb-4 w-full justify-between">
                <div  className="flex flex-col items-center w-[50%] "> 
                      {imgUrl?<Image className='m-auto rounded-lg mb-4 w-[250px] h-[250px]' height={250} width={250} src={imgUrl} alt="Albom picture"/>:
-                    <div className='bg-black m-auto rounded-lg mb-4 flex justify-center items-center w-[250px] h-[250px]'><AddPhotoAlternateIcon   className='text-white rounded-full w-[150px] h-[150px]'/></div>}
-                 <FileUpload setFile={setPictureHandler} accept="image/*"><Button className=" text-red text-lg font-semibold">{imgUrl?"Змінити":"Додати"} обкладинку</Button></FileUpload>
+                    <div className='bg-black m-auto rounded-lg mb-4 flex justify-center items-center w-[250px] h-[250px]'><AddPhotoAlternateIcon   className='!text-white !rounded-full !w-[150px] !h-[150px]'/></div>}
+                 <FileUpload setFile={setPictureHandler} accept="image/*"><Button className=" !text-red !text-lg !font-semibold">{imgUrl?"Змінити":"Додати"} обкладинку</Button></FileUpload>
                </div>
                 <div  className="flex flex-col w-[50%] items-center">
-                    <TextField  onClick={()=>setInternalError({name:""})}  {...name} label="Назва" className='m-[20px] w-[300px]' />
-                    <TextField {...description} label="Опис (необов'язково)"  className='m-[20px] w-[300px]' />
+                    <TextField  onClick={()=>setInternalError({name:""})}  {...name} label="Назва" className='!m-[20px] !w-[300px]' />
+                    <TextField {...description} label="Опис (необов'язково)"  className='!m-[20px] !w-[300px]' />
                </div>
                </div>
                {internalError && <div className='text-center text-xl font-semibold text-error'>{internalError.name}</div>}
-                <Button  variant='contained' className="bg-green-dark hover:bg-green-dark  hover:opacity-90 text-lg font-semibold capitalize mt-8" onClick={createPlaylistHandler}>Створити плейлист</Button>
+                <Button  variant='contained' className="!bg-green-dark hover:!bg-green-dark  hover:!opacity-90 !text-lg !font-semibold !capitalize !mt-8" onClick={createPlaylistHandler}>Створити плейлист</Button>
             </div>
         </MainLayout>
     )

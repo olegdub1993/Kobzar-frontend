@@ -81,18 +81,18 @@ const TrackPage: NextPage = () => {
           <div className="font-bold mb-10 text-6xl  ">{trackForPage.name}</div>
           <div className="font-semibold mt-4   mb-4  text-4xl max-w-full">{trackForPage.artist}</div>
           {user &&
-            <IconButton disabled={disabled} className='mr-[10px] absolute bottom-0 hover:scale-110 duration-300  transition-all' onClick={addOrRemoveFromLiked}>{isLiked ? <FavoriteIcon className="w-[60px] h-[60px]" color='error' /> : <FavoriteBorderIcon className="w-[60px] h-[60px]" color='error' />}</IconButton>}
+            <IconButton disabled={disabled} className='!mr-[10px] !absolute !bottom-0 hover:!scale-110 !duration-300  !transition-all' onClick={addOrRemoveFromLiked}>{isLiked ? <FavoriteIcon className="!w-[60px] !h-[60px]" color='error' /> : <FavoriteBorderIcon className="w-[60px] h-[60px]" color='error' />}</IconButton>}
         </div>
         {user && <div className="absolute top-[30px] right-[20px]">
-          <div className="relative"> <IconButton className='bg-black hover:!bg-green hover:!scale-125  transition-all  duration-500' onClick={showPopup}><MoreVertIcon color='error' className="rotate-180" /></IconButton>
+          <div className="relative"> <IconButton className='!bg-black hover:!bg-green hover:!scale-125  !transition-all  !duration-500' onClick={showPopup}><MoreVertIcon color='error' className="rotate-180" /></IconButton>
             {morePopup === trackForPage._id && <Popup trackId={trackForPage._id} />}
           </div>
         </div>
         }
       </Grid>
       <div className=' flex justify-center mt-16'>
-        {isTrackPlaying ? <IconButton className=' bg-green-dark hover:!bg-green-dark hover:scale-105 shadow-xl  transition-all  duration-500' onClick={playOrPause}>{!pause ? <Pause color='error' className='!w-[200px]  !h-[200px] ' /> : <PlayArrow color='error' className='!w-[200px]  !h-[200px]' />}</IconButton> :
-          <IconButton className='bg-green-dark hover:!bg-green-dark hover:scale-105 shadow-xl   transition-all  duration-500' onClick={pushAndPlay}><PlayArrow color='error' className='!w-[200px]  !h-[200px]' /></IconButton>
+        {isTrackPlaying ? <IconButton className=' !bg-green-dark hover:!bg-green-dark hover:!scale-105 !shadow-xl  !transition-all  !duration-500' onClick={playOrPause}>{!pause ? <Pause color='error' className='!w-[200px]  !h-[200px] ' /> : <PlayArrow color='error' className='!w-[200px]  !h-[200px]' />}</IconButton> :
+          <IconButton className='!bg-green-dark hover:!bg-green-dark hover:!scale-105 !shadow-xl   !transition-all  !duration-500' onClick={pushAndPlay}><PlayArrow color='error' className='!w-[200px]  !h-[200px]' /></IconButton>
         }
       </div>
 

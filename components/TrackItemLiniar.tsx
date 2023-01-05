@@ -101,9 +101,9 @@ const TrackItem: React.FC<TrackItemProps> = ({ red, track, playlist, index }) =>
       <div className="font-semibold mr-12">{minutes + ":" + seconds}</div>
       {user &&
         <>
-          <IconButton disabled={disabled} className='mr-8  hover:scale-110 duration-300  transition-all' onClick={addOrRemoveFromLiked}>{isLiked ? <FavoriteIcon fontSize='medium' color='error' /> : <FavoriteBorderIcon fontSize='medium' color='error' />}</IconButton>
+          <IconButton disabled={disabled} className='!mr-8  hover:!scale-110 !duration-300  !transition-all' onClick={addOrRemoveFromLiked}>{isLiked ? <FavoriteIcon fontSize='medium' color='error' /> : <FavoriteBorderIcon fontSize='medium' color='error' />}</IconButton>
           <div className=' relative'>
-            <IconButton className='  hover:scale-110  hover:!bg-green-dark  bg-green-dark   transition-all  duration-500' onClick={onMoreClickHandler}><MoreVertIcon /></IconButton>
+            <IconButton className='  hover:!scale-110  hover:!bg-green-dark  !bg-green-dark   !transition-all  !duration-500' onClick={onMoreClickHandler}><MoreVertIcon /></IconButton>
             {morePopup == track._id && <Popup playlist={playlist} setPopup={(str: string) => dispatch(setMorePopup(str))} trackId={track._id} />}
           </div>
         </>}

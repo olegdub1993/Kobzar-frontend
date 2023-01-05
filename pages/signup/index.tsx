@@ -8,6 +8,7 @@ import Checkbox from '@mui/material/Checkbox';
 import Link from "next/link";
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
+import DoneIcon from '@mui/icons-material/Done';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
@@ -37,7 +38,6 @@ export default function SignUp() {
     const {isAuth, error} = useTypedSelector((state) => state.auth)
     const [internalError, setError]=useState({name:""})
     const dispatch = useDispatch<any>() 
-    console.log("eee",error)
     useEffect(()=>{
         setError(error)
     },[error])
@@ -59,11 +59,12 @@ export default function SignUp() {
     return (
         <div className=' h-screen bg-gradient-to-b from-[rgba(54,0,2,1)] to-[rgba(140,0,0,1)]  pt-24' >
             <ThemeProvider theme={theme} >
-                <Container component="main" maxWidth="xs" className='bg-yellow p-[30px] rounded shadow-[0px_0px_23px_5px_rgba(0,0,0,0.96)] '>
+                <Container component="main" maxWidth="xs" className={`${isAuth?'bg-green':'' } bg-yellow !p-[30px] rounded shadow-[0px_0px_23px_5px_rgba(0,0,0,0.96)] `}>
                 {isAuth? 
-                 <div className='text-red font-semibold text-3xl m-2 mt-8 mb-8 text-center' >
+                 <div className='text-white bg-green font-semibold text-3xl m-2 mt-8 mb-8 text-center' >
+                   <div className='bg-red mx-auto !w-[80px] !h-[80px] shadow-md mb-8 flex items-center justify-center p-4 rounded-full '><DoneIcon className='!w-[60px] !h-[60px]'/></div>
                      Ви зареєструвались!) 
-                     <div className='text-red font-semibold text-2xl m-4 text-center' >Щоб активувати акaунт будь ласка перейдіть за посиланням яке ми додали  до листа надісланого на вашу пошту.</div>
+                     <div className='text-white font-semibold text-2xl m-4 text-center' >Щоб активувати акaунт будь ласка перейдіть за посиланням яке ми додали  до листа надісланого на вашу пошту.</div>
                  </div>:<>
                     <CssBaseline />
                     <Box
@@ -74,8 +75,8 @@ export default function SignUp() {
                             alignItems: 'center',
                         }}
                     >
-                        <Avatar className='bg-red' sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                            <LockOutlinedIcon className='bg-red' />
+                        <Avatar className='!bg-red' sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                            <LockOutlinedIcon className='!bg-red' />
                         </Avatar>
                         <Typography component="h1" variant="h5">
                             Sign up
@@ -134,7 +135,7 @@ export default function SignUp() {
                                 {internalError && <Grid item xs={12}><div className='text-center text-lg font-semibold text-error'>{internalError.name}</div> </Grid>}
                                 <Grid item xs={12} className="mt-6 mb-4">
                                     <FormControlLabel
-                                        control={<Checkbox value="allowExtraEmails"  className='bold bg-red hover:!bg-red mr-4 ml-4' />}
+                                        control={<Checkbox value="allowExtraEmails"  className='!bold !bg-red hover:!bg-red !mr-4 !ml-4' />}
                                         label="Я хочу отримувати інформацію щодо нових можливостей Kobzar."
                                     />
                                 </Grid>
@@ -143,7 +144,7 @@ export default function SignUp() {
                                 type="submit"
                                 fullWidth
                                 variant="contained"
-                                className='bg-red hover:bg-black capitalize text-lg font-bold'
+                                className='!bg-red hover:!bg-black !capitalize !text-lg !font-bold'
                                 sx={{ mt: 3, mb: 2, }}
                             >
                                 Зареєструватись
