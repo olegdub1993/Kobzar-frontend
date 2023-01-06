@@ -53,7 +53,6 @@ const MainLayout: React.FC<propsType> = ({ children, title, description, keyword
                 <meta name='robots' content="index, follow" />
                 <meta name="keywords" content={keywords || "Music, tracks, artists"} />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
-                <link href="https://api.fontshare.com/v2/css?f[]=clash-display@700&display=swap" rel="stylesheet"></link>
             </Head>
             <div onClick={()=>{setRestrictPopup(""); dispatch(setMorePopup(""))}}>
             <Navigation setRestrictPopup={setRestrictPopup} restrictPopup={restrictPopup} />
