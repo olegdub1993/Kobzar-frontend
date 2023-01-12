@@ -9,6 +9,7 @@ import { setDisabled } from "./playerSlice";
 import { fetchPlaylist } from "./playlistSlice";
 import { IPlaylist } from './../types/playlist';
 import axios from "axios";
+import { setLoading } from "./authSlice";
 
 // Type for our state
 export interface UserState {
@@ -144,11 +145,14 @@ export const createPlaylist = createAsyncThunk(
   "user/createPlaylist",
   async (data: any, { rejectWithValue, dispatch }) => {
     try {
+      dispatch(setLoading(true))
       const response = await playlistAPI.createPlaylist(data)
       dispatch(setSuccess('Плейлист успішно створено!'))
       return response.data
     } catch (error) {
       // dispatch(setError("Some Server erroor"))
+    }finally{
+      dispatch(setLoading(false))
     }
   }
 );
