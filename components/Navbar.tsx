@@ -41,7 +41,7 @@ const manuItems = [
     // { text: "Tracks List", href: "/tracks",protect:true },
     // { text: "Alboms List", href: "/alboms",protect:true  },
     { icon: <PlaylistAddIcon className='text-red !w-[30px]' />, text: "Створити плейлист", href: "/createPlaylist", protect: true },
-    { icon: <FavoriteIcon className='text-red !w-[30px]' />, text: "Cподобане", href: "/liked", protect: true },]
+    { icon: <FavoriteIcon className='text-red !w-[30px]' />, text: "Вподобані", href: "/liked", protect: true },]
 
 const AppBar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== 'open',

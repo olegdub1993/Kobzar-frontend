@@ -13,7 +13,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useDispatch } from 'react-redux';
-import { login } from '../../store/authSlice';
+import { login, setError } from '../../store/authSlice';
 import { useTypedSelector } from './../../hooks/useTypedSelector';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -37,12 +37,20 @@ const theme = createTheme();
 export default function SignIn() {
     const { isAuth, error } = useTypedSelector((state) => state.auth)
     const [internalError, setInternalError] = useState({ name: "" })
+    const[email,setEmail]=useState("")
+    const[password,setPassword]=useState("")
     const dispatch = useDispatch<any>()
     console.log("eee", error)
 
     useEffect(() => {
         setInternalError(error)
     }, [error])
+
+    useEffect(()=>{
+        return ()=> {
+        if(error){dispatch(setError(""))}
+        }
+    },[])
 
     const router = useRouter()
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -78,7 +86,7 @@ export default function SignIn() {
                             <LockOutlinedIcon className='!bg-red' />
                         </Avatar>
                         <Typography component="h1" variant="h5">
-                            Sign in
+                            Ввійдіть
                         </Typography>
                         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                             <TextField
@@ -89,8 +97,12 @@ export default function SignIn() {
                                 id="email"
                                 label="Ваш Email"
                                 name="email"
+                              //  label={internalError.name?"Помилка":"Ваш Email"}
+                                error={((internalError.name&&!email)||internalError.name==="Повинен бути і-мейл"||internalError.name==="Неправильний пароль або логін")}
                                 autoComplete="email"
                                 autoFocus
+                                value={email}
+                                onChange={(e)=>setEmail(e.target.value)}
                             />
                             <TextField
                                 onClick={() => setInternalError({ name: "" })}
@@ -98,12 +110,16 @@ export default function SignIn() {
                                 required
                                 fullWidth
                                 name="password"
-                                label="Пароль"
+                                label="Ваш пароль"
+                             //   label={internalError.name?"Помилка":"Пароль"}
+                                error={((internalError.name&&!password)||internalError.name==="Неправильний пароль або логін")}
+                                value={password}
+                                onChange={(e)=>setPassword(e.target.value)}
                                 type="password"
                                 id="password"
                                 autoComplete="current-password"
                             />
-                            {internalError && <Grid item xs={12}><div className='text-center text-lg font-semibold text-error'>{internalError.name}</div> </Grid>}
+                            {internalError.name && <Grid item xs={12}><div className='text-center text-lg font-semibold text-error'>{internalError.name}</div> </Grid>}
                             <Grid item xs={12} className="!mt-6 !mb-4">
                                 <FormControlLabel
                                     control={<Checkbox value="remember" color="primary" className='!bg-red !font-bold hover:!bg-red !mr-4 !ml-4' />}
@@ -120,11 +136,11 @@ export default function SignIn() {
                                 Ввійти
                             </Button>
                             <Grid container justifyContent="flex-end">
-                                {/* <Grid item xs>
-                                <Link href="#" variant="body2">
-                                    Forgot password?
+                                <Grid item xs>
+                                <Link href="/passwordReset" className='font-bold  text-sm text-red'>
+                                    Забули пароль?
                                 </Link>
-                            </Grid> */}
+                            </Grid>
                                 <Grid item>
                                     <Link href="/signup" className='font-bold  text-sm text-red'>
                                         {"Немає акаунта? Зареєструватись"}

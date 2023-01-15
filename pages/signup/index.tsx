@@ -14,7 +14,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useDispatch } from 'react-redux';
-import { signup } from '../../store/authSlice';
+import { setError, signup } from '../../store/authSlice';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { useEffect, useState } from 'react';
 
@@ -36,16 +36,26 @@ const theme = createTheme();
 
 export default function SignUp() {
     const {isAuth, error} = useTypedSelector((state) => state.auth)
-    const [internalError, setError]=useState({name:""})
+    const [internalError, setInternalError]=useState({name:""})
+    const[username,setUsername]=useState("")
+    const[email,setEmail]=useState("")
+    const[password,setPassword]=useState("")
     const dispatch = useDispatch<any>() 
+
     useEffect(()=>{
-        setError(error)
+        setInternalError(error)
     },[error])
+
+    useEffect(()=> ()=> {
+        if(error){dispatch(setError(""))
+    }
+    },[])
+
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         if(!data.get('username')||!data.get('email')||!data.get('password')){
-            setError({name:"Заповніть всі поля"})
+            setInternalError({name:"Заповніть всі поля"})
             return
         }
         dispatch(signup({
@@ -64,7 +74,7 @@ export default function SignUp() {
                  <div className='text-white bg-green font-semibold text-3xl m-2 mt-8 mb-8 text-center' >
                    <div className='bg-red mx-auto !w-[80px] !h-[80px] shadow-md mb-8 flex items-center justify-center p-4 rounded-full '><DoneIcon className='!w-[60px] !h-[60px]'/></div>
                      Ви зареєструвались!) 
-                     <div className='text-white font-semibold text-2xl m-4 text-center' >Щоб активувати акaунт будь ласка перейдіть за посиланням яке ми додали  до листа надісланого на вашу пошту.</div>
+                     <div className='text-white font-semibold text-2xl m-4 text-center' >Щоб активувати акaунт, перейдіть за посиланням яке ми додали до листа, надісланого на вашу пошту.</div>
                  </div>:<>
                     <CssBaseline />
                     <Box
@@ -79,7 +89,7 @@ export default function SignUp() {
                             <LockOutlinedIcon className='!bg-red' />
                         </Avatar>
                         <Typography component="h1" variant="h5">
-                            Sign up
+                            Зареєструйтесь
                         </Typography>
                         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3, }} >
                             <Grid container spacing={2}>
@@ -98,30 +108,36 @@ export default function SignUp() {
                                 <Grid item xs={12} >
                                     <TextField
                                         // sx={{ background: "white" }}
+                                        onClick={()=>setInternalError({name:""})}
                                         required
                                         fullWidth
                                         id="username"
                                         label="Прізвище та ім'я"
                                         name="username"
                                         autoComplete="family-name"
-                                        onClick={()=>setError({name:""})}
+                                        error={Boolean(internalError.name)&&!username}
+                                        value={username}
+                                        onChange={(e)=>setUsername(e.target.value)}
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
                                     <TextField
                                         // sx={{ background: "white" }}
+                                        onClick={()=>setInternalError({name:""})}
                                         required
                                         fullWidth
                                         id="email"
                                         label="Ваш Email"
                                         name="email"
                                         autoComplete="email"
-                                        onClick={()=>setError({name:""})}
+                                        error={((internalError.name&&!email)||internalError.name==="Повинен бути і-мейл"||internalError.name===`Користувач з поштою ${email} вже існує`)}
+                                        value={email}
+                                        onChange={(e)=>setEmail(e.target.value)}
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
                                     <TextField
-                                        onClick={()=>setError({name:""})}
+                                        onClick={()=>setInternalError({name:""})}
                                         // sx={{ background: "white" }}
                                         required
                                         fullWidth
@@ -130,9 +146,12 @@ export default function SignUp() {
                                         type="password"
                                         id="password"
                                         autoComplete="new-password"
+                                        error={((internalError.name&&!password)||internalError.name==="Неправильний пароль або логін")}
+                                        value={password}
+                                        onChange={(e)=>setPassword(e.target.value)}
                                     />
                                 </Grid>
-                                {internalError && <Grid item xs={12}><div className='text-center text-lg font-semibold text-error'>{internalError.name}</div> </Grid>}
+                                {internalError.name && <Grid item xs={12}><div className='text-center text-lg font-semibold text-error'>{internalError.name}</div> </Grid>}
                                 <Grid item xs={12} className="mt-6 mb-4">
                                     <FormControlLabel
                                         control={<Checkbox value="allowExtraEmails"  className='!bold !bg-red hover:!bg-red !mr-4 !ml-4' />}

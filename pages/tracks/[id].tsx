@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import MainLayout from './../../layouts/MainLayout';
 import { Grid, IconButton } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -12,7 +12,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { wrapper } from '../../store/store'
 import { NextPage } from 'next';
-
+import { Button } from '@mui/material'
 // interface TrackPageProps {
 //     serverTrack: ITrack
 // }
@@ -24,6 +24,8 @@ const TrackPage: NextPage = () => {
   const isLiked = user?.liked?.find((id: string) => id === trackForPage?._id)
   const isTrackPlaying = active?._id === trackForPage._id
   const dispatch = useDispatch<any>()
+  const [warningPopup, setWarningPopup] = useState(false)
+  const [activeLokalPlaylist, setActiveLokalPlaylist] = useState("")
 
   const pushAndPlay = (e: React.MouseEvent<HTMLElement>) => {
     e.stopPropagation()
@@ -85,7 +87,7 @@ const TrackPage: NextPage = () => {
         </div>
         {user && <div className="absolute top-[30px] right-[20px]">
           <div className="relative"> <IconButton className='!bg-black hover:!bg-green hover:!scale-125  !transition-all  !duration-500' onClick={showPopup}><MoreVertIcon color='error' className="rotate-180" /></IconButton>
-            {morePopup === trackForPage._id && <Popup trackId={trackForPage._id} />}
+            {morePopup === trackForPage._id && <Popup trackId={trackForPage._id} setActivePlaylist={setActiveLokalPlaylist} setWarningPopup={setWarningPopup}/>}
           </div>
         </div>
         }
@@ -95,7 +97,6 @@ const TrackPage: NextPage = () => {
           <IconButton className='!bg-green-dark hover:!bg-green-dark hover:!scale-105 !shadow-xl   !transition-all  !duration-500' onClick={pushAndPlay}><PlayArrow color='error' className='!w-[200px]  !h-[200px]' /></IconButton>
         }
       </div>
-
       {/* <Grid container>
                     <TextField {...username} label="Your name" fullWidth />
                     <TextField {...text} label="Write comment" fullWidth multiline
@@ -108,28 +109,57 @@ const TrackPage: NextPage = () => {
                         <div>{comment.text}</div>
                     </div>)}
                 </div> */}
-
+         {warningPopup && <WarningPopup playlist={activeLokalPlaylist} setPopup={setWarningPopup} trackId={trackForPage._id}/>}
     </MainLayout>
   )
 }
-const Popup = ({ trackId }: any) => {
+const Popup = ({ trackId, setWarningPopup, setActivePlaylist}: any) => {
   const dispatch = useDispatch<any>()
   const { alboms } = useTypedSelector((state) => state.user)
-  const addTrackToAlbomHandler = (albomId: string) => {
-    dispatch(addTrackToAlbom({ albomId, trackId }))
+
+  const addTrackToAlbomHandler = (albom: any) => {
+    setActivePlaylist(albom)
+    const alreadyExist=albom.tracks.find((t:string)=>t===trackId)
+    if(alreadyExist){
+      console.log("eeewsdtgh")
+      setWarningPopup(true)
+    } else{
+      dispatch(addTrackToAlbom({ albomId:albom._id, trackId }))
+    }
   }
   return (
     <div className={`text-white text-lg font-semibold shadow-[0px_0px_16px_0px_rgba(0,0,0,0.96)] bg-green  rounded w-[275px]  px-4 py-6 top-[0px] right-[100%]  absolute `} >
       Додати до альбому:
       <div className="mt-4">
         {alboms?.map((albom) => <div
-          className="mt-2 cursor-pointer font-bold hover:!opacity-75" key={albom._id} onClick={() => addTrackToAlbomHandler(albom._id)}>
+          className="mt-2 cursor-pointer font-bold hover:!opacity-75" key={albom._id} onClick={() => addTrackToAlbomHandler(albom)}>
           {albom.name}
         </div>)}
       </div>
     </div>
   )
 }
+
+const WarningPopup = ({setPopup, playlist,trackId}:any) => {
+  const dispatch=useDispatch<any>()
+
+  const addHandler=()=>{
+    setPopup(false)
+    dispatch(addTrackToAlbom({ albomId:playlist._id, trackId }))
+  }    
+
+  return (
+    <div className=' p-8 shadow-[0px_0px_23px_2px_rgba(0,0,0,0.96)] rounded w-[400px] bg-green-dark text-white fixed top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%] z-[1500]'>
+        {/* Увійдіть, щоб переглянути збережені пісні, подкасти, виконавців і плейлісти в розділі "Моя бібліотека". */}
+         <div className="text-2xl mb-8 pl-4 pr-4 text-center"> Ця пісня вже є в плейлисті {playlist.name}</div>
+        <div className="flex justify-between center ">
+        <Button onClick={(e) =>{ addHandler()}} className='!w-[150px] !normal-case hover:!bg-light-red !bg-transparent !text-black !font-semibold'>Усе одно  додати</Button>
+        <Button onClick={() =>setPopup(false)} className='!bg-white !w-[150px]  !normal-case  hover:!bg-light-red !text-black !font-semibold'>Не додавати</Button>
+  </div>
+    </div>
+  )
+}
+
 export default TrackPage
 export const getServerSideProps = wrapper.getServerSideProps((store) =>
   async (context) => {

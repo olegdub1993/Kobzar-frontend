@@ -41,6 +41,16 @@ export const authAPI = {
   logout() {
     return $api.delete("auth/logout");
   },
+  sendPasswordLink(data){
+    return $api.post("auth/sendPasswordLink", data);
+  },
+  validateUser({id, token}){
+    return $api.get(`auth/forgotPassword/${id}/${token}`);
+  },
+  changePassword({id, token, data}){
+    return $api.post(`auth/changePassword/${id}/${token}`, data);
+  },
+  
   // validation(data) {
   //   return instance.post("signup/validation", data);
   // },

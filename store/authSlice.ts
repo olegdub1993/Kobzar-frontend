@@ -11,6 +11,7 @@ export interface AuthState {
   loading:boolean
   error:{name:string}
   restrictPopup:string
+  message:string
 }
 
 // Initial state
@@ -18,7 +19,8 @@ const initialState: AuthState = {
   isAuth: false,
   loading:false,
   error:{name:""},
-  restrictPopup:''
+  restrictPopup:'',
+  message:""
 };
 export const logout= createAsyncThunk(
   "auth/logout",
@@ -89,7 +91,7 @@ export const signup = createAsyncThunk(
       if(typeof(error.response.data.message)==="string"){
         dispatch(setError(error.response.data.message))
       } else{
-        dispatch(setError(error.response.data.message[0]))
+        dispatch(setError("Повинен бути і-мейл"))
       }
     }
   }
@@ -116,8 +118,51 @@ export const login = createAsyncThunk(
       if(typeof(error.response.data.message)==="string"){
         dispatch(setError(error.response.data.message))
       } else{
-        dispatch(setError(error.response.data.message[0]))
+        dispatch(setError("Повинен бути і-мейл"))
       }
+    }
+  }
+);
+export const sendPasswordLink = createAsyncThunk(
+  "auth/sendPasswordLink",
+  async (data:any, { rejectWithValue, dispatch }) => {
+    try {
+      const response = await authAPI.sendPasswordLink(data)
+      dispatch(setMessage(" Посилання для відновлення паролю успішно надіслано на вашу електронну пошту"))
+    } catch (error:any) {
+      if(typeof(error.response.data.message)==="string"){
+        dispatch(setError(error.response.data.message))
+      } else{
+        dispatch(setError("Повинен бути і-мейл"))
+      }
+    }
+  }
+);
+export const validateUser = createAsyncThunk(
+  "auth/validateUser",
+  async (data:any, { rejectWithValue, dispatch }) => {
+    try {
+      const response = await authAPI.validateUser(data)
+    }  catch (error:any) {
+      if(typeof(error.response.data.message)==="string"){
+        dispatch(setError(error.response.data.message))
+      } else{
+        dispatch(setError("something else"))
+      }
+    }
+  }
+);
+export const changePassword = createAsyncThunk(
+  "auth/changePassword",
+  async (data:any, { rejectWithValue, dispatch }) => {
+    dispatch(setLoading(true))
+    try {
+      const response = await authAPI.changePassword(data)
+      dispatch(login(response.data))
+    } catch (error:any) {     
+      dispatch(setError(error.response.data.message))
+    }finally{
+      dispatch(setLoading(false))
     }
   }
 );
@@ -134,8 +179,10 @@ export const authSlice = createSlice({
     setLoading(state, action){
       state.loading=action.payload
     },
+    setMessage(state, action){
+      state.message=action.payload
+    },
     setError(state, action) {
-      console.log(action.payload)
       state.error ={name:action.payload}
     },
     setRestrictPopup(state, action) {
@@ -154,6 +201,6 @@ export const authSlice = createSlice({
 
 });
 
-export const { setAuth, setLoading, setError, setRestrictPopup} = authSlice.actions;
+export const { setAuth, setMessage, setLoading, setError, setRestrictPopup} = authSlice.actions;
 
 export default authSlice.reducer;

@@ -123,7 +123,7 @@ const PlaylistPage: NextPage = () => {
         <div>
           {playlistForPage?.tracks?.length ?
             <div>
-              {playlistForPage?.tracks?.map((track, index) => <TrackItem key={track._id} index={index} track={track} playlist={playlistForPage} />)}
+              {playlistForPage?.tracks?.map((track, index) => <TrackItem key={track._id+index} index={index} track={track} playlist={playlistForPage} />)}
             </div> :
             <> <div className='text-white text-center text-2xl font-bold mb-2'>У цьому альбомі поки що немає пісень</div>
               <div className='flex justify-center mt-8'> <Button onClick={() => router.push('/search')} className='!text-white hover:!bg-green-dark hover:!opacity-75  !bg-green-dark !capitalize !text-xl !py-2 px-4 !font-bold !mb-2'>Знайти та додати пісні</Button></div>

@@ -97,8 +97,8 @@ export const addTrackToAlbom = createAsyncThunk(
   async (data: any, { rejectWithValue, dispatch }) => {
     try {
       await playlistAPI.addTrackToPlaylist(data)
+      dispatch(getUserPlaylists())
       dispatch(setSuccess('Додано до плейліста'))
-      // dispatch(addToLikedId(track._id))
     } catch (error) {
       // dispatch(setError("Some Server erroor"))
     } finally {
@@ -144,8 +144,8 @@ export const removeFromLiked = createAsyncThunk(
 export const createPlaylist = createAsyncThunk(
   "user/createPlaylist",
   async (data: any, { rejectWithValue, dispatch }) => {
+    dispatch(setLoading(true))
     try {
-      dispatch(setLoading(true))
       const response = await playlistAPI.createPlaylist(data)
       dispatch(setSuccess('Плейлист успішно створено!'))
       return response.data

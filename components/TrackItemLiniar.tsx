@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ITrack } from '../types/track'
-import { Grid, IconButton } from '@mui/material';
+import { Button, Grid, IconButton } from '@mui/material';
 import Pause from '@mui/icons-material/Pause'
 import PlayArrow from '@mui/icons-material/PlayArrow';
 import { useRouter } from 'next/router';
@@ -36,6 +36,8 @@ const TrackItem: React.FC<TrackItemProps> = ({ red, track, playlist, index }) =>
   let seconds: string | number = duration - minutes * 60;
   seconds = seconds < 10 ? "0" + seconds : seconds
 
+  const [warningPopup, setWarningPopup] = useState(false)
+  const [activeLokalPlaylist, setActiveLokalPlaylist] = useState("")
   // nead to think
   useEffect(() => {
     if (activePlaylistId === playlistForPage._id) {
@@ -80,8 +82,9 @@ const TrackItem: React.FC<TrackItemProps> = ({ red, track, playlist, index }) =>
   // }
   const onMoreClickHandler = (e: React.MouseEvent<HTMLElement>) => {
     e.stopPropagation()
-    dispatch(setMorePopup(track._id))
+    dispatch(setMorePopup(track._id+index))
   }
+  console.log("track._id+index" ,track._id+index)
   return (
     <div
       className={`${red ? '!bg-red' : ''} hover:bg-[rgba(54,0,2,1)] p-2 flex items-center text-white  pr-6 pl-6 rounded  hover:!shadow-lg transition-all  duration-500  w-full border-b border-black shadow-sm cursor-pointer`}
@@ -104,9 +107,10 @@ const TrackItem: React.FC<TrackItemProps> = ({ red, track, playlist, index }) =>
           <IconButton disabled={disabled} className='!mr-8  hover:!scale-110 !duration-300  !transition-all' onClick={addOrRemoveFromLiked}>{isLiked ? <FavoriteIcon fontSize='medium' color='error' /> : <FavoriteBorderIcon fontSize='medium' color='error' />}</IconButton>
           <div className=' relative'>
             <IconButton className='  hover:!scale-110  hover:!bg-green-dark  !bg-green-dark   !transition-all  !duration-500' onClick={onMoreClickHandler}><MoreVertIcon /></IconButton>
-            {morePopup == track._id && <Popup playlist={playlist} setPopup={(str: string) => dispatch(setMorePopup(str))} trackId={track._id} />}
+            {morePopup === track._id+index && <Popup  setActivePlaylist={setActiveLokalPlaylist}  setWarningPopup={setWarningPopup} playlist={playlist} setPopup={(str: string) => dispatch(setMorePopup(str))} trackId={track._id} />}
           </div>
         </>}
+        {warningPopup && <WarningPopup playlist={activeLokalPlaylist} setPopup={setWarningPopup} trackId={track._id}/>}
     </div>
   )
 }
@@ -115,14 +119,22 @@ interface PopupProps {
   playlist: any
   trackId: string
   setPopup: (arg: string) => void
+  setActivePlaylist: (arg: any) => void
+  setWarningPopup:(arg: boolean) => void
 }
-const Popup: React.FC<PopupProps> = ({ trackId, setPopup, playlist }) => {
+const Popup: React.FC<PopupProps> = ({setActivePlaylist, trackId, setPopup, playlist, setWarningPopup }) => {
   const dispatch = useDispatch<any>()
   const { alboms } = useTypedSelector((state) => state.user)
   const isUserAuthorOfPlaylist = alboms?.find((albom) => albom._id === playlist._id)
-  const addTrackToPlaylistHandler = (albomId: string) => {
-    setPopup("")
-    dispatch(addTrackToAlbom({ albomId, trackId }))
+  
+  const addTrackToPlaylistHandler = (albom: any) => {
+    setActivePlaylist(albom)
+    const alreadyExist=albom.tracks.find((t:string)=>t===trackId)
+    if(alreadyExist){
+      setWarningPopup(true)
+    } else{
+      dispatch(addTrackToAlbom({ albomId:albom._id, trackId }))
+    }
   }
 
   const removeTrackFromPlaylistHandler = () => {
@@ -140,7 +152,7 @@ const Popup: React.FC<PopupProps> = ({ trackId, setPopup, playlist }) => {
         {alboms?.map((albom) => {
           if (albom._id !== playlist._id) {
             return <div
-              className="text-white mt-2 cursor-pointer hover:!opacity-75" key={albom._id} onClick={() => addTrackToPlaylistHandler(albom._id)}>
+              className="text-white mt-2 cursor-pointer hover:!opacity-75" key={albom._id} onClick={() => addTrackToPlaylistHandler(albom)}>
               {albom.name}
             </div>
           }
@@ -149,4 +161,25 @@ const Popup: React.FC<PopupProps> = ({ trackId, setPopup, playlist }) => {
     </div>
   )
 }
+const WarningPopup = ({setPopup, playlist,trackId}:any) => {
+  const dispatch=useDispatch<any>()
+
+  const addHandler=()=>{
+    setPopup(false)
+    dispatch(addTrackToAlbom({ albomId:playlist._id, trackId }))
+  }    
+
+  return (
+    <div className=' p-8 shadow-[0px_0px_23px_2px_rgba(0,0,0,0.96)] rounded w-[400px] bg-green-dark text-white fixed top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%] z-[1500]'>
+        {/* Увійдіть, щоб переглянути збережені пісні, подкасти, виконавців і плейлісти в розділі "Моя бібліотека". */}
+         <div className="text-2xl mb-8 pl-4 pr-4 text-center"> Ця пісня вже є в плейлисті {playlist.name}</div>
+        <div className="flex justify-between center ">
+        <Button onClick={(e) =>{ addHandler()}} className='!w-[150px] !normal-case hover:!bg-light-red !bg-transparent !text-black !font-semibold'>Усе одно  додати</Button>
+        <Button onClick={() =>setPopup(false)} className='!bg-white !w-[150px]  !normal-case  hover:!bg-light-red !text-black !font-semibold'>Не додавати</Button>
+  </div>
+    </div>
+  )
+}
+
+
 export default TrackItem
