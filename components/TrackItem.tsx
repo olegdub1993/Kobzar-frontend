@@ -5,6 +5,7 @@ import Pause from '@mui/icons-material/Pause'
 import PlayArrow from '@mui/icons-material/PlayArrow';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
+import Image from 'next/image'
 import { setActiveTrack, setPlay, setActivePlaylist, setActiveTrackIndex, setPause, setTaken, setFree } from '../store/playerSlice';
 import { useTypedSelector } from './../hooks/useTypedSelector';
 
@@ -45,7 +46,7 @@ const TrackItem: React.FC<TrackItemProps> = ({ red, track, index, tracklist, }) 
             className={`${red ? '!bg-red' : ''} flex flex-col items-center m-[10px] p-[10px] rounded !bg-black pr-6 pl-6 hover:!scale-105 hover:!shadow-lg transition-all  duration-500  w-[230px] min-w-[230px] shadow-sm cursor-pointer`}
             onClick={() => router.push("/tracks/" + track._id)}
         >
-            <div className='m-auto w-[180px] h-[150px] mb-4 mt-2 '> <img className='w-[100%] h-[100%] object-cover rounded' src={process.env.NEXT_PUBLIC_BASIC_URL + track.picture} /></div>
+            <div className='m-auto w-[180px] h-[150px] mb-4 mt-2 '> <Image alt="Track`s image"  className='w-[100%] h-[100%]  object-cover rounded' height={250} width={250} src={process.env.NEXT_PUBLIC_BASIC_URL + track.picture} /></div>
             <div className=' mb-2'>
                 {isTrackPlaying ? <IconButton className='!bg-green-dark hover:!bg-green-dark  hover:!scale-125 !transition-all  !duration-500' onClick={playOrPause}>{!pause ? <Pause color='error' /> : <PlayArrow color='error' />}</IconButton> :
                     <IconButton className='!bg-green-dark  hover:!scale-125   hover:!bg-green-dark   !transition-all  !duration-500' onClick={pushAndPlay}><PlayArrow color='error' /></IconButton>
