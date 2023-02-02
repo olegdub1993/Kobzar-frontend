@@ -13,6 +13,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { wrapper } from '../../store/store'
 import { NextPage } from 'next';
 import { Button } from '@mui/material'
+import Image from 'next/image'
 // interface TrackPageProps {
 //     serverTrack: ITrack
 // }
@@ -76,7 +77,7 @@ const TrackPage: NextPage = () => {
       {/* <Button variant='outlined' onClick={() => router.push("/tracks")}>To list</Button> */}
       <Grid container className="flex mb-8 relative text-white">
         <div className='w-[500px] h-[350px] mb-4 mt-2 '>
-          <img className='w-[100%] h-[100%] object-cover rounded' src={trackForPage?.picture?process.env.NEXT_PUBLIC_BASIC_URL + trackForPage?.picture:""} />
+          <Image className='w-[100%] h-[100%] object-cover rounded' alt="Track's image" src={trackForPage?.picture?process.env.NEXT_PUBLIC_BASIC_URL + trackForPage?.picture:""} />
         </div>
         <div className="ml-8 mt-2 max-w-[900px] relative ">
           <div className="font-semibold mb-4 mt-6 text-2xl max-w-full">Пісня</div>

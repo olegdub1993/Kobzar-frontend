@@ -27,6 +27,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
 import AppsIcon from '@mui/icons-material/Apps';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
+import Image from 'next/image'
+
 const drawerWidth = 240;
 
 
@@ -112,7 +114,7 @@ export default function Navigation({ restrictPopup, setRestrictPopup }: any) {
                     </Typography >
                         <Button onClick={() => router.push("/signup")} className='!bg-white hover:!bg-red !capitalize !text-black !font-semibold'>Реєстрація</Button></> :
                         <div className='group flex items-center relative h-[64px]'>
-                            {user?.picture ? <img className="rounded-full w-[40px] h-[40px] bg-red mr-4"
+                            {user?.picture ? <Image alt="avatar" width={40} height={40} className="rounded-full w-[40px] h-[40px] bg-red mr-4"
                                 src={process.env.NEXT_PUBLIC_BASIC_URL + user.picture} /> :
                                 <div className="flex items-center justify-center rounded-full w-[40px] h-[40px] bg-red mr-4"><PersonIcon className="mb-[5px]" /></div>}
                             <Typography className='text-white' variant="h6" noWrap component="div">
