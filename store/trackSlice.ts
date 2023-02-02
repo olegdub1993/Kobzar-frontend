@@ -7,7 +7,7 @@ import { tracksAPI,playlistAPI} from "../API/api";
 import { IPlaylist } from "../types/playlist";
 // Type for our state
 export interface TrackState { 
-  trackForPage:ITrack
+  trackForPage:ITrack|null
   playlists:any[]
   tracks: ITrack[]
   error: string
@@ -16,7 +16,7 @@ export interface TrackState {
 
 // Initial state
 const initialState: TrackState = {
-  trackForPage:{} as ITrack,
+  trackForPage: null,
   tracks: [],
   error: "",
   playlists:[],

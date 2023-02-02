@@ -22,7 +22,7 @@ const TrackPage: NextPage = () => {
   const { trackForPage, morePopup } = useTypedSelector((state) => state.track)
   const { user } = useTypedSelector((state) => state.user)
   const isLiked = user?.liked?.find((id: string) => id === trackForPage?._id)
-  const isTrackPlaying = active?._id === trackForPage._id
+  const isTrackPlaying = active?._id === trackForPage?._id
   const dispatch = useDispatch<any>()
   const [warningPopup, setWarningPopup] = useState(false)
   const [activeLokalPlaylist, setActiveLokalPlaylist] = useState("")
@@ -49,10 +49,10 @@ const TrackPage: NextPage = () => {
   const addOrRemoveFromLiked = (e: React.MouseEvent<HTMLElement>) => {
     e.stopPropagation()
     if (!isLiked) {
-      dispatch(addToLiked({ id: trackForPage._id, type: "track" }))
+      dispatch(addToLiked({ id: trackForPage?._id, type: "track" }))
     }
     else {
-      dispatch(removeFromLiked({ id: trackForPage._id, type: "track" }))
+      dispatch(removeFromLiked({ id: trackForPage?._id, type: "track" }))
     }
   }
   // const router = useRouter()
@@ -68,26 +68,26 @@ const TrackPage: NextPage = () => {
   // }
   const showPopup = (e: React.MouseEvent<HTMLElement>) => {
     e.stopPropagation()
-    dispatch(setMorePopup(trackForPage._id))
+    dispatch(setMorePopup(trackForPage?._id))
   }
   return (
-    <MainLayout title={'Kobzar ' + trackForPage.name + "-" + trackForPage.artist}
-      keywords={"Music, tracks, " + trackForPage.name + ", " + trackForPage.artist} red>
+    <MainLayout title={'Kobzar ' + trackForPage?.name + "-" + trackForPage?.artist}
+      keywords={"Music, tracks, " + trackForPage?.name + ", " + trackForPage?.artist} red>
       {/* <Button variant='outlined' onClick={() => router.push("/tracks")}>To list</Button> */}
       <Grid container className="flex mb-8 relative text-white">
         <div className='w-[500px] h-[350px] mb-4 mt-2 '>
-          <img className='w-[100%] h-[100%] object-cover rounded' src={process.env.NEXT_PUBLIC_BASIC_URL + trackForPage.picture} />
+          <img className='w-[100%] h-[100%] object-cover rounded' src={trackForPage?.picture?process.env.NEXT_PUBLIC_BASIC_URL + trackForPage?.picture:""} />
         </div>
         <div className="ml-8 mt-2 max-w-[900px] relative ">
           <div className="font-semibold mb-4 mt-6 text-2xl max-w-full">Пісня</div>
-          <div className="font-bold mb-10 text-6xl  ">{trackForPage.name}</div>
-          <div className="font-semibold mt-4   mb-4  text-4xl max-w-full">{trackForPage.artist}</div>
+          <div className="font-bold mb-10 text-6xl  ">{trackForPage?.name}</div>
+          <div className="font-semibold mt-4   mb-4  text-4xl max-w-full">{trackForPage?.artist}</div>
           {user &&
             <IconButton disabled={disabled} className='!mr-[10px] !absolute !bottom-0 hover:!scale-110 !duration-300  !transition-all' onClick={addOrRemoveFromLiked}>{isLiked ? <FavoriteIcon className="!w-[60px] !h-[60px]" color='error' /> : <FavoriteBorderIcon className="w-[60px] h-[60px]" color='error' />}</IconButton>}
         </div>
         {user && <div className="absolute top-[30px] right-[20px]">
           <div className="relative"> <IconButton className='!bg-black hover:!bg-green hover:!scale-125  !transition-all  !duration-500' onClick={showPopup}><MoreVertIcon color='error' className="rotate-180" /></IconButton>
-            {morePopup === trackForPage._id && <Popup trackId={trackForPage._id} setActivePlaylist={setActiveLokalPlaylist} setWarningPopup={setWarningPopup}/>}
+            {morePopup === trackForPage?._id && <Popup trackId={trackForPage?._id} setActivePlaylist={setActiveLokalPlaylist} setWarningPopup={setWarningPopup}/>}
           </div>
         </div>
         }
@@ -109,7 +109,7 @@ const TrackPage: NextPage = () => {
                         <div>{comment.text}</div>
                     </div>)}
                 </div> */}
-         {warningPopup && <WarningPopup playlist={activeLokalPlaylist} setPopup={setWarningPopup} trackId={trackForPage._id}/>}
+         {warningPopup && <WarningPopup playlist={activeLokalPlaylist} setPopup={setWarningPopup} trackId={trackForPage?._id}/>}
     </MainLayout>
   )
 }
