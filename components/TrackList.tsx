@@ -14,7 +14,7 @@ const TrackList: React.FC<TrackListProps> = ({ tracks, }) => {
       superLargeDesktop: {
         // the naming can be any, depends on you.
         breakpoint: { max: 4000, min: 1800 },
-        items: 6        },
+        items: 7        },
       largeDesktop: {
         breakpoint: { max: 1800, min: 1540 },
         items: 5

@@ -7,10 +7,11 @@ module.exports = {
   ],
   theme: {
     colors: {
-      black: "black",
+      transparent:"transparent",
+      black: "#1B1C1E",
       red: "#a01f1f",
       "light-red": "#db8383",
-      white: "white",
+      white: "#FFFFFF",
       error:"#d41a1a",
       // orange: "",
       green: "rgb(1 50 9)",

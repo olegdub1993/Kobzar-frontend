@@ -43,18 +43,18 @@ const TrackItem: React.FC<TrackItemProps> = ({ red, track, index, tracklist, }) 
     }
     return (
         <div
-            className={`${red ? '!bg-red' : ''} flex flex-col items-center m-[10px] p-[10px] rounded !bg-black pr-6 pl-6 hover:!scale-105 hover:!shadow-lg transition-all  duration-500  w-[230px] min-w-[230px] shadow-sm cursor-pointer`}
+            className={`${red ? '!bg-red' : ''} relative group flex flex-col items-center m-[10px] p-[16px] rounded !bg-[#2B2B2BA6] hover:!scale-105 hover:!shadow-lg transition-all  duration-500  max-w-[195px] w-full shadow-sm cursor-pointer`}
             onClick={() => router.push("/tracks/" + track._id)}
         >
-            <div className='m-auto w-[180px] h-[150px] mb-4 mt-2 '> <Image alt="Track`s image"  className='w-[100%] h-[100%]  object-cover rounded' height={250} width={250} src={process.env.NEXT_PUBLIC_BASIC_URL + track.picture} /></div>
-            <div className=' mb-2'>
-                {isTrackPlaying ? <IconButton className='!bg-green-dark hover:!bg-green-dark  hover:!scale-125 !transition-all  !duration-500' onClick={playOrPause}>{!pause ? <Pause color='error' /> : <PlayArrow color='error' />}</IconButton> :
-                    <IconButton className='!bg-green-dark  hover:!scale-125   hover:!bg-green-dark   !transition-all  !duration-500' onClick={pushAndPlay}><PlayArrow color='error' /></IconButton>
+            <div className='m-auto w-full h-[156px] mb-4 '> <Image alt="Track`s image"  className='w-[100%] h-[100%]  object-cover rounded' height={250} width={250} src={process.env.NEXT_PUBLIC_BASIC_URL + track.picture} /></div>
+            <div className={`${isTrackPlaying?"!opacity-100":""} mb-2 absolute top-[120px] opacity-0 group-hover:!opacity-100 !transition-all  !duration-300`}>
+                {isTrackPlaying ? <IconButton className='!bg-green-dark hover:!bg-green-dark  hover:!scale-125 !transition-all  !duration-300' onClick={playOrPause}>{!pause ? <Pause color='error' /> : <PlayArrow color='error' />}</IconButton> :
+                    <IconButton className='!bg-green-dark  hover:!scale-125   hover:!bg-green-dark   !transition-all  !duration-300' onClick={pushAndPlay}><PlayArrow color='error' /></IconButton>
                 }
             </div>
-            <Grid container className="max-w-full text-red" direction={"column"}>
-                <div className="font-bold truncate max-w-full">{track.name}</div>
-                <div className="font-semibold truncate max-w-full">{track.artist}</div>
+            <Grid container className="max-w-full text-white" direction={"column"}>
+                <div className="font-bold truncate max-w-full mb-[4px]">{track.name}</div>
+                <div className="text-[14px] truncate max-w-full">{track.artist}</div>
             </Grid>
         </div >
     )

@@ -89,9 +89,7 @@ export default function Navigation({ restrictPopup, setRestrictPopup }: any) {
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
-            <AppBar position="fixed" sx={{
-                bgcolor: 'black'
-            }} open={open}>
+            <AppBar position="fixed"  open={open} className="bg-black">
                 <Toolbar className='flex justify-between'>
                     <div className='flex items-center'>
                         <IconButton
@@ -134,7 +132,7 @@ export default function Navigation({ restrictPopup, setRestrictPopup }: any) {
                         overflowY: "visible !important",
                         width: drawerWidth,
                         boxSizing: 'border-box',
-                        bgcolor: "black"
+                        bgcolor: "#1B1C1E"
                     },
                 }}
 
@@ -143,7 +141,7 @@ export default function Navigation({ restrictPopup, setRestrictPopup }: any) {
                 open={open}
             >
                 <DrawerHeader sx={{
-                    bgcolor: "black"
+                    bgcolor: "#1B1C1E"
                 }} >
                     <IconButton onClick={handleDrawerClose}>
                         {theme.direction === 'ltr' ? <ChevronLeftIcon fontSize='large' color='error' /> : <ChevronRightIcon fontSize='large' color='error' />}

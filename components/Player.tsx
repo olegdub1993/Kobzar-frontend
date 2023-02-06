@@ -197,18 +197,16 @@ const Player = ({ setRestrictPopup, restrictPopup }: any) => {
   return (
     <div style={{
       width: "100%", paddingRight: "40px", paddingTop: "10px",
-      paddingBottom: "10px", paddingLeft: "40px", display: "flex", alignItems: "center", position: "fixed", bottom: "0", zIndex: "2000", height: "90px", background: "black", color: "white"
-    }}>
+      paddingBottom: "10px", paddingLeft: "40px", display: "flex", alignItems: "center", position: "fixed", bottom: "0", zIndex: "2000", height: "90px",  color: "white"
+    }} className="bg-black">
       <div className="w-[100px] mr-6" >
         <div className='h-[70px]  rounded w-[100px]'><img src={process.env.NEXT_PUBLIC_BASIC_URL + active.picture} className='w-[100%] h-[100%] object-cover rounded' /></div>
       </div>
       <div className="w-[150px] mr-12">
-        <div onClick={(e) => router.push("/tracks/" + active._id)} className=' text-white truncate max-w-full cursor-pointer  hover:underline'>{active.name}</div>
-        <div className='truncate max-w-full'>{active.artist}</div>
+        <div onClick={(e) => router.push("/tracks/" + active._id)} className=' text-white font-medium  text-[14px] truncate max-w-full cursor-pointer  hover:underline'>{active.name}</div>
+        <div className='truncate max-w-full text-[12px] text-white opacity-[0.65]'>{active.artist}</div>
       </div>
-      <div className='mr-24'>
-        <TrackProgress audioRow width={"300px"} right={duration} left={currentTime} onChange={changeCurrentTime} />
-      </div>
+ 
       <div className="relative">
         <IconButton disabled={disabled} className='!mr-[10px] hover:!scale-110 !duration-300  !transition-all' onClick={addOrRemoveFromLiked}>
           {isLiked ? <FavoriteIcon fontSize='medium' color='error' /> : <FavoriteBorderIcon fontSize='medium' color='error' />}
@@ -220,7 +218,10 @@ const Player = ({ setRestrictPopup, restrictPopup }: any) => {
       <IconButton className='!mr-[10px] !bg-green-dark hover:!bg-green-dark hover:!scale-105 ' onClick={play}>{!pause ? <Pause fontSize='medium' color='error' /> : <PlayArrow color='error' fontSize='medium' />}</IconButton>
       <IconButton className='!mr-[10px] hover:!scale-110 !duration-300  !transition-all' onClick={playNext}><FastForwardIcon fontSize='medium' color='error' /></IconButton>
       <IconButton className={`${repeat && ""} !mr-[10px] !w-[30px] !h-[30px] hover:!scale-110 !duration-300  !transition-all`} onClick={repeatHandler}> {!repeat ? <RepeatOneOutlinedIcon fontSize='medium' color='error' /> : <RepeatOneOnOutlinedIcon fontSize='medium' color="error" className='bg-dark-green' />}</IconButton>
-      <IconButton className={`!mr-[10px] !w-[30px] !h-[30px] hover:!scale-110 !duration-300  !transition-all`} onClick={shuffleHandler}> {!isShuffle ? <ShuffleIcon fontSize='medium' color='error' /> : <ShuffleOnIcon fontSize='medium' color="error" className='bg-dark-green' />}</IconButton>
+      <IconButton className={`!mr-24 !w-[30px] !h-[30px] hover:!scale-110 !duration-300  !transition-all`} onClick={shuffleHandler}> {!isShuffle ? <ShuffleIcon fontSize='medium' color='error' /> : <ShuffleOnIcon fontSize='medium' color="error" className='bg-dark-green' />}</IconButton>
+      <div className=''>
+        <TrackProgress audioRow width={"450px"} right={duration} left={currentTime} onChange={changeCurrentTime} />
+      </div>
       <div style={{ marginLeft: "auto", marginRight: "15px" }} onClick={turnOffVolume}> {!volume ? <VolumeOffIcon className="cursor-pointer" /> : <VolumeUp className="cursor-pointer" />}</div>
       <TrackProgress width={"150px"} right={100} left={volume} onChange={changeVolume} />
     </div>

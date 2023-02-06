@@ -56,7 +56,7 @@ const MainLayout: React.FC<propsType> = ({ children, title, description, keyword
             </Head>
             <div onClick={()=>{setRestrictPopup(""); dispatch(setMorePopup(""))}}>
             <Navigation setRestrictPopup={setRestrictPopup} restrictPopup={restrictPopup} />
-             <div  className={`${red?"bg-gradient-to-b from-[rgba(54,0,2,1)] to-[rgba(140,0,0,1)]":""} pl-[300px] min-h-screen pt-[80px] pb-[110px] p-8 relative `} >
+             <div  className={`${red?"bg-gradient-to-b from-[#000000] via-[#720000] to-[#E70103]":""} pl-[300px] min-h-screen pt-[80px] pb-[110px] p-8 relative `} >
                 {/* <div className='fixed left-[40px] top-[80px] text-[70px] text-[#fafd23] font-bold uppercase '  style={{fontFamily: "'Clash Display', sans-serif", writingMode:'vertical-rl',textOrientation: 'upright',textShadow: '4px 4px 2px rgba(150, 150, 150, 1)'}} >
                  Слава  </div> 
                  <div className='fixed left-[145px] top-[210px] text-[70px]  text-[#064ebb] font-bold uppercase '  style={{ writingMode:'vertical-rl',textOrientation: 'upright',textShadow: '4px 4px 2px rgba(150, 150, 150, 1)'}} >
