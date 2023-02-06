@@ -89,7 +89,7 @@ export default function Navigation({ restrictPopup, setRestrictPopup }: any) {
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
-            <AppBar position="fixed"  open={open} className="bg-black">
+            <AppBar position="fixed"  open={open} className="!bg-black">
                 <Toolbar className='flex justify-between'>
                     <div className='flex items-center'>
                         <IconButton
@@ -107,7 +107,7 @@ export default function Navigation({ restrictPopup, setRestrictPopup }: any) {
                         {/* <Button onClick={()=>dispatch(fetchUser())} className='bg-white capitalize text-black font-semibold'>Реєстрація</Button> */}
                         {/* <div className="w-[70px]" > <img src={kobza} alt="kobza" /></div>  */}
                     </div>
-                    {!isAuth ? <> <Typography className='text-green-dark' variant="h6" noWrap component="div">
+                    {!isAuth ? <> <Typography className='text-red' variant="h6" noWrap component="div">
                         Зареєструйтесь щоб отримати доступ до всіх можливостей Kobzar
                     </Typography >
                         <Button onClick={() => router.push("/signup")} className='!bg-white hover:!bg-red !capitalize !text-black !font-semibold'>Реєстрація</Button></> :
