@@ -86,14 +86,14 @@ const PlaylistPage: NextPage = () => {
       <div>
         <Grid container className="flex mb-12 items-center text-white relative">
           <div className='w-[500px] h-[350px] mb-4 mt-2 '>
-            <Image alt="Albom picture" className='w-[100%] h-[100%] object-cover rounded' width={500} height={350} src={playlistForPage?.picture ? process.env.NEXT_PUBLIC_BASIC_URL + playlistForPage?.picture : albomPicture} />
+            <Image alt="Albom picture" className='w-[100%] h-[100%] object-cover rounded' width={500} height={350} src={playlistForPage?.picture ? process.env.NEXT_PUBLIC_S3_BUCKET_URL + playlistForPage?.picture : albomPicture} />
           </div>
           <div className="ml-8 mr-24 mt-2">
             <div className="font-semibold mb-4 mt-6 text-2xl max-w-full">Плейлист</div>
             <div className="font-semibold mb-8 mt-8 text-5xl max-w-full">{playlistForPage?.name}</div>
             {playlistForPage?.description && <div className="font-bold min-h-[72px] mb-10 text-3xl max-w-[600px]">{playlistForPage?.description}</div>}
             <div className="flex items-center mb-2">
-              <Image alt="Albom picture" className='object-cover mr-4 rounded-full !h-[60px]' width={60} height={60} src={playlistForPage?.userPicture ? process.env.NEXT_PUBLIC_BASIC_URL + playlistForPage?.userPicture : albomPicture} />
+              <Image alt="Albom picture" className='object-cover mr-4 rounded-full !h-[60px]' width={60} height={60} src={playlistForPage?.userPicture ? process.env.NEXT_PUBLIC_S3_BUCKET_URL + playlistForPage?.userPicture : albomPicture} />
               <div onClick={(e) => router.push("/users/" + playlistForPage.userId)} className=" hover:underline cursor-pointer font-semibold  text-2xl  max-w-full">{playlistForPage?.username}</div>
             </div>
             <div className="flex">
@@ -191,7 +191,7 @@ export const getServerSideProps = wrapper.getServerSideProps((store) =>
 
     const id = context?.params?.id
     await store.dispatch(fetchPlaylist(id as string));
-    //  const response = await axios.get(process.env.NEXT_PUBLIC_BASIC_URL + "alboms/" + id)
+    //  const response = await axios.get(process.env.NEXT_PUBLIC_S3_BUCKET_URL + "alboms/" + id)
     //  const serverPlaylist = response.data
     return {
       props: {},

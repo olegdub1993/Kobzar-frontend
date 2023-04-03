@@ -58,7 +58,7 @@ const UserPage: NextPage = (props) => {
       <div>
         <Grid container className="flex mb-12 items-center text-white relative">
           <div className='w-[300px] h-[300px] mb-4 mt-2 '>
-            {imgUrl ? <img className=' rounded-full  w-[300px] h-[300px]' src={imgUrl} /> : <Image alt="User picture" className='w-[100%] h-[100%] object-cover rounded-full' width={300} height={300} src={userForPage?.picture ? process.env.NEXT_PUBLIC_BASIC_URL + userForPage?.picture : albomPicture} />}
+            {imgUrl ? <img className=' rounded-full  w-[300px] h-[300px]' src={imgUrl} /> : <Image alt="User picture" className='w-[100%] h-[100%] object-cover rounded-full' width={300} height={300} src={userForPage?.picture ? process.env.NEXT_PUBLIC_S3_BUCKET_URL + userForPage?.picture : albomPicture} />}
           </div>
           <div className="ml-16 mr-24 mt-2">
             <div className="font-semibold mb-4 mt-6 text-2xl max-w-full">Профіль</div>

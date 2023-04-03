@@ -40,7 +40,7 @@ const Index = () => {
     return (
         <MainLayout>
             <div className="flex  items-center"> 
-            {imgUrl ? <img className=' rounded-full  w-[200px] h-[200px]' src={imgUrl}/>:user?.picture?<img className=' rounded-full  w-[200px] h-[200px]'  src={process.env.NEXT_PUBLIC_BASIC_URL + user.picture}/>:
+            {imgUrl ? <img className=' rounded-full  w-[200px] h-[200px]' src={imgUrl}/>:user?.picture?<img className=' rounded-full  w-[200px] h-[200px]'  src={process.env.NEXT_PUBLIC_S3_BUCKET_URL + user.picture}/>:
             <div className='bg-black rounded-full flex justify-center items-center w-[200px] h-[200px]'><PersonIcon   className='text-white rounded-full w-[150px] h-[150px]'/></div>}
     
            <div className="ml-8 font-semibold text-4xl"><div> {user?.username} </div>

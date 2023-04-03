@@ -16,9 +16,9 @@ const LibraryItem: React.FC<LibraryItemProps> = ({ playlist }) => {
             onClick={() => router.push("/playlist/" + playlist._id)}
         >
             <div className='m-auto w-[280px] h-[200px] mb-4 mt-2 '>
-                <Image className='w-[100%] h-[100%] object-cover rounded' height={250} width={250} src={playlist.picture ? process.env.NEXT_PUBLIC_BASIC_URL + playlist.picture : albomPicture} alt="Albom picture" />
+                <Image className='w-[100%] h-[100%] object-cover rounded' height={250} width={250} src={playlist.picture ? process.env.NEXT_PUBLIC_S3_BUCKET_URL + playlist.picture : albomPicture} alt="Albom picture" />
 
-                {/* <img className='w-[100%] h-[100%] object-cover rounded' src={process.env.NEXT_PUBLIC_BASIC_URL + playlist.picture} /> */}
+                {/* <img className='w-[100%] h-[100%] object-cover rounded' src={process.env.NEXT_PUBLIC_S3_BUCKET_URL + playlist.picture} /> */}
             </div>
             <div className=' mb-2'>
                 {/* {isTrackPlaying?  <IconButton className='bg-black' onClick={playOrPause}>{!pause ? <Pause color='error'  /> : <PlayArrow color='error' />}</IconButton>:

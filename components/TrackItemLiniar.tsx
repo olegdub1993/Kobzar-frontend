@@ -78,7 +78,7 @@ const TrackItem: React.FC<TrackItemProps> = ({ red, track, playlist, index }) =>
   }
   // const deleteItem = (e:React.MouseEvent<HTMLElement>) => {
   //     e.stopPropagation()
-  //     axios.delete(process.env.NEXT_PUBLIC_BASIC_URL + "tracks/" + track._id).then((r) => console.log("track deleted good"))
+  //     axios.delete(process.env.NEXT_PUBLIC_S3_BUCKET_URL + "tracks/" + track._id).then((r) => console.log("track deleted good"))
   // }
   const onMoreClickHandler = (e: React.MouseEvent<HTMLElement>) => {
     e.stopPropagation()
@@ -95,7 +95,7 @@ const TrackItem: React.FC<TrackItemProps> = ({ red, track, playlist, index }) =>
           <IconButton className='!bg-black  hover:!scale-125   hover:!bg-green-dark   !transition-all  !duration-500' onClick={pushAndPlay}><PlayArrow color='error' /></IconButton>
         }
       </div>
-      <div className='m-auto w-[100px] h-[60px] mr-6 '> <img className='w-[100%] h-[100%] object-cover rounded' src={process.env.NEXT_PUBLIC_BASIC_URL + track.picture} /></div>
+      <div className='m-auto w-[100px] h-[60px] mr-6 '> <img className='w-[100%] h-[100%] object-cover rounded' src={process.env.NEXT_PUBLIC_S3_BUCKET_URL + track.picture} /></div>
 
       <Grid container className="" direction={"column"}>
         <div className="font-bold truncate max-w-full">{track.name}</div>

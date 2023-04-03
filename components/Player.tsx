@@ -52,7 +52,7 @@ const Player = ({ setRestrictPopup, restrictPopup }: any) => {
     // console.log(active, "taken", taken)
     if (active && !taken) {
       // console.log(active)
-      audio.src = process.env.NEXT_PUBLIC_BASIC_URL + active.audio
+      audio.src = process.env.NEXT_PUBLIC_S3_BUCKET_URL + active.audio
       audio.volume = volume / 100
       audio.onloadedmetadata = () => {
         // console.log("onloadedmetadata", audio.duration)
@@ -200,7 +200,7 @@ const Player = ({ setRestrictPopup, restrictPopup }: any) => {
       paddingBottom: "10px", paddingLeft: "40px", display: "flex", alignItems: "center", position: "fixed", bottom: "0", zIndex: "2000", height: "90px",  color: "white"
     }} className="bg-black">
       <div className="w-[100px] mr-6" >
-        <div className='h-[70px]  rounded w-[100px]'><img src={process.env.NEXT_PUBLIC_BASIC_URL + active.picture} className='w-[100%] h-[100%] object-cover rounded' /></div>
+        <div className='h-[70px]  rounded w-[100px]'><img src={process.env.NEXT_PUBLIC_S3_BUCKET_URL + active.picture} className='w-[100%] h-[100%] object-cover rounded' /></div>
       </div>
       <div className="w-[150px] mr-12">
         <div onClick={(e) => router.push("/tracks/" + active._id)} className=' text-white font-medium  text-[14px] truncate max-w-full cursor-pointer  hover:underline'>{active.name}</div>

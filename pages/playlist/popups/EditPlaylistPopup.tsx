@@ -52,7 +52,7 @@ const EditPlaylistPopup: React.FC<EditPlaylistProps> = ({ setEditMode, playlist 
         <div className="shadow-[0px_0px_33px_2px_rgba(0,0,0,0.96)]  flex flex-col items-center fixed top-[200px]  left-[50%] translate-x-[-50%] bg-white w-[750px] p-6 rounded m-auto mt-8 ">
             <div className="flex mb-4 w-full justify-between">
                 <div className="flex flex-col items-center w-[50%] ">
-                    {imgUrl ? <img className='m-auto rounded-lg mb-4 w-[320px] h-[250px]' src={imgUrl} /> : playlist?.picture ? <img className='m-auto rounded-lg mb-4 w-[320px] h-[250px]' src={process.env.NEXT_PUBLIC_BASIC_URL + playlist.picture} /> :
+                    {imgUrl ? <img className='m-auto rounded-lg mb-4 w-[320px] h-[250px]' src={imgUrl} /> : playlist?.picture ? <img className='m-auto rounded-lg mb-4 w-[320px] h-[250px]' src={process.env.NEXT_PUBLIC_S3_BUCKET_URL + playlist.picture} /> :
                         <div className='bg-black m-auto rounded-lg mb-4 flex justify-center items-center w-[250px] h-[250px]'><AddPhotoAlternateIcon className='!text-white !rounded-full !w-[150px] !h-[150px]' /></div>}
                     <FileUpload setFile={setPlaylistPictureHandler} accept="image/*"><Button className=" !text-red !text-lg !font-semibold">{imgUrl ? "Змінити" : "Додати"} обкладинку</Button></FileUpload>
                 </div>

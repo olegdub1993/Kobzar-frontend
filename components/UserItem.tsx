@@ -17,7 +17,7 @@ const UserItem: React.FC<UserItemProps> = ({ user }) => {
             onClick={() => router.push("/users/" + user._id)}
         >
             <div className='m-auto w-[150px] h-[150px] mb-8 mt-2 '>
-               <Image alt="User picture" className='w-[100%] h-[100%] object-cover rounded-full' width={150} height={150} src={user.picture ? process.env.NEXT_PUBLIC_BASIC_URL + user.picture : albomPicture} />
+               <Image alt="User picture" className='w-[100%] h-[100%] object-cover rounded-full' width={150} height={150} src={user.picture ? process.env.NEXT_PUBLIC_S3_BUCKET_URL + user.picture : albomPicture} />
              </div>
             <Grid container className="max-w-full text-red" direction={"column"}>
                 <div className="font-bold truncate text-center max-w-full mb-4">{user.username}</div>
