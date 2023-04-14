@@ -7,6 +7,8 @@ import { usersSlice } from './usersSlice';
 import { authSlice } from "./authSlice";
 import { searchSlice } from "./searchSlice";
 import { playlistSlice } from "./playlistSlice";
+import { artistSlice } from "./artistSlice";
+
 const makeStore = () =>
   configureStore({
     reducer: {
@@ -17,6 +19,7 @@ const makeStore = () =>
       [authSlice.name]: authSlice.reducer,
       [playlistSlice.name]: playlistSlice.reducer,
       [searchSlice.name]: searchSlice.reducer,
+      [artistSlice.name]: artistSlice.reducer,
     },
     devTools: true,
   });

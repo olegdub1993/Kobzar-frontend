@@ -1,3 +1,5 @@
+
+import { IArtist } from './artist';
 export interface IComment {
     _id: string,
     username: string,
@@ -10,6 +12,7 @@ export interface ITrack {
     audio: string,
     picture: string,
     artist: string,
+    artists:IArtist[]
     name: string,
     listens: number,
     comments: IComment[],

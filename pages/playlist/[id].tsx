@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router';
 import MainLayout from '../../layouts/MainLayout';
-import { Button, Grid, IconButton, } from '@mui/material';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
 import axios from 'axios';
 import { IPlaylist } from '../../types/playlist';
 import TrackItem from '../../components/TrackItemLiniar';

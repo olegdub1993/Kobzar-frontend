@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { ITrack } from '../types/track'
 import { Card, Grid, IconButton } from '@mui/material';
 import Pause from '@mui/icons-material/Pause'
@@ -54,7 +54,8 @@ const TrackItem: React.FC<TrackItemProps> = ({ red, track, index, tracklist, }) 
             </div>
             <Grid container className="max-w-full text-white" direction={"column"}>
                 <div className="font-bold truncate max-w-full mb-[4px]">{track.name}</div>
-                <div className="text-[14px] truncate max-w-full">{track.artist}</div>
+                {/* <div className="text-[14px] truncate max-w-full">{track.artist}</div> */}
+             <div className="truncate max-w-full text-[14px]"> {track.artists.map((artist:any,index)=> <Fragment key={artist._id} >{artist.name}{index < (track.artists.length-1) ? ", " : ""}</Fragment>)}</div>
             </Grid>
         </div >
     )

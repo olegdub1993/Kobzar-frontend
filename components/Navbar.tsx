@@ -43,7 +43,11 @@ const manuItems = [
     // { text: "Tracks List", href: "/tracks",protect:true },
     // { text: "Alboms List", href: "/alboms",protect:true  },
     { icon: <PlaylistAddIcon className='text-red !w-[30px]' />, text: "Створити плейлист", href: "/createPlaylist", protect: true },
-    { icon: <FavoriteIcon className='text-red !w-[30px]' />, text: "Вподобані", href: "/liked", protect: true },]
+    { icon: <FavoriteIcon className='text-red !w-[30px]' />, text: "Вподобані", href: "/liked", protect: true }
+]
+const manuAdminItems = [
+        { icon: <PlaylistAddIcon className='text-red !w-[30px]' />, text: "Додати виконавця", href: "/artists/create", protect: true },
+        { icon: <PlaylistAddIcon className='text-red !w-[30px]' />, text: "Додати трек", href: "/tracks/create", protect: true }]
 
 const AppBar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== 'open',
@@ -154,7 +158,9 @@ export default function Navigation({ restrictPopup, setRestrictPopup }: any) {
                     {manuItems.map((item, index) => (
                         <MyListItem restrictPopup={restrictPopup} setRestrictPopup={setRestrictPopup} key={item.text} index={index} navItem={item} />
                     ))}
-
+                    {user?.admin ? manuAdminItems.map((item, index) => (
+                        <MyListItem restrictPopup={restrictPopup} setRestrictPopup={setRestrictPopup} key={item.text} index={index} navItem={item} />
+                    )):""}
                 </List>
 
                 <List className='text-white bg-black ' >
