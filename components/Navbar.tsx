@@ -75,7 +75,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     justifyContent: 'flex-end',
 }));
 
-export default function Navigation({ restrictPopup, setRestrictPopup }: any) {
+export default function Navbar({ restrictPopup, setRestrictPopup }: any) {
     const { isAuth } = useTypedSelector((state) => state.auth)
     const { user, alboms } = useTypedSelector((state) => state.user)
     const theme = useTheme();

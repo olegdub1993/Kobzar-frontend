@@ -15,6 +15,7 @@ import { wrapper } from '../../store/store'
 import { NextPage } from 'next';
 import { Button } from '@mui/material'
 import Image from 'next/image'
+import router from 'next/router';
 // interface TrackPageProps {
 //     serverTrack: ITrack
 // }
@@ -28,6 +29,11 @@ const TrackPage: NextPage = () => {
   const dispatch = useDispatch<any>()
   const [warningPopup, setWarningPopup] = useState(false)
   const [activeLokalPlaylist, setActiveLokalPlaylist] = useState("")
+
+  let duration =trackForPage ? Math.ceil(trackForPage.duration):0;
+  let minutes = Math.floor(duration / 60);
+  let seconds: string | number = duration - minutes * 60;
+  seconds = seconds < 10 ? "0" + seconds : seconds
 
   const pushAndPlay = (e: React.MouseEvent<HTMLElement>) => {
     e.stopPropagation()
@@ -82,8 +88,12 @@ const TrackPage: NextPage = () => {
         </div>
         <div className="ml-8 mt-2 max-w-[900px] relative ">
           <div className="font-semibold mb-4 mt-6 text-2xl max-w-full">Пісня</div>
-          <div className="font-bold mb-10 text-6xl  ">{trackForPage?.name}</div>
-          <div className="font-semibold mt-4   mb-4  text-4xl max-w-full">{trackForPage?.artist}</div>
+           <div className="font-bold mb-10 text-6xl  ">{trackForPage?.name}</div> 
+      <div className="flex gap-1"> 
+       {trackForPage?.artists.map((artist:any,index)=> <div key={artist._id} onClick={(e) => router.push("/artists/" + artist._id)} className=' font-semibold cursor-pointer max-w-full hover:underline text-white '>{artist.name}{index < (trackForPage?.artists.length-1) ? "•" : ""}</div>)}
+       <div className="font-semibold mr-12">{"• " + minutes + ":" + seconds}</div>
+      </div>
+          {/* <div className="font-semibold mt-4   mb-4  text-4xl max-w-full">{trackForPage?.artist}</div> */}
           {user &&
             <IconButton disabled={disabled} className='!mr-[10px] !absolute !bottom-0 hover:!scale-110 !duration-300  !transition-all' onClick={addOrRemoveFromLiked}>{isLiked ? <FavoriteIcon className="!w-[60px] !h-[60px]" color='error' /> : <FavoriteBorderIcon className="w-[60px] h-[60px]" color='error' />}</IconButton>}
         </div>

@@ -19,6 +19,7 @@ const tabs: TabType[] = [
     { type: "all", text: "все" },
     { type: "tracks", text: "пісні" },
     { type: "playlists", text: "плейлисти" },
+    { type: "artists", text: "артисти" },
     { type: "users", text: "профілі" }]
 
 
@@ -30,6 +31,7 @@ const Search = () => {
     const searchedTracks = searchedData?.tracks
     const searchedPlaylists = searchedData?.playlists
     const searchedUsers = searchedData?.users
+    const searchedArtists= searchedData?.artists
     const dispatch = useDispatch<any>()
     const [query, setQuery] = useState<string>("")
     const debouncedFetch = useDebouncedFunction((query: string) => { dispatch(searchContent({ query, type: selectedTab })) }, 500);
@@ -62,7 +64,7 @@ const Search = () => {
                 </div>
                 {(noContent && query) &&
                     <div className='text-white text-2xl font-bold mb-2 '>За вашим запитом нічого не знайдено</div>}
-                {(!searchedTracks?.length && !searchedPlaylists?.length && !searchedUsers?.length) ?
+                {(!searchedTracks?.length && !searchedPlaylists?.length && !searchedArtists?.length && !searchedUsers?.length) ?
                     <>
                         <div className='text-white text-2xl mt-8 font-bold  mb-2'>Пісні, які найчастіше шукають:</div>
                         <SearchTrackList tracks={tracksWithIndex} />
@@ -77,6 +79,13 @@ const Search = () => {
                             <div className='mb-4'>
                                 <div className='text-white text-2xl font-bold  mt-4 mb-2 '>Плейлисти</div>
                                 <Playlists playlists={searchedPlaylists} />
+                            </div> : ""}
+                        {searchedArtists?.length ?
+                            <div className='mb-4'>
+                                <div className='text-white text-2xl font-bold  mt-4 mb-2 '>Виконавці</div>
+                                <div className='grid md:grid-cols-4  xl:grid-cols-4 2xl:grid-cols-5 min-[1800px]:grid-cols-6'>
+                                    {searchedArtists.map((searchedArist) => <UserItem key={searchedArist._id} user={searchedArist} />)}
+                                </div>
                             </div> : ""}
                         {searchedUsers?.length ?
                             <div className='mb-4'>

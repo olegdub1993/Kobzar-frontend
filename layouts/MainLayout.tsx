@@ -1,7 +1,7 @@
 import { Container } from '@mui/material';
 import Head from 'next/head';
 import React, { useEffect,useState } from 'react'
-import Navigation from '../components/Navbar'
+import Navbar from '../components/Navbar';
 import Player from '../components/Player';
 import { useDispatch } from 'react-redux';
 import { checkAuth } from '../store/authSlice';
@@ -10,6 +10,7 @@ import { getUserPlaylists } from '../store/userSlice';
 import SuccesOperation from '../components/SuccesOperation';
 import { setMorePopup} from '../store/trackSlice';
 import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
+// import NavigationButtons from '../components/NavigationButtons';
 type propsType = {
     title?: string
     description?: string
@@ -56,13 +57,14 @@ const MainLayout: React.FC<propsType> = ({ children, title, description, keyword
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
             </Head>
             <div onClick={()=>{setRestrictPopup(""); dispatch(setMorePopup(""))}}>
-            <Navigation setRestrictPopup={setRestrictPopup} restrictPopup={restrictPopup} />
+            <Navbar setRestrictPopup={setRestrictPopup} restrictPopup={restrictPopup} />
              <div  className={`${red?"bg-gradient-to-b from-[#000000] via-[#720000] to-[#E70103]":""}
              ${differPadding?"!pl-[240px] !pb-[90px] !pr-[0px] !pt-[64px]":""}  pl-[300px] min-h-screen pt-[80px] pb-[110px] p-8 relative `} >
                 {/* <div className='fixed left-[40px] top-[80px] text-[70px] text-[#fafd23] font-bold uppercase '  style={{fontFamily: "'Clash Display', sans-serif", writingMode:'vertical-rl',textOrientation: 'upright',textShadow: '4px 4px 2px rgba(150, 150, 150, 1)'}} >
                  Слава  </div> 
                  <div className='fixed left-[145px] top-[210px] text-[70px]  text-[#064ebb] font-bold uppercase '  style={{ writingMode:'vertical-rl',textOrientation: 'upright',textShadow: '4px 4px 2px rgba(150, 150, 150, 1)'}} >
                   Україні </div> */}
+                  {/* <NavigationButtons/> */}
                 {children}
             </div>
             <SuccesOperation/>

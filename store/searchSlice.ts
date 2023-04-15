@@ -5,11 +5,13 @@ import { ITrack, } from '../types/track'
 import { tracksAPI, playlistAPI } from "../API/api";
 import { IPlaylist } from "../types/playlist";
 import { IUser } from './../types/user';
+import { IArtist } from "../types/artist";
 
 export type SearchData = {
   tracks: ITrack[],
   playlists: IPlaylist[]
   users: IUser[]
+  artists:IArtist[]
 }
 
 // Type for our state
@@ -31,7 +33,7 @@ export const searchContent = createAsyncThunk(
   async (queryData: any, { rejectWithValue, dispatch }) => {
     try {
       const response = await tracksAPI.getSearchedTracks(queryData)
-      if (response.data.length == 0 || (response.data.tracks?.length == 0 && response.data.playlists?.length == 0 && response.data.users?.length == 0)) {
+      if (response.data.length == 0 || (response.data.tracks?.length == 0 && response.data.artists?.length == 0 && response.data.playlists?.length == 0 && response.data.users?.length == 0)) {
         dispatch(setNoContent(true))
       } else {
         dispatch(setNoContent(false))
