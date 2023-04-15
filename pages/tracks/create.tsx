@@ -31,7 +31,7 @@ const Create = () => {
             setStep((step) => step + 1)
         } else {
             const formData = new FormData()
-            // formData.append("name", name.value)
+            formData.append("name", name.value)
             formData.append("category", category)
             formData.append("artists", JSON.stringify(artists))
             formData.append("audio", audio as Blob)

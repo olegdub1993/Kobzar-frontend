@@ -20,9 +20,10 @@ interface TrackItemProps {
   track: ITrack
   playlist: IPlaylist
   red?: boolean
+  withoutName?:boolean
 }
 
-const TrackItem: React.FC<TrackItemProps> = ({ red, track, playlist, index }) => {
+const TrackItem: React.FC<TrackItemProps> = ({withoutName, red, track, playlist, index }) => {
   const { user } = useTypedSelector((state) => state.user)
   const { playlistForPage } = useTypedSelector((state) => state.playlist)
   const { active, disabled, pause, activePlaylistId } = useTypedSelector((state) => state.player)
@@ -99,7 +100,7 @@ const TrackItem: React.FC<TrackItemProps> = ({ red, track, playlist, index }) =>
 
       <Grid container className="" direction={"column"}>
         <div className="font-bold truncate max-w-full">{track.name}</div>
-        <div className="font-semibold truncate max-w-full">{track.artist}</div>
+        {!withoutName?<div className="font-semibold truncate max-w-full">{track.artist}</div>:""}
       </Grid>
       <div className="font-semibold mr-12">{minutes + ":" + seconds}</div>
       {user &&

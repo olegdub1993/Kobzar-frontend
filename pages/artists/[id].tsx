@@ -72,7 +72,7 @@ console.log(artist?.tracks)
         <div className="pt-12 pb-32 bg-gradient-to-b from-[#000000] to-[#720000] ">
         {artist?.tracks?.length ?
             <div>
-              {artist?.tracks?.map((track, index) => <TrackItem key={track._id+index} index={index} track={track} playlist={artist as IPlaylist} />)}
+              {artist?.tracks?.map((track, index) => <TrackItem withoutName key={track._id+index} index={index} track={track} playlist={artist as IPlaylist} />)}
             </div>:""}
         </div>
       </div>
