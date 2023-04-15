@@ -10,6 +10,7 @@ import SearchTrackList from '../../components/SearchTrackList';
 import { Button } from '@mui/material';
 import Playlists from '../../components/Playlists'
 import UserItem from './../../components/UserItem';
+import { IArtist } from '../../types/artist';
 
 type TabType = {
     type: string,

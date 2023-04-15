@@ -11,5 +11,7 @@ export interface IUser {
     subscribers:IUser[],
     username: string,
     email: string,
-    password: string
+    password: string,
+    // this property for artist
+    name?: string;
 }

@@ -5,7 +5,8 @@ import { IUser } from './../types/user';
 import albomPicture from './../public/kobza.jpg'
 import Image from 'next/image';
 interface UserItemProps {
-    user: IUser
+   // user: IUser
+   user:any
 }
 
 const UserItem: React.FC<UserItemProps> = ({ user }) => {
