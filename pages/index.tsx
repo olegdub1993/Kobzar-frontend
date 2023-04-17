@@ -3,15 +3,16 @@ import TrackList from '../components/TrackList'
 import Playlists from '../components/Playlists'
 import MainLayout from '../layouts/MainLayout'
 import { wrapper } from '../store/store'
-import { fetchTracks, fetchPlaylists} from '../store/trackSlice'
+import { fetchTracks, fetchPlaylists, fetchArtists} from '../store/trackSlice'
 import { useTypedSelector } from './../hooks/useTypedSelector';
 import {ITrack } from './../types/track';
 import { parseCookies} from "nookies";
 import { checkAuth } from './../store/authSlice';
 import { fetchUser } from '../store/userSlice'
+import ArtistList from '../components/ArtistList'
 
 export default function Home() {
-  const { tracks, playlists, } = useTypedSelector((state) => state.track)
+  const { tracks, playlists, artists } = useTypedSelector((state) => state.track)
   // const { isAuth} = useTypedSelector((state) => state.auth)
   // const { user} = useTypedSelector((state) => state.user)
   const rock = tracks.filter((track:ITrack) => track.category === 'rock')
@@ -34,6 +35,10 @@ export default function Home() {
             <TrackList tracks={rock} />
           </div>
           <div className='mb-4'>
+            <div className='text-white text-2xl font-bold mb-2 '>Ремікси</div>
+            <TrackList tracks={remix} />
+          </div>
+          <div className='mb-4'>
             <div className='text-white text-2xl font-bold mb-2 '>Різдвяні свята</div>
             <TrackList tracks={christmas} />
           </div>
@@ -42,8 +47,8 @@ export default function Home() {
             <TrackList tracks={forSoul} />
           </div>
           <div className='mb-4'>
-            <div className='text-white text-2xl font-bold mb-2 '>Ремікси</div>
-            <TrackList tracks={remix} />
+            <div className='text-white text-2xl font-bold mb-2 '>Виконавці</div>
+              <ArtistList artists={artists} />
           </div>
           <div className='mb-4'>
             <div className='text-white text-2xl font-bold mb-2 '>Плейлисти</div>
@@ -62,6 +67,7 @@ export const getServerSideProps = wrapper.getServerSideProps((store) =>
   //  const response =  await store.dispatch(fetchUser(accessToken));
     await store.dispatch(fetchTracks());
     await store.dispatch(fetchPlaylists());
+    await store.dispatch(fetchArtists());
     return {
       props: {}
     }

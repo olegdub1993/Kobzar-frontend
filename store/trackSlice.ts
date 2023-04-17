@@ -5,11 +5,13 @@ import { ITrack, } from '../types/track'
 import axios from "axios";
 import { tracksAPI,playlistAPI} from "../API/api";
 import { IPlaylist } from "../types/playlist";
+import { IArtist } from "../types/artist";
 // Type for our state
 export interface TrackState { 
   trackForPage:ITrack|null
   playlists:any[]
   tracks: ITrack[]
+  artists: IArtist[]
   error: string
   morePopup:string
 }
@@ -20,6 +22,7 @@ const initialState: TrackState = {
   tracks: [],
   error: "",
   playlists:[],
+  artists:[],
   morePopup:""
 };
 export const fetchTracks = createAsyncThunk(
@@ -31,6 +34,20 @@ export const fetchTracks = createAsyncThunk(
       // const response =  await tracksAPI.getTracks()
       //no localeStorage
       dispatch(setTracks(response.data)) 
+    } catch (error) {
+      dispatch(setError("Some Server erroor"))
+    }
+  } 
+); 
+export const fetchArtists = createAsyncThunk(
+  "track/fetchArtists",
+  async (_, { rejectWithValue, dispatch }) => {
+    try {
+      const response = await  axios.get(process.env.NEXT_PUBLIC_BASIC_URL+"artists")
+    // const response = await  axios.get('http://192.168.1.102:5000/'+"tracks")
+      // const response =  await tracksAPI.getTracks()
+      //no localeStorage
+      dispatch(setArtists(response.data)) 
     } catch (error) {
       console.log("dddd")
       dispatch(setError("Some Server erroor"))
@@ -85,6 +102,10 @@ export const trackSlice = createSlice({
       state.playlists = action.payload
       // console.log("insettracks",  state.tracks )
     },
+    setArtists(state, action) {
+      state.artists = action.payload
+      // console.log("insettracks",  state.tracks )
+    },
     setError(state, action) {
       state.error = action.payload
     },
@@ -104,6 +125,6 @@ export const trackSlice = createSlice({
 
 });
 
-export const { setTracks, setError,setMorePopup, setPlaylists, setTrackForPage} = trackSlice.actions;
+export const { setTracks, setError,setMorePopup, setPlaylists, setArtists, setTrackForPage} = trackSlice.actions;
 
 export default trackSlice.reducer;
