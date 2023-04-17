@@ -71,7 +71,7 @@ let pathA=process.env.NEXT_PUBLIC_S3_BUCKET_URL + artist?.picture
         </Grid>
         <div className="pt-8 pb-32 bg-gradient-to-b from-[#000000] to-[#720000] ">
         <div className="relative">
-                <Button disabled={disabled} onClick={(e) => createOrRemoveSubscription(e)} className='!bg-white ml-8 mb-8 !capitalize !w-[150px] hover:!bg-light-red !text-black !font-semibold'>{isSubscription ? "Відписатись" : "Підписатись"}</Button>
+                <Button disabled={disabled} onClick={(e) => createOrRemoveSubscription(e)} className='!bg-white !ml-8 !mb-8 !capitalize !w-[150px] hover:!bg-light-red !text-black !font-semibold'>{isSubscription ? "Відписатись" : "Підписатись"}</Button>
                 {restrictPopup === "subscribe" && <Popup setPopup={() => dispatch(setRestrictPopup(""))} className="bottom-[80px] left-[50%] translate-x-[-50%]" />}
          </div>
         {artist?.tracks?.length ?
