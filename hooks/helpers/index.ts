@@ -55,7 +55,7 @@ export const getSubscribersWord =(playlistsArray:IUser[]):string=>{
   }
   return playlistsWord
 }
-  export const getSubscriptionsWord =(playlistsArray:IUser[]):string=>{
+  export const getSubscriptionsWord =(playlistsArray:any[]):string=>{
     let playlistsWord=""
     if (playlistsArray!==undefined){
       const playlistsAmountString=playlistsArray.length.toString()

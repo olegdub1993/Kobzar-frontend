@@ -26,7 +26,7 @@ const ArtistPage: NextPage = (props) => {
   const { user } = useTypedSelector((state) => state.user)
   const { disabled, activePlaylistId, pause } = useTypedSelector((state) => state.player)
   const [editMode, setEditMode] = useState(false)
-  // const isSubscription = user?.subscriptions?.find((id: string) => id === userForPage?._id)
+  const isSubscription = user?.subscriptionsToArtists?.find((id: string) => id === artist?._id)
   const router = useRouter()
   const [imgUrl, setImageUrl] = useState<any>()
   const dispatch = useDispatch<any>()
@@ -35,26 +35,26 @@ const ArtistPage: NextPage = (props) => {
   // const subscribersWord = getSubscribersWord(userForPage?.subscribers)
   // const subscriptionsWord = getSubscriptionsWord(userForPage?.subscriptions)
 
-  // const createOrRemoveSubscription = (e: React.MouseEvent<HTMLElement>) => {
-  //   if (!user) {
-  //     e.stopPropagation()
-  //     dispatch(setRestrictPopup("subscribe"))
-  //     return
-  //   }
-  //   if (!isSubscription) {
-  //     dispatch(createSubscription(userForPage._id))
-  //   }
-  //   else {
-  //     dispatch(deleteSubscription(userForPage._id))
-  //   }
-  // }
+  const createOrRemoveSubscription = (e: React.MouseEvent<HTMLElement>) => {
+    if (!user) {
+      e.stopPropagation()
+      dispatch(setRestrictPopup("subscribe"))
+      return
+    }
+    if (!isSubscription) {
+      dispatch(createSubscription({type:"artists", id:artist._id}))
+    }
+    else {
+      dispatch(deleteSubscription({type:"artists", id:artist._id}))
+    }
+  }
 
   // const onMoreClickHandler =(e:React.MouseEvent<HTMLElement>)=>{
   //   e.stopPropagation()
   //   dispatch(setMorePopup(userForPage?._id))
   // }
 let pathA=process.env.NEXT_PUBLIC_S3_BUCKET_URL + artist?.picture
-console.log(artist?.tracks)
+
   return (
     <MainLayout title={'Kobzar ' + artist?.name}
       keywords={"Music, tracks, " + artist?.name} red differPadding >
@@ -69,7 +69,11 @@ console.log(artist?.tracks)
             <div className="font-bold mb-8 text-8xl  max-w-full">{artist?.name}</div>
           </div>
         </Grid>
-        <div className="pt-12 pb-32 bg-gradient-to-b from-[#000000] to-[#720000] ">
+        <div className="pt-8 pb-32 bg-gradient-to-b from-[#000000] to-[#720000] ">
+        <div className="relative">
+                <Button disabled={disabled} onClick={(e) => createOrRemoveSubscription(e)} className='!bg-white ml-8 mb-8 !capitalize !w-[150px] hover:!bg-light-red !text-black !font-semibold'>{isSubscription ? "Відписатись" : "Підписатись"}</Button>
+                {restrictPopup === "subscribe" && <Popup setPopup={() => dispatch(setRestrictPopup(""))} className="bottom-[80px] left-[50%] translate-x-[-50%]" />}
+         </div>
         {artist?.tracks?.length ?
             <div>
               {artist?.tracks?.map((track, index) => <TrackItem withoutName key={track._id+index} index={index} track={track} playlist={artist as IPlaylist} />)}

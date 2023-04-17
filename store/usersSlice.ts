@@ -20,7 +20,7 @@ export const fetchUserProfile = createAsyncThunk(
   async (id:string, { rejectWithValue, dispatch }) => {
     try {
       const response = await  axios.get(process.env.NEXT_PUBLIC_BASIC_URL+"users/"+id)
-      console.log(response.data)
+     //console.log(response.data)
       // no locale storage
       // const response = await userAPI.getUserProfile(id)
       dispatch(setUserForPage(response.data))

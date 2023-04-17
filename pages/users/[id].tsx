@@ -28,10 +28,11 @@ const UserPage: NextPage = (props) => {
   const router = useRouter()
   const [imgUrl, setImageUrl] = useState<any>()
   const dispatch = useDispatch<any>()
-
   const playlistsWord = getPlaylistsWord(userForPage?.playlists)
   const subscribersWord = getSubscribersWord(userForPage?.subscribers)
-  const subscriptionsWord = getSubscriptionsWord(userForPage?.subscriptions)
+  //@ts-ignore
+  const allSubscriptions = (userForPage?.subscriptions ?? []).concat(userForPage?.subscriptionsToArtists ?? [])
+  const subscriptionsWord = getSubscriptionsWord(allSubscriptions)
 
   const createOrRemoveSubscription = (e: React.MouseEvent<HTMLElement>) => {
     if (!user) {
@@ -40,10 +41,10 @@ const UserPage: NextPage = (props) => {
       return
     }
     if (!isSubscription) {
-      dispatch(createSubscription(userForPage._id))
+      dispatch(createSubscription({type:"users", id:userForPage._id}))
     }
     else {
-      dispatch(deleteSubscription(userForPage._id))
+      dispatch(deleteSubscription({type:"users", id:userForPage._id}))
     }
   }
 
@@ -66,7 +67,7 @@ const UserPage: NextPage = (props) => {
             <div className="flex">
               <div className="font-bold mb-8 text-xl mr-2 max-w-full">{userForPage?.playlists?.length + ' ' + playlistsWord},</div>
               <div className="font-bold mb-8 text-xl mr-2 max-w-full">{userForPage?.subscribers?.length + ' ' + subscribersWord},</div>
-              <div className="font-bold mb-8 text-xl  max-w-full">{userForPage?.subscriptions?.length + ' ' + subscriptionsWord}</div>
+              <div className="font-bold mb-8 text-xl  max-w-full">{userForPage?.subscriptions?.length + userForPage?.subscriptionsToArtists?.length +' ' + subscriptionsWord}</div>
             </div>
             {user?.id === userForPage?._id &&
               <Button
@@ -106,6 +107,7 @@ const UserPage: NextPage = (props) => {
           <div className='font-bold text-xl mb-4 text-white'>
             Підписки
             <div className="flex">
+              {userForPage?.subscriptionsToArtists?.map((subscription) => <UserItem key={subscription._id} user={subscription} />)}
               {userForPage?.subscriptions?.map((subscription) => <UserItem key={subscription._id} user={subscription} />)}
             </div>
           </div>}

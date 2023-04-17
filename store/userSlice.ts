@@ -33,11 +33,12 @@ const initialState: UserState = {
 
 export const createSubscription = createAsyncThunk(
   "user/createSubscription",
-  async (id: string, { rejectWithValue, dispatch }) => {
+  async (data:any, { rejectWithValue, dispatch }) => {
+    let type=data.type==="artists"?"subscriptionsToArtists":"subscriptions"
     dispatch(setDisabled(true))
     try {
-      const response = await userAPI.createSubscription(id);
-      dispatch(addToSubscriptionsId(response.data));
+      const response = await userAPI.createSubscription(data);
+      dispatch(addToSubscriptionsId({type, data:response.data}));
       dispatch(setSuccess('Ви успішно підписались'))
     } catch (error) {
       // dispatch(setError("Some Server erroor"))
@@ -48,10 +49,11 @@ export const createSubscription = createAsyncThunk(
 );
 export const deleteSubscription = createAsyncThunk(
   "user/deleteSubscription",
-  async (id: string, { rejectWithValue, dispatch }) => {
+  async (data:any,  { rejectWithValue, dispatch }) => {
+    let type=data.type==="artists"?"subscriptionsToArtists":"subscriptions"
     try {
-      const response = await userAPI.deleteSubscription(id)
-      dispatch(removeFromSubscriptionsId(response.data))
+      const response = await userAPI.deleteSubscription(data)
+      dispatch(removeFromSubscriptionsId({type, data:response.data}))
       dispatch(setSuccess('Ви успішно відписались'))
     } catch (error) {
       // dispatch(setError("Some Server erroor"))
@@ -239,12 +241,12 @@ export const userSlice = createSlice({
     // },
     addToSubscriptionsId(state, action) {
       if (state.user) {
-        state.user = { ...state.user, subscriptions: [...state.user.subscriptions, action.payload] }
+        state.user = { ...state.user, [action.payload.type]: [...state.user[action.payload.type], action.payload.data] }
       }
     },
     removeFromSubscriptionsId(state, action) {
       if (state.user) {
-        state.user = { ...state.user, subscriptions: state.user.subscriptions.filter((id:string) => id !== action.payload) }
+        state.user = { ...state.user, [action.payload.type]: state.user[action.payload.type].filter((id:string) => id !== action.payload.data) }
       }
     },
     addToLikedTracksId(state, action) {
@@ -271,7 +273,6 @@ export const userSlice = createSlice({
       state.alboms = action.payload
     },
     setSuccess(state, action) {
-      console.log("ddd", action.payload)
       state.success = action.payload
     },
     // setError(state, action) {
