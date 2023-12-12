@@ -55,6 +55,7 @@ const MainLayout: React.FC<propsType> = ({ children, title, description, keyword
                 <meta name='robots' content="index, follow" />
                 <meta name="keywords" content={keywords || "Music, tracks, artists"} />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
+                <meta name="google-site-verification" content="Bk1K1l77NXeJADdWOmMZrERi-WRCKNY7G9JlArRpans" />
             </Head>
             <div onClick={()=>{setRestrictPopup(""); dispatch(setMorePopup(""))}}>
             <Navbar setRestrictPopup={setRestrictPopup} restrictPopup={restrictPopup} />
