@@ -25,33 +25,33 @@ export default function Home() {
     <>
       <MainLayout red>
         <div className=''>
-          <div className='text-white text-4xl font-bold mb-6'> Доброго вечора, ми з України!</div>
+          <div className='text-white dark:text-black text-4xl font-bold mb-6'> Доброго вечора, ми з України!</div>
           <div className='mb-4'>
-            <div className='text-white text-2xl font-bold mb-2'>Популярне</div>
+            <div className='text-white dark:text-black text-2xl font-bold mb-2'>Популярне</div>
             <TrackList tracks={popular} />
           </div>
           <div className='mb-4'>
-            <div className='text-white text-2xl font-bold mb-2'>Український рок</div>
+            <div className='text-white dark:text-black text-2xl font-bold mb-2'>Український рок</div>
             <TrackList tracks={rock} />
           </div>
           <div className='mb-4'>
-            <div className='text-white text-2xl font-bold mb-2 '>Ремікси</div>
+            <div className='text-white dark:text-black text-2xl font-bold mb-2 '>Ремікси</div>
             <TrackList tracks={remix} />
           </div>
           <div className='mb-4'>
-            <div className='text-white text-2xl font-bold mb-2 '>Різдвяні свята</div>
+            <div className='text-white dark:text-black text-2xl font-bold mb-2 '>Різдвяні свята</div>
             <TrackList tracks={christmas} />
           </div>
           <div className='mb-4'>
-            <div className='text-white text-2xl font-bold mb-2 '>Для душі</div>
+            <div className='text-white dark:text-black text-2xl font-bold mb-2 '>Для душі</div>
             <TrackList tracks={forSoul} />
           </div>
           <div className='mb-4'>
-            <div className='text-white text-2xl font-bold mb-2 '>Виконавці</div>
+            <div className='text-white dark:text-black text-2xl font-bold mb-2 '>Виконавці</div>
               <ArtistList artists={artists} />
           </div>
           <div className='mb-4'>
-            <div className='text-white text-2xl font-bold mb-2 '>Плейлисти</div>
+            <div className='text-white dark:text-black text-2xl font-bold mb-2 '>Плейлисти</div>
             <Playlists playlists={playlists} />
           </div>
         </div>

@@ -198,13 +198,13 @@ const Player = ({ setRestrictPopup, restrictPopup }: any) => {
     <div style={{
       width: "100%", paddingRight: "40px", paddingTop: "10px",
       paddingBottom: "10px", paddingLeft: "40px", display: "flex", alignItems: "center", position: "fixed", bottom: "0", zIndex: "2000", height: "90px",  color: "white"
-    }} className="bg-black">
+    }} className="bg-black dark:bg-blue-dark">
       <div className="w-[100px] mr-6" >
         <div className='h-[70px]  rounded w-[100px]'><img src={process.env.NEXT_PUBLIC_S3_BUCKET_URL + active.picture} className='w-[100%] h-[100%] object-cover rounded' /></div>
       </div>
       <div className="w-[180px] mr-12">
-        <div onClick={(e) => router.push("/tracks/" + active._id)} className=' text-white font-medium  text-[14px] truncate max-w-full cursor-pointer  hover:underline'>{active.name}</div>
-      <div className="flex gap-1"> {active.artists.map((artist:any,index)=> <div key={artist._id} onClick={(e) => router.push("/artists/" + artist._id)} className='cursor-pointer max-w-full hover:underline text-[12px] text-white opacity-[0.65]'>{artist.name}{index < (active.artists.length-1) ? "," : ""}</div>)}</div>
+        <div onClick={(e) => router.push("/tracks/" + active._id)} className=' text-white dark:text-black font-medium  text-[14px] truncate max-w-full cursor-pointer  hover:underline'>{active.name}</div>
+      <div className="flex gap-1"> {active.artists.map((artist:any,index)=> <div key={artist._id} onClick={(e) => router.push("/artists/" + artist._id)} className='cursor-pointer max-w-full hover:underline text-[12px] text-white dark:text-black opacity-[0.65]'>{artist.name}{index < (active.artists.length-1) ? "," : ""}</div>)}</div>
       </div>
  
       <div className="relative">

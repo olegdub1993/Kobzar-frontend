@@ -77,7 +77,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 export default function Navbar({ restrictPopup, setRestrictPopup }: any) {
     const { isAuth } = useTypedSelector((state) => state.auth)
-    const { user, alboms } = useTypedSelector((state) => state.user)
+    const { user, alboms,darkMode } = useTypedSelector((state) => state.user)
     const theme = useTheme();
     const [open, setOpen] = React.useState(true);
     const router = useRouter()
@@ -93,7 +93,7 @@ export default function Navbar({ restrictPopup, setRestrictPopup }: any) {
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
-            <AppBar position="fixed"  open={open} className="!bg-black">
+            <AppBar position="fixed"  open={open} className="!bg-black dark:!bg-blue">
                 <Toolbar className='flex justify-between'>
                     <div className='flex items-center'>
                         <IconButton
@@ -105,7 +105,7 @@ export default function Navbar({ restrictPopup, setRestrictPopup }: any) {
                         >
                             <MenuIcon color='error' />
                         </IconButton>
-                        <Typography variant="h6" noWrap component="div">
+                        <Typography variant="h6" noWrap component="div" className='dark:text-black'>
                             KOBZAR
                         </Typography>
                         {/* <Button onClick={()=>dispatch(fetchUser())} className='bg-white capitalize text-black font-semibold'>Реєстрація</Button> */}
@@ -119,7 +119,7 @@ export default function Navbar({ restrictPopup, setRestrictPopup }: any) {
                             {user?.picture ? <Image alt="avatar" width={40} height={40} className="rounded-full w-[40px] h-[40px] bg-red mr-4"
                                 src={process.env.NEXT_PUBLIC_S3_BUCKET_URL + user.picture} /> :
                                 <div className="flex items-center justify-center rounded-full w-[40px] h-[40px] bg-red mr-4"><PersonIcon className="mb-[5px]" /></div>}
-                            <Typography className='text-white' variant="h6" noWrap component="div">
+                            <Typography className='text-white dark:text-black' variant="h6" noWrap component="div">
                                 {user?.username}
                             </Typography>
                             <HoverPopup />
@@ -136,7 +136,7 @@ export default function Navbar({ restrictPopup, setRestrictPopup }: any) {
                         overflowY: "visible !important",
                         width: drawerWidth,
                         boxSizing: 'border-box',
-                        bgcolor: "#1B1C1E"
+                        bgcolor: darkMode? "#B2FFFF":"#1B1C1E"
                     },
                 }}
 
@@ -145,7 +145,7 @@ export default function Navbar({ restrictPopup, setRestrictPopup }: any) {
                 open={open}
             >
                 <DrawerHeader sx={{
-                    bgcolor: "#1B1C1E"
+                    bgcolor: darkMode? "#B2FFFF":"#1B1C1E"
                 }} >
                     <IconButton onClick={handleDrawerClose}>
                         {theme.direction === 'ltr' ? <ChevronLeftIcon fontSize='large' color='error' /> : <ChevronRightIcon fontSize='large' color='error' />}
@@ -153,7 +153,7 @@ export default function Navbar({ restrictPopup, setRestrictPopup }: any) {
                 </DrawerHeader>
                 <Divider />
                 <List
-                    className='text-white bg-black  border-b border-white '
+                    className='text-white  bg-black dark:text-black dark:bg-blue border-b border-white'
                 >
                     {manuItems.map((item, index) => (
                         <MyListItem restrictPopup={restrictPopup} setRestrictPopup={setRestrictPopup} key={item.text} index={index} navItem={item} />
@@ -163,7 +163,7 @@ export default function Navbar({ restrictPopup, setRestrictPopup }: any) {
                     )):""}
                 </List>
 
-                <List className='text-white bg-black ' >
+                <List className='text-white dark:text-black bg-black dark:!bg-blue' >
                     {alboms?.map((albom) => (<div
                         onClick={() => router.push(`/playlist/${albom._id}`)} className='ml-[75px] cursor-pointer mt-3 mb-3' key={albom._id} >{albom.name}</div>
                     ))}
@@ -188,7 +188,7 @@ const MyListItem = ({ navItem, index, setRestrictPopup, restrictPopup }: any) =>
         }
     }
     return <ListItem onClick={(e) => onListItemClick(e, navItem.href)} disablePadding
-        className='text-white relative' >
+        className='text-white dark:text-black relative' >
         <ListItemButton>
             <ListItemIcon>
                 {navItem.icon}

@@ -20,8 +20,13 @@ module.exports = {
       //  "green-dark": "rgb(1 50 9)",
       gray: "#8492a6",
       "gray-light": "#d3dce6",
+      blue:'#B2FFFF',
+      "blue-light": "#D6FFFF",
+      // "blue-dark" :"#0AFFFF"
+      "blue-dark" :"#85FFFF"
     },
     extend: {},
   },
   plugins: [],
+  darkMode:"class"
 };

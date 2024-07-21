@@ -19,6 +19,7 @@ export interface UserState {
   alboms: null | any[]
   success: string
   userForPage: IUser
+  darkMode: boolean
 }
 
 // Initial state
@@ -28,7 +29,8 @@ const initialState: UserState = {
   // likedPlaylists:[],
   alboms: null,
   success: "",
-  userForPage: {} as IUser
+  userForPage: {} as IUser,
+  darkMode:false,
 };
 
 export const createSubscription = createAsyncThunk(
@@ -275,6 +277,10 @@ export const userSlice = createSlice({
     setSuccess(state, action) {
       state.success = action.payload
     },
+    setDarkMode(state, action) {
+      state.darkMode = action.payload
+      localStorage.setItem("darkMode", action.payload)
+    },
     // setError(state, action) {
     //   state.error = action.payload
     // },
@@ -292,6 +298,6 @@ export const userSlice = createSlice({
 
 });
 
-export const { setUser, removeFromSubscriptionsId, addToSubscriptionsId, setUserForPage, setLiked, setSuccess, setAlboms, addToLikedTracksId, addToLikedPlaylistsId, removeLikedId, removeLikedPlaylistsId } = userSlice.actions;
+export const { setUser, removeFromSubscriptionsId, addToSubscriptionsId, setUserForPage, setLiked, setSuccess, setAlboms, addToLikedTracksId, addToLikedPlaylistsId, removeLikedId, removeLikedPlaylistsId, setDarkMode } = userSlice.actions;
 
 export default userSlice.reducer;

@@ -15,6 +15,9 @@ export const HoverPopup = () => {
         {/* <Link href="/manageAccount">Профіль</Link> */}
         <Link href={`/users/${user?.id}`}>Профіль</Link>
       </div>
+      <div className='text-center pb-[10px]  transition-all hover:scale-105'>
+        <Link href='/settings'>Налаштування</Link>
+      </div>
       <div className='border-b border-white'></div>
       <div
         className=' text-center transitiontransition-all cursor-pointer pt-[10px] hover:scale-105'

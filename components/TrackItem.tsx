@@ -43,7 +43,7 @@ const TrackItem: React.FC<TrackItemProps> = ({ red, track, index, tracklist, }) 
     }
     return (
         <div
-            className={`${red ? '!bg-red' : ''} relative group flex flex-col items-center m-[10px] p-[16px] rounded !bg-[#2B2B2BA6] hover:!scale-105 hover:!shadow-lg transition-all  duration-500  max-w-[195px] w-full shadow-sm cursor-pointer`}
+            className={`${red ? '!bg-red' : ''} relative group flex flex-col items-center m-[10px] p-[16px] rounded !bg-[#2B2B2BA6] dark:!bg-blue hover:!scale-105 hover:!shadow-lg transition-all  duration-500  max-w-[195px] w-full shadow-sm cursor-pointer`}
             onClick={() => router.push("/tracks/" + track._id)}
         >
             <div className='m-auto w-full h-[156px] mb-4 '> <Image alt="Track`s image"  className='w-[100%] h-[100%]  object-cover rounded' height={250} width={250} src={process.env.NEXT_PUBLIC_S3_BUCKET_URL + track.picture} /></div>
@@ -52,7 +52,7 @@ const TrackItem: React.FC<TrackItemProps> = ({ red, track, index, tracklist, }) 
                     <IconButton className='!bg-green-dark  hover:!scale-125   hover:!bg-green-dark   !transition-all  !duration-300' onClick={pushAndPlay}><PlayArrow color='error' /></IconButton>
                 }
             </div>
-            <Grid container className="max-w-full text-white" direction={"column"}>
+            <Grid container className="max-w-full text-white dark:text-black" direction={"column"}>
                 <div className="font-bold truncate max-w-full mb-[4px]">{track.name}</div>
                 {/* <div className="text-[14px] truncate max-w-full">{track.artist}</div> */}
              <div className="truncate max-w-full text-[14px]"> {track.artists?.map((artist:any,index)=> <Fragment key={artist._id} >{artist.name}{index < (track.artists.length-1) ? ", " : ""}</Fragment>)}</div>

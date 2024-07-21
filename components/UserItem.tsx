@@ -14,7 +14,7 @@ const UserItem: React.FC<UserItemProps> = ({ user }) => {
     //this component should  be renamed bacause  it is for users and artists
     return (
         <div
-            className=' flex flex-col items-center m-[10px] p-[10px]  bg-black pr-6 pl-6 hover:!scale-105 hover:!shadow-lg !transition-all rounded  !duration-500  w-[230px] min-w-[230px] shadow-sm cursor-pointer'
+            className=' flex flex-col items-center m-[10px] p-[10px]  bg-black dark:bg-blue pr-6 pl-6 hover:!scale-105 hover:!shadow-lg !transition-all rounded  !duration-500  w-[230px] min-w-[230px] shadow-sm cursor-pointer'
             onClick={user.username?() => router.push("/users/" + user._id):() => router.push("/artists/" + user._id)}
         >
             <div className='m-auto w-[150px] h-[150px] mb-8 mt-2 '>
