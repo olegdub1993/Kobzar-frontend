@@ -10,6 +10,7 @@ import { parseCookies} from "nookies";
 import { checkAuth } from './../store/authSlice';
 import { fetchUser } from '../store/userSlice'
 import ArtistList from '../components/ArtistList'
+import { useIntl } from 'react-intl'
 
 export default function Home() {
   const { tracks, playlists, artists } = useTypedSelector((state) => state.track)
@@ -20,12 +21,14 @@ export default function Home() {
   const christmas = tracks.filter((track:ITrack) => track.category === 'christmas')
   const forSoul = tracks.filter((track:ITrack) => track.category === 'forSoul')
   const remix = tracks.filter((track:ITrack) => track.category === 'remix')
+  const intl=useIntl()
+  const title= intl.formatMessage({id:"home.title"})
 
   return (
     <>
       <MainLayout red>
         <div className=''>
-          <div className='text-white dark:text-black text-4xl font-bold mb-6'> Доброго вечора, ми з України!</div>
+          <div className='text-white dark:text-black text-4xl font-bold mb-6'>{title}</div>
           <div className='mb-4'>
             <div className='text-white dark:text-black text-2xl font-bold mb-2'>Популярне</div>
             <TrackList tracks={popular} />

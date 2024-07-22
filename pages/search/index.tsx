@@ -11,17 +11,12 @@ import { Button } from '@mui/material';
 import Playlists from '../../components/Playlists'
 import UserItem from './../../components/UserItem';
 import { IArtist } from '../../types/artist';
+import { useIntl } from 'react-intl';
 
 type TabType = {
     type: string,
     text: string
 }
-const tabs: TabType[] = [
-    { type: "all", text: "все" },
-    { type: "tracks", text: "пісні" },
-    { type: "playlists", text: "плейлисти" },
-    { type: "artists", text: "артисти" },
-    { type: "users", text: "профілі" }]
 
 
 const Search = () => {
@@ -33,6 +28,7 @@ const Search = () => {
     const searchedPlaylists = searchedData?.playlists
     const searchedUsers = searchedData?.users
     const searchedArtists= searchedData?.artists
+    const intl=useIntl()
     const dispatch = useDispatch<any>()
     const [query, setQuery] = useState<string>("")
     const debouncedFetch = useDebouncedFunction((query: string) => { dispatch(searchContent({ query, type: selectedTab })) }, 500);
@@ -51,6 +47,12 @@ const Search = () => {
         setSelectedTab(selectedTab.type)
         dispatch(searchContent({ query, type: selectedTab.type }))
     }
+    const tabs: TabType[] = [
+        { type: "all", text: intl.formatMessage({id:"search.all"})},
+        { type: "tracks", text: intl.formatMessage({id:"search.songs"})},
+        { type: "playlists", text: intl.formatMessage({id:"search.playlists"})},
+        { type: "artists", text: intl.formatMessage({id:"search.artists"})},
+        { type: "users", text: intl.formatMessage({id:"search.profiles"})}]
     return (
         <MainLayout title={'Kobzar - tracks list '} red>
             <div>
@@ -67,7 +69,7 @@ const Search = () => {
                     <div className='text-white dark:text-black text-2xl font-bold mb-2 '>За вашим запитом нічого не знайдено</div>}
                 {(!searchedTracks?.length && !searchedPlaylists?.length && !searchedArtists?.length && !searchedUsers?.length) ?
                     <>
-                        <div className='text-white dark:text-black text-2xl mt-8 font-bold  mb-2'>Пісні, які найчастіше шукають:</div>
+                        <div className='text-white dark:text-black text-2xl mt-8 font-bold  mb-2'>{intl.formatMessage({id:"search.mostSearched"})}</div>
                         <SearchTrackList tracks={tracksWithIndex} />
                     </> :
                     <>
