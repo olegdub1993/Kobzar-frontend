@@ -28,6 +28,7 @@ import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
 import AppsIcon from '@mui/icons-material/Apps';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import Image from 'next/image'
+import { useIntl } from 'react-intl';
 
 const drawerWidth = 240;
 
@@ -36,18 +37,6 @@ interface AppBarProps extends MuiAppBarProps {
     open?: boolean;
 }
 
-const manuItems = [
-    { icon: <AppsIcon className='text-red !w-[30px]' />, text: "Головна", href: "/", },
-    { icon: <SearchIcon className='text-red !w-[30px]' />, text: "Пошук", href: "/search" },
-    { icon: <LibraryMusicIcon className='text-red !w-[30px]' />, text: "Moя бібліотека", href: "/library", protect: true },
-    // { text: "Tracks List", href: "/tracks",protect:true },
-    // { text: "Alboms List", href: "/alboms",protect:true  },
-    { icon: <PlaylistAddIcon className='text-red !w-[30px]' />, text: "Створити плейлист", href: "/createPlaylist", protect: true },
-    { icon: <FavoriteIcon className='text-red !w-[30px]' />, text: "Вподобані", href: "/liked", protect: true }
-]
-const manuAdminItems = [
-        { icon: <PlaylistAddIcon className='text-red !w-[30px]' />, text: "Додати виконавця", href: "/artists/create", protect: true },
-        { icon: <PlaylistAddIcon className='text-red !w-[30px]' />, text: "Додати трек", href: "/tracks/create", protect: true }]
 
 const AppBar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== 'open',
@@ -81,7 +70,8 @@ export default function Navbar({ restrictPopup, setRestrictPopup }: any) {
     const theme = useTheme();
     const [open, setOpen] = React.useState(true);
     const router = useRouter()
-
+    const intl=useIntl()
+    
     const handleDrawerOpen = () => {
         setOpen(true);
     };
@@ -89,7 +79,19 @@ export default function Navbar({ restrictPopup, setRestrictPopup }: any) {
     const handleDrawerClose = () => {
         setOpen(false);
     };
-
+    const manuItems = [
+        { icon: <AppsIcon className='text-red !w-[30px]' />, text: intl.formatMessage({id:"navbar.home"}), href: "/", },
+        { icon: <SearchIcon className='text-red !w-[30px]' />, text: intl.formatMessage({id:"navbar.search"}), href: "/search" },
+        { icon: <LibraryMusicIcon className='text-red !w-[30px]' />, text:  intl.formatMessage({id:"navbar.library"}), href: "/library", protect: true },
+        // { text: "Tracks List", href: "/tracks",protect:true },
+        // { text: "Alboms List", href: "/alboms",protect:true  },
+        { icon: <PlaylistAddIcon className='text-red !w-[30px]' />, text:  intl.formatMessage({id:"navbar.createPlaylist"}), href: "/createPlaylist", protect: true },
+        { icon: <FavoriteIcon className='text-red !w-[30px]' />, text:  intl.formatMessage({id:"navbar.liked"}), href: "/liked", protect: true }
+    ]
+    const manuAdminItems = [
+            { icon: <PlaylistAddIcon className='text-red !w-[30px]' />, text: intl.formatMessage({id:"navbar.addArtist"}), href: "/artists/create", protect: true },
+            { icon: <PlaylistAddIcon className='text-red !w-[30px]' />, text: intl.formatMessage({id:"navbar.addTrack"}), href: "/tracks/create", protect: true }]
+    
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />

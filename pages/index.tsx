@@ -22,39 +22,38 @@ export default function Home() {
   const forSoul = tracks.filter((track:ITrack) => track.category === 'forSoul')
   const remix = tracks.filter((track:ITrack) => track.category === 'remix')
   const intl=useIntl()
-  const title= intl.formatMessage({id:"home.title"})
 
   return (
     <>
       <MainLayout red>
         <div className=''>
-          <div className='text-white dark:text-black text-4xl font-bold mb-6'>{title}</div>
+          <div className='text-white dark:text-black text-4xl font-bold mb-6'>{intl.formatMessage({id:"home.title"})}</div>
           <div className='mb-4'>
-            <div className='text-white dark:text-black text-2xl font-bold mb-2'>Популярне</div>
+            <div className='text-white dark:text-black text-2xl font-bold mb-2'>{intl.formatMessage({id:"home.popular"})}</div>
             <TrackList tracks={popular} />
           </div>
           <div className='mb-4'>
-            <div className='text-white dark:text-black text-2xl font-bold mb-2'>Український рок</div>
+            <div className='text-white dark:text-black text-2xl font-bold mb-2'>{intl.formatMessage({id:"home.rok"})}</div>
             <TrackList tracks={rock} />
           </div>
           <div className='mb-4'>
-            <div className='text-white dark:text-black text-2xl font-bold mb-2 '>Ремікси</div>
+            <div className='text-white dark:text-black text-2xl font-bold mb-2 '>{intl.formatMessage({id:"home.remixes"})}</div>
             <TrackList tracks={remix} />
           </div>
           <div className='mb-4'>
-            <div className='text-white dark:text-black text-2xl font-bold mb-2 '>Різдвяні свята</div>
+            <div className='text-white dark:text-black text-2xl font-bold mb-2 '>{intl.formatMessage({id:"home.christmas"})}</div>
             <TrackList tracks={christmas} />
           </div>
           <div className='mb-4'>
-            <div className='text-white dark:text-black text-2xl font-bold mb-2 '>Для душі</div>
+            <div className='text-white dark:text-black text-2xl font-bold mb-2 '>{intl.formatMessage({id:"home.forSoul"})}</div>
             <TrackList tracks={forSoul} />
           </div>
           <div className='mb-4'>
-            <div className='text-white dark:text-black text-2xl font-bold mb-2 '>Виконавці</div>
+            <div className='text-white dark:text-black text-2xl font-bold mb-2 '>{intl.formatMessage({id:"home.artists"})}</div>
               <ArtistList artists={artists} />
           </div>
           <div className='mb-4'>
-            <div className='text-white dark:text-black text-2xl font-bold mb-2 '>Плейлисти</div>
+            <div className='text-white dark:text-black text-2xl font-bold mb-2 '>{intl.formatMessage({id:"home.playlists"})}</div>
             <Playlists playlists={playlists} />
           </div>
         </div>
