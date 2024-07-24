@@ -24,6 +24,16 @@
     "search.songs":"пісні",
     "search.playlists":"плейлисти",
     "search.artists":"артисти",
-    "search.profiles":"профілі"
+    "search.profiles":"профілі",
+    "playlist.song":"пісня",
+    "playlist.songs":"пісні",
+    "playlist.songs2":"пісень",
+    "playlist.like":"вподобання",
+    "playlist.likes":"вподобань",
+    "playlist.approximately":"приблизно",
+    "playlist.min":"хв",
+    "user.playlist":"плейлист",
+    "user.playlists":"плейлисти",
+    "user.playlists2":"плейлистів"
 
 }

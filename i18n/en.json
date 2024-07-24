@@ -23,6 +23,15 @@
     "search.songs":"songs",
     "search.playlists":"playlists",
     "search.artists":"artists",
-    "search.profiles":"profiles"
-
+    "search.profiles":"profiles",
+    "playlist.song":"song",
+    "playlist.songs":"songs",
+    "playlist.songs2":"songs",
+    "playlist.like":"like",
+    "playlist.likes":"likes",
+    "playlist.approximately":"approximately",
+    "playlist.min":"min",
+    "user.playlist":"playlist",
+    "user.playlists":"playlists",
+    "user.playlists2":"playlists"
 }

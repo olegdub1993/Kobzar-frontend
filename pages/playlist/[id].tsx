@@ -27,6 +27,7 @@ import EditPlaylistPopup from './popups/EditPlaylistPopup';
 import DeletePlaylistPopup from './popups/DeletePlaylistPopup';
 import { parseCookies } from "nookies";
 import { fetchUser } from '../../store/userSlice'
+import { useIntl } from 'react-intl';
 
 const PlaylistPage: NextPage = () => {
   const { playlistForPage } = useTypedSelector((state) => state.playlist)
@@ -41,6 +42,7 @@ const PlaylistPage: NextPage = () => {
   const totalTime = getTotalTime(playlistForPage?.tracks)
   const tracksWord = getTracksWord(playlistForPage?.tracks)
   const likesWord = getLikesWord(playlistForPage?.likes)
+  const intl= useIntl()
 
   // let tracksWithIdex= playlistForPage.tracks?.map((t,index)=>({...t,index})) 
   // const [playlist, setPlaylist] = useState<IPlaylist>(serverPlaylist)
@@ -87,12 +89,12 @@ const PlaylistPage: NextPage = () => {
     <MainLayout title={'Kobzar ' + playlistForPage?.name}
       keywords={"Music, tracks, " + playlistForPage?.name} red >
       <div>
-        <Grid container className="flex mb-12 items-center text-white relative">
+        <Grid container className="flex mb-12 items-center text-white dark:text-black relative">
           <div className='w-[500px] h-[350px] mb-4 mt-2 '>
             <Image alt="Albom picture" className='w-[100%] h-[100%] object-cover rounded' width={500} height={350} src={playlistForPage?.picture ? process.env.NEXT_PUBLIC_S3_BUCKET_URL + playlistForPage?.picture : albomPicture} />
           </div>
           <div className="ml-8 mr-24 mt-2">
-            <div className="font-semibold mb-4 mt-6 text-2xl max-w-full">Плейлист</div>
+            <div className="font-semibold mb-4 mt-6 text-2xl max-w-full capitalize">{intl.formatMessage({id:"user.playlist"})}</div>
             <div className="font-semibold mb-8 mt-8 text-5xl max-w-full">{playlistForPage?.name}</div>
             {playlistForPage?.description && <div className="font-bold min-h-[72px] mb-10 text-3xl max-w-[600px]">{playlistForPage?.description}</div>}
             <div className="flex items-center mb-2">
@@ -102,7 +104,7 @@ const PlaylistPage: NextPage = () => {
             <div className="flex">
               <div className="font-bold mb-8 text-xl mr-2 max-w-full">{playlistForPage?.tracks?.length + ' ' + tracksWord},</div>
               <div className="font-bold mb-8 text-xl mr-2 max-w-full">{playlistForPage?.likes + ' ' + likesWord},</div>
-              <div className="font-bold mb-8 text-xl  max-w-full">приблизно {totalTime} хв</div>
+              <div className="font-bold mb-8 text-xl  max-w-full">{intl.formatMessage({id:"playlist.approximately"})} {totalTime} {intl.formatMessage({id:"playlist.min"})}</div>
             </div>
           </div>
           {isPlaylistPlaying ? <IconButton className='!bg-green-dark hover:!bg-green-dark   hover:!scale-125 !transition-all  !duration-500' onClick={playOrPause}>{!pause ? <Pause color='error' className='!w-[120px]  !h-[120px]' /> : <PlayArrow color='error' className='!w-[120px]  !h-[120px]' />}</IconButton> :
@@ -128,8 +130,8 @@ const PlaylistPage: NextPage = () => {
             <div>
               {playlistForPage?.tracks?.map((track, index) => <TrackItem key={track._id+index} index={index} track={track} playlist={playlistForPage} />)}
             </div> :
-            <> <div className='text-white text-center text-2xl font-bold mb-2'>У цьому альбомі поки що немає пісень</div>
-              <div className='flex justify-center mt-8'> <Button onClick={() => router.push('/search')} className='!text-white hover:!bg-green-dark hover:!opacity-75  !bg-green-dark !capitalize !text-xl !py-2 px-4 !font-bold !mb-2'>Знайти та додати пісні</Button></div>
+            <> <div className='text-white dark:text-black text-center text-2xl font-bold mb-2'>У цьому альбомі поки що немає пісень</div>
+              <div className='flex justify-center mt-8'> <Button onClick={() => router.push('/search')} className='!text-white dark:!text-black hover:!bg-green-dark hover:!opacity-75  !bg-green-dark !capitalize !text-xl !py-2 px-4 !font-bold !mb-2'>Знайти та додати пісні</Button></div>
             </>}
         </div>
         {editMode && <EditPlaylistPopup playlist={playlistForPage} setEditMode={setEditMode} />}
@@ -173,7 +175,7 @@ const Popup: React.FC<PopupProps> = ({ setPopup, playlist, setEditMode, setDelet
   }
 
   return (
-    <div onClick={(e) => e.stopPropagation()} className={`text-white  h-[120px] font-bold rounded w-[225px] bg-black p-6 top-[0px] right-[100%]  absolute `} >
+    <div onClick={(e) => e.stopPropagation()} className={`text-white dark:text-black  h-[120px] font-bold rounded w-[225px] bg-black dark:bg-blue p-6 top-[0px] right-[100%]  absolute `} >
       {isUserAuthorOfPlaylist ?
         <><div onClick={() => editHandler()} className="hover:opacity-80 mb-3 cursor-pointer"> Редагувати</div>
           <div onClick={() => removePlaylistHandler()} className="hover:opacity-80 cursor-pointer">Видалити</div>

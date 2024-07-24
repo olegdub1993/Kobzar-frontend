@@ -88,7 +88,7 @@ const TrackItem: React.FC<TrackItemProps> = ({withoutName, red, track, playlist,
   console.log("track._id+index" ,track._id+index)
   return (
     <div
-      className={`${red ? '!bg-red' : ''} hover:bg-[rgba(54,0,2,1)] p-2 flex items-center text-white  pr-6 pl-6 rounded  hover:!shadow-lg transition-all  duration-500  w-full border-b border-black shadow-sm cursor-pointer`}
+      className={`${red ? '!bg-red' : ''} hover:bg-[rgba(54,0,2,1)] dark:hover:bg-blue p-2 flex items-center text-white dark:text-black pr-6 pl-6 rounded  hover:!shadow-lg transition-all  duration-500  w-full border-b border-black shadow-sm cursor-pointer`}
       onClick={() => router.push("/tracks/" + track._id)}
     >
       <div className='mr-6'>
@@ -144,7 +144,7 @@ const Popup: React.FC<PopupProps> = ({setActivePlaylist, trackId, setPopup, play
   }
 
   return (
-    <div onClick={(e) => e.stopPropagation()} className={`text-white  font-bold rounded w-[225px] bg-red p-[15px] bottom-[100%] right-[0px]   absolute `} >
+    <div onClick={(e) => e.stopPropagation()} className={`text-white dark:text-black dark:text-black font-bold rounded w-[225px] bg-red p-[15px] bottom-[100%] right-[0px]   absolute `} >
       {isUserAuthorOfPlaylist &&
         <div className="mb-3 hover:opacity-80" onClick={() => removeTrackFromPlaylistHandler()}>Видалити з плейлиста</div>
       }
@@ -153,7 +153,7 @@ const Popup: React.FC<PopupProps> = ({setActivePlaylist, trackId, setPopup, play
         {alboms?.map((albom) => {
           if (albom._id !== playlist._id) {
             return <div
-              className="text-white mt-2 cursor-pointer hover:!opacity-75" key={albom._id} onClick={() => addTrackToPlaylistHandler(albom)}>
+              className="text-white dark:text-black mt-2 cursor-pointer hover:!opacity-75" key={albom._id} onClick={() => addTrackToPlaylistHandler(albom)}>
               {albom.name}
             </div>
           }
@@ -171,7 +171,7 @@ const WarningPopup = ({setPopup, playlist,trackId}:any) => {
   }    
 
   return (
-    <div className=' p-8 shadow-[0px_0px_23px_2px_rgba(0,0,0,0.96)] rounded w-[400px] bg-green-dark text-white fixed top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%] z-[1500]'>
+    <div className=' p-8 shadow-[0px_0px_23px_2px_rgba(0,0,0,0.96)] rounded w-[400px] bg-green-dark text-white dark:text-black fixed top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%] z-[1500]'>
         {/* Увійдіть, щоб переглянути збережені пісні, подкасти, виконавців і плейлісти в розділі "Моя бібліотека". */}
          <div className="text-2xl mb-8 pl-4 pr-4 text-center"> Ця пісня вже є в плейлисті {playlist.name}</div>
         <div className="flex justify-between center ">

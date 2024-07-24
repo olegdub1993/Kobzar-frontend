@@ -1,7 +1,10 @@
 import { ITrack } from "../../types/track";
 import { IPlaylist } from "../../types/playlist";
 import { IUser } from "../../types/user";
+import { useIntl } from "react-intl";
+
 export const getTracksWord =(tracksArray:ITrack[]):string=>{
+  let intl=useIntl()
   let tracksWord=""
   if (tracksArray!==undefined){
     const trackAmountString=tracksArray.length.toString()
@@ -10,16 +13,17 @@ export const getTracksWord =(tracksArray:ITrack[]):string=>{
     const predlastNumber=numbersArray[numbersArray.length-2]
     
     if(lastNumber ==="1" && predlastNumber!=='1'){
-      tracksWord="пісня"
+      tracksWord=intl.formatMessage({id:"playlist.song"})
     }else if((lastNumber==="2"||lastNumber==="3"||lastNumber==="4")&& predlastNumber!=='1'){
-      tracksWord="пісні"
+      tracksWord=intl.formatMessage({id:"playlist.songs"})
     }else{
-      tracksWord="пісень"
+      tracksWord=intl.formatMessage({id:"playlist.songs2"})
     }
   }
   return tracksWord
 }
 export const getPlaylistsWord =(playlistsArray:IPlaylist[]):string=>{
+  let intl=useIntl()
   let playlistsWord=""
   if (playlistsArray!==undefined){
     const playlistsAmountString=playlistsArray.length.toString()
@@ -28,11 +32,11 @@ export const getPlaylistsWord =(playlistsArray:IPlaylist[]):string=>{
     const predlastNumber=numbersArray[numbersArray.length-2]
     
     if(lastNumber ==="1" && predlastNumber!=='1'){
-      playlistsWord="плейлист"
+      playlistsWord=intl.formatMessage({id:"user.playlist"})
     }else if((lastNumber==="2"||lastNumber==="3"||lastNumber==="4")&& predlastNumber!=='1'){
-      playlistsWord="плейлисти"
+      playlistsWord=intl.formatMessage({id:"user.playlists"})
     }else{
-      playlistsWord="плейлистів"
+      playlistsWord=intl.formatMessage({id:"user.playlists2"})
     }
   }
   return playlistsWord
@@ -75,6 +79,7 @@ export const getSubscribersWord =(playlistsArray:IUser[]):string=>{
   }
 
 export const getLikesWord=(likesAmount:number):string=>{
+    let intl=useIntl()
     let likesWord=""
     if (likesAmount!==undefined){
     const likesAmountString=likesAmount.toString()
@@ -83,9 +88,10 @@ export const getLikesWord=(likesAmount:number):string=>{
     const predlastANumber=numbersArray[numbersArray.length-2]
 
     if((lastNumber ==="1"||lastNumber==="2"||lastNumber==="3"||lastNumber==="4") && predlastANumber!=='1'){
-      likesWord="вподобання"}
+      likesWord=intl.formatMessage({id:"playlist.like"})
+    }
       else{
-      likesWord="вподобань"
+      likesWord=intl.formatMessage({id:"playlist.likes"})
     }
   }
   return likesWord
