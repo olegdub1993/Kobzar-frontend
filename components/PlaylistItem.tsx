@@ -56,7 +56,7 @@ const PlaylistItem: React.FC<PlaylistItemProps> = ({ playlist }) => {
     // }
     return (
         <div
-            className={`flex flex-col items-center m-[10px] p-[10px] bg-black pr-6 pl-6 hover:!scale-105 hover:!shadow-lg transition-all  duration-500 rounded w-[230px] min-w-[230px] shadow-sm cursor-pointer`}
+            className={`flex flex-col items-center m-[10px] p-[10px] bg-black dark:bg-blue pr-6 pl-6 hover:!scale-105 hover:!shadow-lg transition-all  duration-500 rounded w-[230px] min-w-[230px] shadow-sm cursor-pointer`}
             onClick={() => router.push("/playlist/" + playlist._id)}
         >
             <div className='m-auto w-[180px] h-[150px] mb-4 mt-2 '>

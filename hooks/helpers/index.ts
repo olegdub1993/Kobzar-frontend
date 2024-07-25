@@ -4,7 +4,7 @@ import { IUser } from "../../types/user";
 import { useIntl } from "react-intl";
 
 export const getTracksWord =(tracksArray:ITrack[]):string=>{
-  let intl=useIntl()
+  const intl=useIntl()
   let tracksWord=""
   if (tracksArray!==undefined){
     const trackAmountString=tracksArray.length.toString()
@@ -23,7 +23,7 @@ export const getTracksWord =(tracksArray:ITrack[]):string=>{
   return tracksWord
 }
 export const getPlaylistsWord =(playlistsArray:IPlaylist[]):string=>{
-  let intl=useIntl()
+  const intl=useIntl()
   let playlistsWord=""
   if (playlistsArray!==undefined){
     const playlistsAmountString=playlistsArray.length.toString()
@@ -42,6 +42,7 @@ export const getPlaylistsWord =(playlistsArray:IPlaylist[]):string=>{
   return playlistsWord
 }
 export const getSubscribersWord =(playlistsArray:IUser[]):string=>{
+  const intl=useIntl()
   let playlistsWord=""
   if (playlistsArray!==undefined){
     const playlistsAmountString=playlistsArray.length.toString()
@@ -50,16 +51,17 @@ export const getSubscribersWord =(playlistsArray:IUser[]):string=>{
     const predlastNumber=numbersArray[numbersArray.length-2]
     
     if(lastNumber ==="1" && predlastNumber!=='1'){
-      playlistsWord="підписник"
+      playlistsWord=intl.formatMessage({id:"user.subscriber"})
     }else if((lastNumber==="2"||lastNumber==="3"||lastNumber==="4")&& predlastNumber!=='1'){
-      playlistsWord="підписники"
+      playlistsWord=intl.formatMessage({id:"user.subscribers"})
     }else{
-      playlistsWord="підписників"
+      playlistsWord=intl.formatMessage({id:"user.subscribers2"})
     }
   }
   return playlistsWord
 }
   export const getSubscriptionsWord =(playlistsArray:any[]):string=>{
+    const intl=useIntl()
     let playlistsWord=""
     if (playlistsArray!==undefined){
       const playlistsAmountString=playlistsArray.length.toString()
@@ -68,18 +70,18 @@ export const getSubscribersWord =(playlistsArray:IUser[]):string=>{
       const predlastNumber=numbersArray[numbersArray.length-2]
       
       if(lastNumber ==="1" && predlastNumber!=='1'){
-        playlistsWord="підписка"
+        playlistsWord=intl.formatMessage({id:"user.subscription"})
       }else if((lastNumber==="2"||lastNumber==="3"||lastNumber==="4")&& predlastNumber!=='1'){
-        playlistsWord="підписки"
+        playlistsWord=intl.formatMessage({id:"user.subscriptions"})
       }else{
-        playlistsWord="підписок"
+        playlistsWord=intl.formatMessage({id:"user.subscriptions2"})
       }
     }
     return playlistsWord
   }
 
 export const getLikesWord=(likesAmount:number):string=>{
-    let intl=useIntl()
+  const intl=useIntl()
     let likesWord=""
     if (likesAmount!==undefined){
     const likesAmountString=likesAmount.toString()

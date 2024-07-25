@@ -19,6 +19,7 @@
     "navbar.logout":"Log out",
     "search.mostSearched":"Most searched songs:",
     "search.mode":"Dark Mode",
+    "search.language":"Language",
     "search.all":"all",
     "search.songs":"songs",
     "search.playlists":"playlists",
@@ -33,5 +34,14 @@
     "playlist.min":"min",
     "user.playlist":"playlist",
     "user.playlists":"playlists",
-    "user.playlists2":"playlists"
+    "user.playlists2":"playlists",
+    "user.subscription":"subscription",
+    "user.subscriptions":"subscriptions",
+    "user.subscriptions2":"subscriptions",
+    "user.subscriber":"subscriber",
+    "user.subscribers":"subscribers",
+    "user.subscribers2":"subscribers",
+    "user.profile":"profile",
+    "user.edit":"edit profile",
+    "about.about":"about"
 }

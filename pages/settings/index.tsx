@@ -22,7 +22,7 @@ const Settings = () => {
                <Switch checked={darkMode} onClick={()=>dispatch(setDarkMode(!darkMode))}></Switch>
                </div>
              </div>
-             <div className='mb-4 flex items-center gap-5'>
+             <div className='mb-8 flex items-center gap-5'>
                <div className='text-white dark:text-black text-2xl font-bold '>
                {intl.formatMessage({id:"search.language"})}
                 </div>
@@ -34,6 +34,11 @@ const Settings = () => {
                             </Link>
                         </MenuItem>)}
                </Select>
+             </div>
+             <div className='mb-4 flex items-center gap-5'>
+               <div className='text-white dark:text-black capitalize text-2xl font-bold '>
+                  <Link  href='/about'>{intl.formatMessage({id:"about.about"})}</Link>
+               </div>
              </div>
           </div>
         </MainLayout>

@@ -34,6 +34,15 @@
     "playlist.min":"хв",
     "user.playlist":"плейлист",
     "user.playlists":"плейлисти",
-    "user.playlists2":"плейлистів"
+    "user.playlists2":"плейлистів",
+    "user.subscription":"підписка",
+    "user.subscriptions":"підписки",
+    "user.subscriptions2":"підписок",
+    "user.subscriber":"підписник",
+    "user.subscribers":"підписники",
+    "user.subscribers2":"підписників",
+    "user.profile":"профіль",
+    "user.edit":"редагувати профіль",
+    "about.about":"про нас"
 
 }

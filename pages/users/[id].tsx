@@ -17,6 +17,7 @@ import Popup from './../../components/Popup';
 import EditProfilePopup from './popups/EditProfilePopup';
 import PlaylistItem from "./../../components/PlaylistItem"
 import UserItem from './../../components/UserItem';
+import { useIntl } from 'react-intl';
 
 const UserPage: NextPage = (props) => {
   const { userForPage } = useTypedSelector((state) => state.users)
@@ -33,6 +34,7 @@ const UserPage: NextPage = (props) => {
   //@ts-ignore
   const allSubscriptions = (userForPage?.subscriptions ?? []).concat(userForPage?.subscriptionsToArtists ?? [])
   const subscriptionsWord = getSubscriptionsWord(allSubscriptions)
+  const intl=useIntl()
 
   const createOrRemoveSubscription = (e: React.MouseEvent<HTMLElement>) => {
     if (!user) {
@@ -57,12 +59,12 @@ const UserPage: NextPage = (props) => {
     <MainLayout title={'Kobzar ' + userForPage?.username}
       keywords={"Music, tracks, " + userForPage?.username} red >
       <div>
-        <Grid container className="flex mb-12 items-center text-white relative">
+        <Grid container className="flex mb-12 items-center text-white dark:text-black relative">
           <div className='w-[300px] h-[300px] mb-4 mt-2 '>
             {imgUrl ? <img className=' rounded-full  w-[300px] h-[300px]' src={imgUrl} /> : <Image alt="User picture" className='w-[100%] h-[100%] object-cover rounded-full' width={300} height={300} src={userForPage?.picture ? process.env.NEXT_PUBLIC_S3_BUCKET_URL + userForPage?.picture : albomPicture} />}
           </div>
           <div className="ml-16 mr-24 mt-2">
-            <div className="font-semibold mb-4 mt-6 text-2xl max-w-full">Профіль</div>
+            <div className="font-semibold mb-4 mt-6 text-2xl max-w-full">{intl.formatMessage({id:"user.profile"})}</div>
             <div className="font-bold mb-8 text-2xl  max-w-full">{userForPage?.username}</div>
             <div className="flex">
               <div className="font-bold mb-8 text-xl mr-2 max-w-full">{userForPage?.playlists?.length + ' ' + playlistsWord},</div>
@@ -77,7 +79,7 @@ const UserPage: NextPage = (props) => {
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Редагувати профіль
+                  {intl.formatMessage({id:"user.edit"})}
               </Button>
             }
             {user?.id !== userForPage?._id &&
@@ -90,22 +92,22 @@ const UserPage: NextPage = (props) => {
 
         </Grid>
         {!!userForPage?.playlists?.length &&
-          <div className='font-bold text-xl mb-4 text-white'>
-            Плейлисти
+          <div className='font-bold text-xl mb-4 text-white dark:text-black capitalize'>
+            {intl.formatMessage({id:"user.playlists"})}
             <div className="flex">
               {userForPage?.playlists?.map((playlist, index) => <PlaylistItem index={index} key={playlist._id} playlist={playlist} />)}
             </div>
           </div>}
         {!!userForPage?.subscribers?.length &&
-          <div className='font-bold text-xl mb-4 text-white'>
-            Підписники
+          <div className='font-bold text-xl mb-4 text-white dark:text-black capitalize'>
+              {intl.formatMessage({id:"user.subscribers"})}
             <div className="flex">
               {userForPage?.subscribers?.map((subscriber) => <UserItem key={subscriber._id} user={subscriber} />)}
             </div>
           </div>}
         {!!userForPage?.subscriptions?.length &&
-          <div className='font-bold text-xl mb-4 text-white'>
-            Підписки
+          <div className='font-bold text-xl mb-4 text-white dark:text-black capitalize'>
+              {intl.formatMessage({id:"user.subscriptions"})}
             <div className="flex">
               {userForPage?.subscriptionsToArtists?.map((subscription) => <UserItem key={subscription._id} user={subscription} />)}
               {userForPage?.subscriptions?.map((subscription) => <UserItem key={subscription._id} user={subscription} />)}
